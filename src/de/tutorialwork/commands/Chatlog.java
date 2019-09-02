@@ -30,19 +30,23 @@ public class Chatlog extends Command {
                 String UUID = UUIDFetcher.getUUID(args[0]);
                 if(UUID != null){
                     if(BanManager.playerExists(UUID)){
-                        if(Chat.hasMessages(UUID)){
-                            String ID = Chat.createChatlog(UUID, p.getUniqueId().toString());
-                            p.sendMessage(Main.Prefix+"Der Chatlog von §e§l"+BanManager.getNameByUUID(UUID)+" §7wurde erfolgreich erstellt");
-                            File config = new File(Main.main.getDataFolder(), "config.yml");
-                            try {
-                                Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
-                                p.sendMessage(Main.Prefix+"Link: §e§l"+cfg.getString("CHATLOG.URL")+ID);
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                        if(!p.getUniqueId().toString().equals(UUID)){
+                            if(Chat.hasMessages(UUID)){
+                                String ID = Chat.createChatlog(UUID, p.getUniqueId().toString());
+                                p.sendMessage(Main.Prefix+"Der Chatlog von §e§l"+BanManager.getNameByUUID(UUID)+" §7wurde erfolgreich erstellt");
+                                File config = new File(Main.main.getDataFolder(), "config.yml");
+                                try {
+                                    Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
+                                    p.sendMessage(Main.Prefix+"Link: §e§l"+cfg.getString("CHATLOG.URL")+ID);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                LogManager.createEntry(UUID, p.getUniqueId().toString(), "CREATE_CHATLOG", ID);
+                            } else {
+                                p.sendMessage(Main.Prefix+"§cDieser Spieler hat in der letzten Zeit keine Nachrichten verfasst");
                             }
-                            LogManager.createEntry(UUID, p.getUniqueId().toString(), "CREATE_CHATLOG", ID);
                         } else {
-                            p.sendMessage(Main.Prefix+"§cDieser Spieler hat in der letzten Zeit keine Nachrichten verfasst");
+                            p.sendMessage(Main.Prefix+"§cDu kannst kein Chatlog von dir selbst erstellen");
                         }
                     } else {
                         p.sendMessage(Main.Prefix+"§cDieser Spieler wurde nicht gefunden");
