@@ -42,6 +42,20 @@ public class BanManager {
         }
     }
 
+    public static void getBanReasonsList(ProxiedPlayer p){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM reasons ORDER BY SORTINDEX ASC");
+            while(rs.next()){
+                int id = rs.getInt("ID");
+                if(BanManager.isBanReason(id)){
+                    p.sendMessage("§7"+id+" §8| §e"+BanManager.getReasonByID(id));
+                } else {
+                    p.sendMessage("§7"+id+" §8| §e"+BanManager.getReasonByID(id)+" §8(§cMUTE§8)");
+                }
+            }
+        } catch (SQLException exc){ }
+    }
+
     public static String getNameByUUID(String UUID){
         if(playerExists(UUID)){
             try {

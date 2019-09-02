@@ -15,6 +15,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Ban extends Command {
     public Ban(String name) {
@@ -27,13 +28,7 @@ public class Ban extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.ban") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
-                    for(int zaehler = 1;zaehler < BanManager.countReasons()+1;zaehler++) {
-                        if(BanManager.isBanReason(zaehler)){
-                            p.sendMessage("§7"+zaehler+" §8| §e"+BanManager.getReasonByID(zaehler));
-                        } else {
-                            p.sendMessage("§7"+zaehler+" §8| §e"+BanManager.getReasonByID(zaehler)+" §8(§cMUTE§8)");
-                        }
-                    }
+                    BanManager.getBanReasonsList(p);
                     p.sendMessage(Main.Prefix+"/ban <Spieler> <Grund-ID>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);

@@ -411,6 +411,8 @@ public class Main extends Plugin {
         //SQL Update 2.2
         mysql.update("ALTER TABLE bans ADD IF NOT EXISTS FIRSTLOGIN varchar(255);");
         mysql.update("ALTER TABLE bans ADD IF NOT EXISTS LASTLOGIN varchar(255);");
+        //SQL Update 2.4
+        mysql.update("ALTER TABLE reasons ADD COLUMN SORTINDEX int(11)");
     }
 
     private void Commands() {

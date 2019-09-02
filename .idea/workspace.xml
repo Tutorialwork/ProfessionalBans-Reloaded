@@ -6,7 +6,16 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="" />
+    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Ban.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Ban.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Ban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/Ban.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/BanManager.java" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,12 +47,17 @@
       <replace>§o</replace>
     </replaceStrings>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1OdUylzNMoT4MdXybPY5oemMsud" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="professionalbans_reloaded" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
@@ -79,6 +93,23 @@
       <updated>1556805016680</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Reasons are now sortable" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reasons are now sortable" />
   </component>
   <component name="masterDetails">
     <states>
