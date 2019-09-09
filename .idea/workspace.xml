@@ -7,11 +7,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/Broadcast.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/PrivateMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/PrivateMessageReply.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/TeamChat.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/MessagesManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Chatlog.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Chatlog.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Chatlog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/Chatlog.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,21 +36,6 @@
         <option value="Class" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>BanManager.ban</find>
-      <find>BanManager.mute</find>
-      <find>UPDATE</find>
-      <find>set</find>
-      <find>YOUR</find>
-      <find>change</find>
-      <find>§k</find>
-      <find>LogManager</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>§o</replace>
-    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,8 +55,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="de.tutorialwork.listener" />
       <recent name="de.tutorialwork.commands" />
+      <recent name="de.tutorialwork.main" />
+      <recent name="de.tutorialwork.listener" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -77,6 +71,40 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager" selected="Application.CloudMessage">
+    <configuration name="CloudMessage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.tutorialwork.utils.CloudMessage" />
+      <module name="ProfessionalBans Reloaded" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="de.tutorialwork.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="HttpURLConnectionExample" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.tutorialwork.utils.HttpURLConnectionExample" />
+      <module name="ProfessionalBans Reloaded" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="de.tutorialwork.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.CloudMessage" />
+        <item itemvalue="Application.HttpURLConnectionExample" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -96,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1567429693431</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Preparing Release 2.4&#10;Fixed reporting yourself as chatlog">
+      <created>1567441610495</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1567441610495</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -114,7 +149,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Reasons are now sortable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reasons are now sortable" />
+    <MESSAGE value="Preparing Release 2.4&#10;Fixed reporting yourself as chatlog" />
+    <option name="LAST_COMMIT_MESSAGE" value="Preparing Release 2.4&#10;Fixed reporting yourself as chatlog" />
   </component>
   <component name="masterDetails">
     <states>

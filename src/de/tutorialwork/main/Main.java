@@ -6,6 +6,7 @@ import de.tutorialwork.listener.Chat;
 import de.tutorialwork.listener.Login;
 import de.tutorialwork.listener.Quit;
 import de.tutorialwork.utils.BanManager;
+import de.tutorialwork.utils.MessagesManager;
 import de.tutorialwork.utils.Metrics;
 import de.tutorialwork.utils.MySQLConnect;
 import net.md_5.bungee.BungeeCord;
@@ -16,10 +17,7 @@ import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
@@ -43,6 +41,7 @@ public class Main extends Plugin {
     public static Integer increaseValue = 50;
 
     public static String APIKey = null;
+    public static String WebURL = null;
 
     //==============================================
     //Plugin Informationen
@@ -124,7 +123,11 @@ public class Main extends Plugin {
             if(!config.exists()){
                 config.createNewFile();
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
+                configcfg.set("WEBINTERFACE.URL", "https://DeinServer.de/Webinterface");
                 configcfg.set("PREFIX", "&e&lBANS &8• &7");
+                configcfg.set("CHATFORMAT.MSG", "&5&lMSG &8• &7%from% » &e%message%");
+                configcfg.set("CHATFORMAT.TEAMCHAT", "&e&lTEAM &8• &7%from% » &e%message%");
+                configcfg.set("CHATFORMAT.BROADCAST", "&8• &c&lMITTEILUNG &8• \n &8» &7%message%");
                 configcfg.set("LAYOUT.BAN", "&8[]===================================[] \n\n &4&lDu wurdest GEBANNT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.KICK", "&8[]===================================[] \n\n &e&lDu wurdest GEKICKT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.TEMPBAN", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEBANNT \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n&8[]===================================[]");
@@ -149,7 +152,6 @@ public class Main extends Plugin {
                 configcfg.set("REPORTS.REASONS", reportreasons);
                 configcfg.set("REPORTS.OFFLINEREPORTS", false);
                 configcfg.set("CHATLOG.ENABLED", true);
-                configcfg.set("CHATLOG.URL", "DeinServer.net/BanWebinterface/public/chatlog.php?id=");
                 configcfg.set("AUTOMUTE.ENABLED", false);
                 configcfg.set("AUTOMUTE.AUTOREPORT", true);
                 //configcfg.set("AUTOMUTE.AUTOREPORT.REASON", "Automatischer Report");
@@ -184,6 +186,25 @@ public class Main extends Plugin {
                 increaseValue = configcfg.getInt("BANTIME-INCREASE.PERCENTRATE");
                 if(configcfg.getString("VPN.APIKEY").length() == 27){
                     APIKey = configcfg.getString("VPN.APIKEY");
+                }
+                if(!configcfg.getString("WEBINTERFACE.URL").equals("https://DeinServer.de/Webinterface")){
+                    WebURL = configcfg.getString("WEBINTERFACE.URL");
+                    if(!WebURL.startsWith("https://") || !WebURL.startsWith("http://")){
+                        WebURL = "https://" + WebURL;
+                    }
+                    if(!WebURL.endsWith("/")){
+                        WebURL = WebURL + "/";
+                    }
+                } else {
+                    //==============================================
+                    //Warnung über fehlende Einstellung
+                    BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
+                    BungeeCord.getInstance().getConsole().sendMessage("§4§lAchtung!");
+                    BungeeCord.getInstance().getConsole().sendMessage("§cEs wurde festgestellt das du noch nicht die Webinterface URL in der §8§oconfig.yml §c§leingestellt hast.");
+                    BungeeCord.getInstance().getConsole().sendMessage("§7Folgende Features werden nicht planmäßig funktionieren");
+                    BungeeCord.getInstance().getConsole().sendMessage("§c§lChatlog-System und MSG-System");
+                    BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
+                    //==============================================
                 }
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             }
@@ -406,6 +427,7 @@ public class Main extends Plugin {
         mysql.update("CREATE TABLE IF NOT EXISTS log(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(255), BYUUID varchar(255), ACTION varchar(255), NOTE varchar(255), DATE varchar(255));");
         mysql.update("CREATE TABLE IF NOT EXISTS unbans(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(255), FAIR int(11), MESSAGE varchar(10000), DATE varchar(255), STATUS int(11));");
         mysql.update("CREATE TABLE IF NOT EXISTS apptokens(UUID varchar(36) UNIQUE, TOKEN varchar(555));");
+        mysql.update("CREATE TABLE IF NOT EXISTS privatemessages(ID int(11) AUTO_INCREMENT UNIQUE, SENDER varchar(255), RECEIVER varchar(255), MESSAGE varchar(2500), STATUS int(11), DATE varchar(255));");
         //SQL Update 2.0
         mysql.update("ALTER TABLE accounts ADD IF NOT EXISTS AUTHSTATUS int(11);");
         //SQL Update 2.2
@@ -413,6 +435,8 @@ public class Main extends Plugin {
         mysql.update("ALTER TABLE bans ADD IF NOT EXISTS LASTLOGIN varchar(255);");
         //SQL Update 2.4
         mysql.update("ALTER TABLE reasons ADD COLUMN SORTINDEX int(11)");
+        //SQL Update 2.5
+        mysql.update("ALTER TABLE apptokens ADD COLUMN FIREBASE_TOKEN varchar(255)");
     }
 
     private void Commands() {
@@ -436,6 +460,10 @@ public class Main extends Plugin {
             getProxy().getPluginManager().registerCommand(this, new Blacklist("blacklist"));
             getProxy().getPluginManager().registerCommand(this, new WebVerify("webverify"));
             getProxy().getPluginManager().registerCommand(this, new SupportChat("support"));
+            getProxy().getPluginManager().registerCommand(this, new PrivateMessage("msg"));
+            getProxy().getPluginManager().registerCommand(this, new PrivateMessageReply("r"));
+            getProxy().getPluginManager().registerCommand(this, new TeamChat("tc"));
+            getProxy().getPluginManager().registerCommand(this, new Broadcast("bc"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -479,5 +507,4 @@ public class Main extends Plugin {
 
         return sb.toString();
     }
-
 }

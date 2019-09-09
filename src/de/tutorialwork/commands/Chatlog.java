@@ -34,12 +34,10 @@ public class Chatlog extends Command {
                             if(Chat.hasMessages(UUID)){
                                 String ID = Chat.createChatlog(UUID, p.getUniqueId().toString());
                                 p.sendMessage(Main.Prefix+"Der Chatlog von §e§l"+BanManager.getNameByUUID(UUID)+" §7wurde erfolgreich erstellt");
-                                File config = new File(Main.main.getDataFolder(), "config.yml");
-                                try {
-                                    Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
-                                    p.sendMessage(Main.Prefix+"Link: §e§l"+cfg.getString("CHATLOG.URL")+ID);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                                if(Main.WebURL != null){
+                                    p.sendMessage(Main.Prefix+"Link: §e§l"+Main.WebURL+"public/chatlog.php?id="+ID);
+                                } else {
+                                    p.sendMessage(Main.Prefix+"Der Link des Chatlogs kann nicht ausgegeben werden");
                                 }
                                 LogManager.createEntry(UUID, p.getUniqueId().toString(), "CREATE_CHATLOG", ID);
                             } else {
