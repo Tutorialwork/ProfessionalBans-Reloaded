@@ -2,6 +2,7 @@ package de.tutorialwork.listener;
 
 import de.tutorialwork.commands.SupportChat;
 import de.tutorialwork.main.Main;
+import de.tutorialwork.utils.MessagesManager;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.PlayerDisconnectEvent;
 import net.md_5.bungee.api.plugin.Listener;
@@ -24,6 +25,7 @@ public class Quit implements Listener {
                 }
             }
         }
+        MessagesManager.updateOnlineStatus(p.getUniqueId().toString(), 0);
     }
 
 }

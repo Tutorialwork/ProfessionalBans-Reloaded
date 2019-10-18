@@ -4,6 +4,7 @@ import de.tutorialwork.commands.SupportChat;
 import de.tutorialwork.main.Main;
 import de.tutorialwork.utils.BanManager;
 import de.tutorialwork.utils.IPManager;
+import de.tutorialwork.utils.MessagesManager;
 import de.tutorialwork.utils.UUIDFetcher;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
@@ -130,6 +131,8 @@ public class Login implements Listener {
                 p.sendMessage("§8[]===================================[]");
             }
         }
+
+        MessagesManager.updateOnlineStatus(p.getUniqueId().toString(), 1);
     }
 
 }

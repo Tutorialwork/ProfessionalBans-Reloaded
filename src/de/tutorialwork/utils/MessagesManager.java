@@ -1,6 +1,7 @@
 package de.tutorialwork.utils;
 
 import de.tutorialwork.main.Main;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.config.Configuration;
@@ -33,9 +34,66 @@ public class MessagesManager {
         }
     }
 
+    public static void sendOpenMessages(){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM privatemessages WHERE STATUS = 0");
+            while (rs.next()){
+
+                ProxiedPlayer target = BungeeCord.getInstance().getPlayer(BanManager.getNameByUUID(rs.getString("RECEIVER")));
+                if(target != null){
+                    target.sendMessage(getRowMSGFormat().replace("%from%", BanManager.getNameByUUID(rs.getString("SENDER"))).replace("%message%", rs.getString("MESSAGE")));
+                    setDoneMessage(rs.getInt("ID"));
+                }
+
+            }
+        } catch (SQLException exc){ }
+    }
+
+    public static void sendOpenBroadcasts(){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM privatemessages WHERE STATUS = 0 AND RECEIVER = 'BROADCAST'");
+            while (rs.next()){
+
+                try{
+                    File file = new File(Main.main.getDataFolder(), "config.yml");
+                    Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+
+                    BungeeCord.getInstance().broadcast("");
+                    BungeeCord.getInstance().broadcast("§8[]===================================[]");
+                    BungeeCord.getInstance().broadcast("");
+                    BungeeCord.getInstance().broadcast(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.BROADCAST").replace("%message%", rs.getString("MESSAGE"))));
+                    BungeeCord.getInstance().broadcast("");
+                    BungeeCord.getInstance().broadcast("§8[]===================================[]");
+                    BungeeCord.getInstance().broadcast("");
+
+                    setDoneMessage(rs.getInt("ID"));
+
+                } catch(IOException e){ }
+
+            }
+        } catch (SQLException exc){ }
+    }
+
+    public static String getRowMSGFormat(){
+        try{
+            File file = new File(Main.main.getDataFolder(), "config.yml");
+            Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+
+            return ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.MSG"));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void setDoneMessage(int ID){
+        Main.mysql.update("UPDATE privatemessages SET STATUS = 1 WHERE ID = " + ID);
+    }
+
     public static void insertMessage(String SenderUUID, String ReceiverUUID, String Message){
         Main.mysql.update("INSERT INTO privatemessages(SENDER, RECEIVER, MESSAGE, STATUS, DATE) " +
-                "VALUES ('" + SenderUUID + "', '" + ReceiverUUID + "', '" + Message + "', '0', '" + System.currentTimeMillis() + "')");
+                "VALUES ('" + SenderUUID + "', '" + ReceiverUUID + "', '" + Message + "', '1', '" + System.currentTimeMillis() + "')");
     }
 
     public static void updateLastChat(ProxiedPlayer player, ProxiedPlayer to){
@@ -121,6 +179,10 @@ public class MessagesManager {
             //printing result from response
             //System.out.println(response.toString());
         } catch (IOException e){ }
+    }
+
+    public static void updateOnlineStatus(String UUID, Integer status){
+        Main.mysql.update("UPDATE bans SET ONLINE_STATUS = "+status+" WHERE UUID = '" + UUID+"'");
     }
 
 }

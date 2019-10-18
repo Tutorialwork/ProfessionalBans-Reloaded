@@ -45,7 +45,7 @@ public class Main extends Plugin {
 
     //==============================================
     //Plugin Informationen
-    public static String Version = "2.4";
+    public static String Version = "2.5-B1";
     //==============================================
 
     @Override
@@ -82,6 +82,8 @@ public class Main extends Plugin {
                                 all.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
                             }
                         }
+                        MessagesManager.sendOpenMessages();
+                        MessagesManager.sendOpenBroadcasts();
                     }
                     ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
                 } catch (IOException e) {
@@ -437,6 +439,7 @@ public class Main extends Plugin {
         mysql.update("ALTER TABLE reasons ADD COLUMN SORTINDEX int(11)");
         //SQL Update 2.5
         mysql.update("ALTER TABLE apptokens ADD COLUMN FIREBASE_TOKEN varchar(255)");
+        mysql.update("ALTER TABLE bans ADD ONLINE_STATUS int(11) NULL DEFAULT '0'");
     }
 
     private void Commands() {
