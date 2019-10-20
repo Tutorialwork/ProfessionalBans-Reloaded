@@ -173,6 +173,9 @@ public class Main extends Plugin {
                 configcfg.set("AUTOMUTE.ADMUTEID", 0);
                 configcfg.set("BANTIME-INCREASE.ENABLED", true);
                 configcfg.set("BANTIME-INCREASE.PERCENTRATE", 50);
+                configcfg.set("COMMANDS.MSG", true);
+                configcfg.set("COMMANDS.TEAMCHAT", true);
+                configcfg.set("COMMANDS.BROADCAST", true);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             } else {
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
@@ -483,10 +486,16 @@ public class Main extends Plugin {
             getProxy().getPluginManager().registerCommand(this, new Blacklist("blacklist"));
             getProxy().getPluginManager().registerCommand(this, new WebVerify("webverify"));
             getProxy().getPluginManager().registerCommand(this, new SupportChat("support"));
-            getProxy().getPluginManager().registerCommand(this, new PrivateMessage("msg"));
-            getProxy().getPluginManager().registerCommand(this, new PrivateMessageReply("r"));
-            getProxy().getPluginManager().registerCommand(this, new TeamChat("tc"));
-            getProxy().getPluginManager().registerCommand(this, new Broadcast("bc"));
+            if(cfg.getBoolean("COMMANDS.MSG")){
+                getProxy().getPluginManager().registerCommand(this, new PrivateMessage("msg"));
+                getProxy().getPluginManager().registerCommand(this, new PrivateMessageReply("r"));
+            }
+            if(cfg.getBoolean("COMMANDS.TEAMCHAT")){
+                getProxy().getPluginManager().registerCommand(this, new TeamChat("tc"));
+            }
+            if(cfg.getBoolean("COMMANDS.BROADCAST")){
+                getProxy().getPluginManager().registerCommand(this, new Broadcast("bc"));
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
