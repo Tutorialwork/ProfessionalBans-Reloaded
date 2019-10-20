@@ -46,7 +46,7 @@ public class Main extends Plugin {
 
     //==============================================
     //Plugin Informationen
-    public static String Version = "2.5";
+    public static String Version = "2.5.1";
     //==============================================
 
     @Override
