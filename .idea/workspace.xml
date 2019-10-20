@@ -6,17 +6,13 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="Added /msg, /tc, and /bc command">
+    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Login.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Login.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Quit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Quit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/MySQLConnect.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/MySQLConnect.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/listener/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/listener/Quit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/MessagesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/MessagesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/MySQLConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/MySQLConnect.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -136,7 +132,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568035410138</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added messages system to plugin">
+      <created>1571439663718</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1571439663718</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -156,7 +159,8 @@
     <MESSAGE value="Reasons are now sortable" />
     <MESSAGE value="Preparing Release 2.4&#10;Fixed reporting yourself as chatlog" />
     <MESSAGE value="Added /msg, /tc, and /bc command" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added /msg, /tc, and /bc command" />
+    <MESSAGE value="Added messages system to plugin" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added messages system to plugin" />
   </component>
   <component name="masterDetails">
     <states>

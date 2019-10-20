@@ -15,21 +15,23 @@ public class MySQLConnect {
     public static String DATABASE;
     public static String USER;
     public static String PASSWORD;
+    public static Integer PORT;
 
     private Connection con;
 
-    public MySQLConnect(String host, String database, String user, String password) {
+    public MySQLConnect(String host, String database, String user, String password, Integer port) {
         this.HOST = host;
         this.DATABASE = database;
         this.USER = user;
         this.PASSWORD = password;
+        this.PORT = port;
 
         connect();
     }
 
     public void connect() {
         try {
-            con = DriverManager.getConnection("jdbc:mysql://" + HOST + ":3306/" + DATABASE + "?autoReconnect=true", USER, PASSWORD);
+            con = DriverManager.getConnection("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?autoReconnect=true", USER, PASSWORD);
             BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§aDie Verbindung mit der MySQL Datenbank wurde erfolgreich hergestellt");
         } catch (SQLException e) {
             BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDie Verbindung mit der MySQL Datenbank ist fehlgeschlagen: §4" + e.getMessage());

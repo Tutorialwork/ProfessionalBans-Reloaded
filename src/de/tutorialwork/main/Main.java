@@ -45,7 +45,7 @@ public class Main extends Plugin {
 
     //==============================================
     //Plugin Informationen
-    public static String Version = "2.5-B1";
+    public static String Version = "2.5";
     //==============================================
 
     @Override
@@ -120,6 +120,7 @@ public class Main extends Plugin {
                 mysql.set("DATENBANK", "Bans");
                 mysql.set("USER", "root");
                 mysql.set("PASSWORT", "deinpasswort");
+                mysql.set("PORT", 3306);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(mysql, file);
             }
             if(!config.exists()){
@@ -415,10 +416,15 @@ public class Main extends Plugin {
             MySQLConnect.DATABASE = mysql.getString("DATENBANK");
             MySQLConnect.USER = mysql.getString("USER");
             MySQLConnect.PASSWORD = mysql.getString("PASSWORT");
+            if(mysql.getInt("PORT") != 0){
+                MySQLConnect.PORT = mysql.getInt("PORT");
+            } else {
+                MySQLConnect.PORT = 3306;
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
-        mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD);
+        mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD, MySQLConnect.PORT);
         mysql.update("CREATE TABLE IF NOT EXISTS accounts(UUID varchar(64) UNIQUE, USERNAME varchar(255), PASSWORD varchar(255), RANK int(11), GOOGLE_AUTH varchar(255), AUTHCODE varchar(255));");
         mysql.update("CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT varchar(11), BANS int(11), PERMS varchar(255));");
         mysql.update("CREATE TABLE IF NOT EXISTS bans(UUID varchar(64) UNIQUE, NAME varchar(64), BANNED int(11), MUTED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11), MUTES int(11), FIRSTLOGIN varchar(255), LASTLOGIN varchar(255));");
