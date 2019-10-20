@@ -42,6 +42,7 @@ public class Main extends Plugin {
 
     public static String APIKey = null;
     public static String WebURL = null;
+    public static Integer ReportCooldown = 1;
 
     //==============================================
     //Plugin Informationen
@@ -103,6 +104,15 @@ public class Main extends Plugin {
         }
         //==============================================
         Metrics metrics = new Metrics(this);
+        //==============================================
+        //Report Cooldown
+        getProxy().getScheduler().schedule(this, new Runnable() {
+            @Override
+            public void run() {
+                Report.players.clear();
+            }
+        }, ReportCooldown, ReportCooldown, TimeUnit.MINUTES);
+        //==============================================
     }
 
     private void Config() {
@@ -154,6 +164,7 @@ public class Main extends Plugin {
                 reportreasons.add("Werbung");
                 configcfg.set("REPORTS.REASONS", reportreasons);
                 configcfg.set("REPORTS.OFFLINEREPORTS", false);
+                configcfg.set("REPORTS.COOLDOWN_MIN", 1);
                 configcfg.set("CHATLOG.ENABLED", true);
                 configcfg.set("AUTOMUTE.ENABLED", false);
                 configcfg.set("AUTOMUTE.AUTOREPORT", true);
@@ -208,6 +219,9 @@ public class Main extends Plugin {
                     BungeeCord.getInstance().getConsole().sendMessage("§c§lChatlog-System und MSG-System");
                     BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
                     //==============================================
+                }
+                if(configcfg.getInt("REPORTS.COOLDOWN_MIN") != 0){ //Is config file updated?
+                    ReportCooldown = configcfg.getInt("REPORTS.COOLDOWN_MIN");
                 }
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             }

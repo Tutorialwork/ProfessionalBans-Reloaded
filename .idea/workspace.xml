@@ -9,11 +9,8 @@
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/MySQLConnect.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/MySQLConnect.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/commands/Report.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/MySQLConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/MySQLConnect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +136,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571439663718</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added mysql port configuration">
+      <created>1571578476702</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1571578476702</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -160,7 +164,8 @@
     <MESSAGE value="Preparing Release 2.4&#10;Fixed reporting yourself as chatlog" />
     <MESSAGE value="Added /msg, /tc, and /bc command" />
     <MESSAGE value="Added messages system to plugin" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added messages system to plugin" />
+    <MESSAGE value="Added mysql port configuration" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added mysql port configuration" />
   </component>
   <component name="masterDetails">
     <states>
