@@ -32,7 +32,12 @@ public class Ban extends Command {
                     p.sendMessage(Main.Prefix+"/ban <Spieler> <Grund-ID>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
-                    int ID = Integer.valueOf(args[1]);
+                    try {
+                        int ID = Integer.valueOf(args[1]);
+                    } catch (NumberFormatException e) {
+                        p.sendMessage(Main.Prefix + "§cBitte gebe eine Gültige Grund-ID an.");
+                        return;
+                    }
                     if(BanManager.playerExists(UUID)){
                         if(BanManager.isWebaccountAdmin(UUID)){
                             p.sendMessage(Main.Prefix+"§cDiesen Spieler kannst du nicht bannen/muten");
