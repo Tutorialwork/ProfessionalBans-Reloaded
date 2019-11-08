@@ -176,6 +176,7 @@ public class Main extends Plugin {
                 configcfg.set("COMMANDS.MSG", true);
                 configcfg.set("COMMANDS.TEAMCHAT", true);
                 configcfg.set("COMMANDS.BROADCAST", true);
+                configcfg.set("COMMANDS.SUPPORT", true);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             } else {
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
@@ -219,7 +220,7 @@ public class Main extends Plugin {
                     BungeeCord.getInstance().getConsole().sendMessage("§4§lAchtung!");
                     BungeeCord.getInstance().getConsole().sendMessage("§cEs wurde festgestellt das du noch nicht die Webinterface URL in der §8§oconfig.yml §c§leingestellt hast.");
                     BungeeCord.getInstance().getConsole().sendMessage("§7Folgende Features werden nicht planmäßig funktionieren");
-                    BungeeCord.getInstance().getConsole().sendMessage("§c§lChatlog-System und MSG-System");
+                    BungeeCord.getInstance().getConsole().sendMessage("§c§lChatlog-System");
                     BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
                     //==============================================
                 }
@@ -485,7 +486,9 @@ public class Main extends Plugin {
             }
             getProxy().getPluginManager().registerCommand(this, new Blacklist("blacklist"));
             getProxy().getPluginManager().registerCommand(this, new WebVerify("webverify"));
-            getProxy().getPluginManager().registerCommand(this, new SupportChat("support"));
+            if(cfg.getBoolean("COMMANDS.SUPPORT")){
+                getProxy().getPluginManager().registerCommand(this, new SupportChat("support"));
+            }
             if(cfg.getBoolean("COMMANDS.MSG")){
                 getProxy().getPluginManager().registerCommand(this, new PrivateMessage("msg"));
                 getProxy().getPluginManager().registerCommand(this, new PrivateMessageReply("r"));
