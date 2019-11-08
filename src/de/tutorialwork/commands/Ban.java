@@ -32,8 +32,9 @@ public class Ban extends Command {
                     p.sendMessage(Main.Prefix+"/ban <Spieler> <Grund-ID>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
+                    int ID;
                     try {
-                        int ID = Integer.valueOf(args[1]);
+                        ID = Integer.valueOf(args[1]);
                     } catch (NumberFormatException e) {
                         p.sendMessage(Main.Prefix + "§cBitte gebe eine Gültige Grund-ID an.");
                         return;
