@@ -39,15 +39,13 @@ public class TeamChat extends Command {
                                 Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
 
                                 if(!all.getUniqueId().toString().equals(p.getUniqueId().toString())){
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", p.getName()).replace("%message%", message)));
+                                    all.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", p.getName()).replace("%message%", message)));
                                 } else {
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", "Du").replace("%message%", message)));
+                                    all.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", "Du").replace("%message%", message)));
                                 }
                                 MessagesManager.insertMessage(p.getUniqueId().toString(), "TEAM", message);
                                 if(MessagesManager.getFirebaseToken(all.getUniqueId().toString()) != null){
-                                    if(!all.getUniqueId().toString().equals(p.getUniqueId().toString())){
-                                        MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(all.getUniqueId().toString()), "Nachricht von "+p.getName(), message);
-                                    }
+                                    MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(all.getUniqueId().toString()), "Nachricht von "+p.getName(), message);
                                 }
 
                             } catch (IOException e) {
