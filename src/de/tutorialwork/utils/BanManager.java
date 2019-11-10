@@ -267,6 +267,13 @@ public class BanManager {
                 }
             }
         }
+        if(Type.toUpperCase().equals("AUTOMUTE")){
+            for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
+                if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
+                    all.sendMessage(Main.Prefix+"§e§l"+BannedName+" §7wurde §cautomatisch gemutet §7wegen §a"+Grund+" §8(§7"+TeamName+"§8)");
+                }
+            }
+        }
         if(Type.toUpperCase().equals("KICK")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){

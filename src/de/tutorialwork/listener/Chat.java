@@ -4,6 +4,7 @@ import de.tutorialwork.commands.SupportChat;
 import de.tutorialwork.main.Main;
 import de.tutorialwork.utils.BanManager;
 import de.tutorialwork.utils.LogManager;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -78,7 +79,7 @@ public class Chat implements Listener {
                                     BanManager.mute(p.getUniqueId().toString(), configcfg.getInt("AUTOMUTE.MUTEID"), "KONSOLE");
                                     LogManager.createEntry(p.getUniqueId().toString(), "KONSOLE", "AUTOMUTE_BLACKLIST", e.getMessage());
                                     BanManager.setMutes(p.getUniqueId().toString(), BanManager.getMutes(p.getUniqueId().toString()) + 1);
-                                    BanManager.sendNotify("MUTE", BanManager.getNameByUUID(p.getUniqueId().toString()), "KONSOLE", BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.MUTEID")));
+                                    BanManager.sendNotify("AUTOMUTE", BanManager.getNameByUUID(p.getUniqueId().toString()), e.getMessage(), BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.MUTEID")));
                                     if(BanManager.getRAWEnd(p.getUniqueId().toString()) == -1L){
                                         p.sendMessage(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.MUTE").replace("%grund%", BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.MUTEID")))));
                                     } else {
@@ -97,7 +98,7 @@ public class Chat implements Listener {
                                         BanManager.mute(p.getUniqueId().toString(), configcfg.getInt("AUTOMUTE.ADMUTEID"), "KONSOLE");
                                         LogManager.createEntry(p.getUniqueId().toString(), "KONSOLE", "AUTOMUTE_ADBLACKLIST", e.getMessage());
                                         BanManager.setMutes(p.getUniqueId().toString(), BanManager.getMutes(p.getUniqueId().toString()) + 1);
-                                        BanManager.sendNotify("MUTE", BanManager.getNameByUUID(p.getUniqueId().toString()), "KONSOLE", BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.ADMUTEID")));
+                                        BanManager.sendNotify("AUTOMUTE", BanManager.getNameByUUID(p.getUniqueId().toString()), e.getMessage(), BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.ADMUTEID")));
                                         if(BanManager.getRAWEnd(p.getUniqueId().toString()) == -1L){
                                             p.sendMessage(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.MUTE").replace("%grund%", BanManager.getReasonByID(configcfg.getInt("AUTOMUTE.MUTEID")))));
                                         } else {
