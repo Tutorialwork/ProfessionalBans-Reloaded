@@ -8,8 +8,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/listener/Chat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/utils/BanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Chat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Chat.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -184,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573412221898</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Added on AutoMute info about sent message">
+      <created>1573417452108</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1573417452108</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
