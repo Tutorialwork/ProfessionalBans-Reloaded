@@ -207,7 +207,7 @@ public class Main extends Plugin {
                 }
                 if(!configcfg.getString("WEBINTERFACE.URL").equals("https://DeinServer.de/Webinterface")){
                     WebURL = configcfg.getString("WEBINTERFACE.URL");
-                    if(!WebURL.startsWith("https://") || !WebURL.startsWith("http://")){
+                    if(!WebURL.startsWith("https://") && !WebURL.startsWith("http://")){
                         WebURL = "https://" + WebURL;
                     }
                     if(!WebURL.endsWith("/")){
