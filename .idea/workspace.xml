@@ -8,10 +8,73 @@
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Chat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Chat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Ban.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Blacklist.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Chatlog.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Check.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/IPBan.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Kick.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/ProfessionalBans.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Report.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Reports.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/SupportChat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/Unban.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/WebAccount.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/commands/WebVerify.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Chat.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Login.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/listener/Quit.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/main/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BCrypt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/BanManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/IPManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/LogManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$AdvancedBarChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$AdvancedPie.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$CustomChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$DrilldownPie.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$MultiLineChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$SimpleBarChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$SimplePie.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics$SingleLineChart.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/Metrics.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/MySQLConnect.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/RandomString.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/de/tutorialwork/utils/UUIDFetcher.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ProfessionalBans Reloaded/plugin.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Ban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Ban.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Blacklist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Blacklist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Broadcast.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Broadcast.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Chatlog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Chatlog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Check.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/IPBan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/IPBan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Kick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Kick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/PrivateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/PrivateMessageReply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessageReply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/ProfessionalBans.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/ProfessionalBans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Report.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Reports.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/SupportChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/SupportChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/TeamChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/TeamChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/Unban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Unban.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/WebAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/commands/WebVerify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebVerify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Chat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/listener/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/BCrypt.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BCrypt.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/IPManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/IPManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/LogManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/LogManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/MessagesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MessagesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/Metrics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/Metrics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/MySQLConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MySQLConnect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/RandomString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/RandomString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/utils/UUIDFetcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/UUIDFetcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -32,6 +95,11 @@
   </component>
   <component name="ProjectId" id="1OdUylzNMoT4MdXybPY5oemMsud" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
@@ -49,18 +117,6 @@
       <recent name="de.tutorialwork.main" />
       <recent name="de.tutorialwork.listener" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Application.CloudMessage">
     <configuration name="CloudMessage" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
@@ -95,6 +151,18 @@
         <item itemvalue="Application.HttpURLConnectionExample" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -191,7 +259,14 @@
       <option name="project" value="LOCAL" />
       <updated>1573417452108</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Release 2.6.1">
+      <created>1573425597168</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1573425597168</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -220,7 +295,8 @@
     <MESSAGE value="Release 2.6" />
     <MESSAGE value="Fixed TeamChat" />
     <MESSAGE value="Added on AutoMute info about sent message" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added on AutoMute info about sent message" />
+    <MESSAGE value="Release 2.6.1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release 2.6.1" />
   </component>
   <component name="masterDetails">
     <states>

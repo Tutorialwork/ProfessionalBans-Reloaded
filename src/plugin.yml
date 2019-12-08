@@ -1,4 +1,4 @@
 name: ProfessionalBans Reloaded
 author: Tutorialwork
-version: 2.6.1
-main: de.tutorialwork.main.Main
+version: 2.6.2
+main: de.tutorialwork.professionalbans.main.Main
