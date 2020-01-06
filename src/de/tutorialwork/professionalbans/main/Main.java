@@ -140,9 +140,9 @@ public class Main extends Plugin {
                 configcfg.set("CHATFORMAT.MSG", "&5&lMSG &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.TEAMCHAT", "&e&lTEAM &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.BROADCAST", "&8• &c&lMITTEILUNG &8• \n &8» &7%message%");
-                configcfg.set("LAYOUT.BAN", "&8[]===================================[] \n\n &4&lDu wurdest GEBANNT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.BAN", "&8[]===================================[] \n\n &4&lDu wurdest GEBANNT \n\n &eGrund: §c§l%grund% \n\n%ea-status% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.KICK", "&8[]===================================[] \n\n &e&lDu wurdest GEKICKT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.TEMPBAN", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEBANNT \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.TEMPBAN", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEBANNT \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n%ea-status% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.MUTE", "&8[]===================================[] \n\n &4&lDu wurdest GEMUTET \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.TEMPMUTE", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEMUTET \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n&8[]===================================[]");
                 configcfg.set("LAYOUT.IPBAN", "&8[]===================================[] \n\n &4&lDeine IP-Adresse wurde GEBANNT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");

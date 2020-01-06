@@ -657,4 +657,43 @@ public class BanManager {
         return jdf.format(date);
     }
 
+    public static boolean hasEA(String UUID){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM unbans WHERE UUID='" + UUID + "'");
+            if(rs.next()){
+                return rs.getString("UUID") != null;
+            }
+
+        } catch (SQLException exc){
+
+        }
+        return false;
+    }
+
+    public static String getEAStatus(String UUID){
+        if(hasEA(UUID)){
+            try {
+                ResultSet rs = Main.mysql.query("SELECT * FROM unbans WHERE UUID='" + UUID + "' ORDER BY DATE DESC");
+                if(rs.next()){
+                    long date = Long.valueOf(rs.getInt("DATE")*1000);
+                    if(getRAWEnd(UUID) > date){
+                        if(rs.getInt("STATUS") == 0){
+                            return "§eDein Entbannunsantrag wird gerade bearbeitet";
+                        } else if(rs.getInt("STATUS") == 2){
+                            return "§eDein Ban wurde aufgrund deines Entbannungsantrags verkürzt";
+                        } else if(rs.getInt("STATUS") == 3){
+                            return "§eDein Entbannungsantrag wurde abgelehnt";
+                        } else {
+                            return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+                        }
+                    } else {
+                        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+                    }
+                }
+
+            } catch (SQLException exc){}
+        }
+        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+    }
+
 }

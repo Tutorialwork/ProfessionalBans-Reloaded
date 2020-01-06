@@ -62,11 +62,12 @@ public class Ban extends Command {
                                     try {
                                         Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
                                         if(BanManager.getRAWEnd(banned.getUniqueId().toString()) == -1L){
-                                            banned.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonByID(ID))));
+                                            banned.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonByID(ID)).replace("%ea-status%", BanManager.getEAStatus(UUID))));
                                         } else {
                                             String MSG = configcfg.getString("LAYOUT.TEMPBAN");
                                             MSG = MSG.replace("%grund%", BanManager.getReasonString(UUID));
                                             MSG = MSG.replace("%dauer%", BanManager.getEnd(UUID));
+                                            MSG = MSG.replace("%ea-status%", BanManager.getEAStatus(UUID));
                                             banned.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
                                         }
                                         ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
@@ -145,11 +146,12 @@ public class Ban extends Command {
                                 try {
                                     Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
                                     if(BanManager.getRAWEnd(banned.getUniqueId().toString()) == -1L){
-                                        banned.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonByID(ID))));
+                                        banned.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonByID(ID)).replace("%ea-status%", BanManager.getEAStatus(UUID))));
                                     } else {
                                         String MSG = configcfg.getString("LAYOUT.TEMPBAN");
                                         MSG = MSG.replace("%grund%", BanManager.getReasonString(UUID));
                                         MSG = MSG.replace("%dauer%", BanManager.getEnd(UUID));
+                                        MSG = MSG.replace("%ea-status%", BanManager.getEAStatus(UUID));
                                         banned.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
                                     }
                                     ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
