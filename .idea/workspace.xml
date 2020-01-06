@@ -7,12 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Ban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Ban.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Chat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Chat.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -209,7 +205,21 @@
       <option name="project" value="LOCAL" />
       <updated>1573425597168</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Changed Login event to prevent DDOSAttacks">
+      <created>1578318742067</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1578318742067</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added information about unbanrequest status in ban message">
+      <created>1578318793774</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1578318793774</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -239,21 +249,27 @@
     <MESSAGE value="Fixed TeamChat" />
     <MESSAGE value="Added on AutoMute info about sent message" />
     <MESSAGE value="Release 2.6.1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release 2.6.1" />
+    <MESSAGE value="Changed Login event to prevent DDOSAttacks" />
+    <MESSAGE value="Added information about unbanrequest status in ban message" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added information about unbanrequest status in ban message" />
   </component>
   <component name="WindowStateProjectService">
     <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1578048168259">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578048168259" />
-    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1578318739037">
+    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1578318791538">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578318739037" />
+    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578318791538" />
     <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1576678318772">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1576678318772" />
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1578318796128">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578318796128" />
     <state x="656" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1578313295118">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

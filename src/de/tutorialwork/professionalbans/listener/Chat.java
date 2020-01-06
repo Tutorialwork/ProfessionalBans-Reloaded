@@ -4,6 +4,8 @@ import de.tutorialwork.professionalbans.commands.SupportChat;
 import de.tutorialwork.professionalbans.main.Main;
 import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
+import de.tutorialwork.professionalbans.utils.MySQLConnect;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
@@ -16,8 +18,7 @@ import net.md_5.bungee.event.EventHandler;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Chat implements Listener {
 
@@ -148,8 +149,21 @@ public class Chat implements Listener {
     }
 
     public static void insertMessage(String UUID, String Message, String Server){
-        Main.mysql.update("INSERT INTO chat(UUID, SERVER, MESSAGE, SENDDATE) " +
-                "VALUES ('" + UUID + "', '" + Server + "', '" + Message + "', '" + System.currentTimeMillis() + "')");
+        try {
+            File file = new File(Main.getInstance().getDataFolder().getPath(), "mysql.yml");
+            Configuration mysql = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+            Connection con = DriverManager.getConnection("jdbc:mysql://" +mysql.getString("HOST") + ":" + mysql.getInt("PORT") + "/" + mysql.getString("DATENBANK") + "?autoReconnect=true", mysql.getString("USER"), mysql.getString("PASSWORT"));
+            PreparedStatement ps = con.prepareStatement("INSERT INTO chat(UUID, SERVER, MESSAGE, SENDDATE) VALUES (?, ?, ?, ?)");
+            ps.setString(1, UUID);
+            ps.setString(2, Server);
+            ps.setString(3, Message);
+            ps.setLong(4, System.currentTimeMillis());
+            ps.execute();
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static String createChatlog(String UUID, String CreatedUUID){
