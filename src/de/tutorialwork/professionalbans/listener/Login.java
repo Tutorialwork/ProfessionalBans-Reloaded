@@ -8,8 +8,8 @@ import de.tutorialwork.professionalbans.utils.MessagesManager;
 import de.tutorialwork.professionalbans.utils.UUIDFetcher;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.config.Configuration;
 import net.md_5.bungee.config.ConfigurationProvider;
@@ -22,7 +22,7 @@ import java.io.IOException;
 public class Login implements Listener {
 
     @EventHandler
-    public void onJoin(PreLoginEvent e){
+    public void onJoin(LoginEvent e){
         String UUID = UUIDFetcher.getUUID(e.getConnection().getName());
         String IP = e.getConnection().getAddress().getHostString();
         BanManager.createPlayer(UUID, e.getConnection().getName());
@@ -87,13 +87,14 @@ public class Login implements Listener {
 
                 if(BanManager.getRAWEnd(UUID) == -1L){
                     e.setCancelled(true);
-                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonString(UUID))));
+                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonString(UUID)).replace("%ea-status%", BanManager.getEAStatus(UUID))));
                 } else {
                     if(System.currentTimeMillis() < BanManager.getRAWEnd(UUID)){
                         e.setCancelled(true);
                         String MSG = configcfg.getString("LAYOUT.TEMPBAN");
                         MSG = MSG.replace("%grund%", BanManager.getReasonString(UUID));
                         MSG = MSG.replace("%dauer%", BanManager.getEnd(UUID));
+                        MSG = MSG.replace("%ea-status%", BanManager.getEAStatus(UUID));
                         e.setCancelReason(ChatColor.translateAlternateColorCodes('&', MSG));
                     } else {
                         BanManager.unban(UUID);
@@ -129,6 +130,12 @@ public class Login implements Listener {
                 p.sendMessage("§7Update: §4§lhttps://spigotmc.org/resources/63657");
                 p.sendMessage("§8[]===================================[]");
             }
+        }
+        //WebURL Conf Check
+        if(Main.WebURL == null){
+            p.sendMessage("§8[]===================================[]");
+            p.sendMessage("§7Bitte stelle in der §e§lconfig.yml §7unter §e§lWEBINTERFACE.URL §7deine URL zu deinem Webinterface ein.");
+            p.sendMessage("§8[]===================================[]");
         }
 
         MessagesManager.updateOnlineStatus(p.getUniqueId().toString(), 1);
