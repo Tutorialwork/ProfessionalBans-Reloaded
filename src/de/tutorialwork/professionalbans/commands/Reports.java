@@ -12,7 +12,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
+import java.util.ArrayList;
+
 public class Reports extends Command {
+
+    public static ArrayList<ProxiedPlayer> not_logged = new ArrayList<>();
+
     public Reports(String name) {
         super(name);
     }
@@ -58,6 +63,14 @@ public class Reports extends Command {
                         LogManager.createEntry(p.getUniqueId().toString(), null, "REPORT_ACCEPT", String.valueOf(id));
                     } else {
                         p.sendMessage(Main.Prefix+"§cDieser Spieler ist nicht mehr online");
+                    }
+                } else if(args[0].equalsIgnoreCase("toggle")){
+                    if(not_logged.contains(p)){
+                        not_logged.remove(p);
+                        p.sendMessage(Main.Prefix+"§a§lDu wirst nun wieder von dem System über ankommende Reports benachrichtigt");
+                    } else {
+                        not_logged.add(p);
+                        p.sendMessage(Main.Prefix+"§cDu wirst nun temporär über §c§lkeine §cneuen Reports benachrichtigt");
                     }
                 }
             } else {

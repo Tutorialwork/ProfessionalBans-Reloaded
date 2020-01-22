@@ -1,5 +1,6 @@
 package de.tutorialwork.professionalbans.utils;
 
+import de.tutorialwork.professionalbans.commands.Reports;
 import de.tutorialwork.professionalbans.main.Main;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -304,7 +305,9 @@ public class BanManager {
         if(Type.toUpperCase().equals("REPORT")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
+                    if(!Reports.not_logged.contains(all)){
+                        all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
+                    }
                 }
             }
         }
