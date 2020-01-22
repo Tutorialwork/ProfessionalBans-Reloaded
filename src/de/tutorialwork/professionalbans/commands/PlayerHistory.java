@@ -24,14 +24,16 @@ public class PlayerHistory extends Command {
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
                     if(UUID != null && BanManager.playerExists(UUID)){
-                        p.sendMessage("§8[]===================================[]");
-                        p.sendMessage("§e§l"+BanManager.getNameByUUID(UUID));
+                        p.sendMessage("§8[]=================§8[§e§l "+BanManager.getNameByUUID(UUID)+" §8]=================[]");
                         ArrayList ids = LogManager.getLog(UUID);
                         for (int i = 0; i < LogManager.getLog(UUID).size(); i++){
                             int logid = Integer.parseInt(ids.get(i).toString());
                             String action = LogManager.getLogAction(logid);
                             String teamname = BanManager.getNameByUUID(LogManager.getLogTeam(logid));
                             String note = LogManager.getLogNote(logid);
+                            String date = " §8- §e"+Main.formatDate(Long.valueOf(LogManager.getLogDate(logid)));
+
+                            String log_prefix = "§8» ";
 
                             if(teamname == null){
                                 teamname = "KONSOLE";
@@ -41,29 +43,33 @@ public class PlayerHistory extends Command {
                             || action.equals("AUTOMUTE_BLACKLIST") || action.equals("AUTOMUTE_ADBLACKLIST")){
                                 switch (action){
                                     case "BAN":
-                                        p.sendMessage("§7Wurde von §e"+teamname+" §7gebannt wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note)));
+                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7gebannt wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_BAN":
-                                        p.sendMessage("§7Wurde von §e"+teamname+" §7entbannt");
+                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7entbannt"+date);
                                         break;
                                     case "MUTE":
-                                        p.sendMessage("§7Wurde von §e"+teamname+" §7gemutet wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note)));
+                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7gemutet wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_MUTE":
-                                        p.sendMessage("§7Wurde von §e"+teamname+" §7entmutet");
+                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7entmutet"+date);
                                         break;
                                     case "AUTOMUTE_BLACKLIST":
-                                        p.sendMessage("§7Wurde wegen seinem Verhalten von dem §cSystem §7gemutet ("
+                                        p.sendMessage(log_prefix+"§7Wurde wegen seinem Verhalten von dem §cSystem §7gemutet ("
                                                 + LogManager.getLogNote(logid) +
-                                                ")");
+                                                ")"+date);
                                     case "AUTOMUTE_ADBLACKLIST":
-                                        p.sendMessage("§7Wurde wegen Werbung von dem §cSystem §7gemutet ("
+                                        p.sendMessage(log_prefix+"§7Wurde wegen Werbung von dem §cSystem §7gemutet ("
                                                 + LogManager.getLogNote(logid) +
-                                                ")");
+                                                ")"+date);
                                 }
                             }
                         }
-                        p.sendMessage("§8[]===================================[]");
+                        String spaces = "";
+                        for(int i = 0; i < BanManager.getNameByUUID(UUID).length() + 4; i++){
+                            spaces = spaces + "=";
+                        }
+                        p.sendMessage("§8[]=================================="+spaces+"[]");
                     } else {
                         p.sendMessage(Main.Prefix+"§cZu diesem Spieler ist kein Verlauf verfügbar");
                     }

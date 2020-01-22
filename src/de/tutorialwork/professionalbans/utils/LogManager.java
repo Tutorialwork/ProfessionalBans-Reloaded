@@ -72,4 +72,16 @@ public class LogManager {
         return null;
     }
 
+    public static String getLogDate(int ID){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM log WHERE ID='" + ID + "'");
+            if (rs.next()){
+                return rs.getString("DATE");
+            }
+        } catch (SQLException exc){
+
+        }
+        return null;
+    }
+
 }

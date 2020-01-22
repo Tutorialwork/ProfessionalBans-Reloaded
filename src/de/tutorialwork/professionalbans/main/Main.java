@@ -20,7 +20,9 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Plugin {
@@ -541,5 +543,12 @@ public class Main extends Plugin {
         }
 
         return sb.toString();
+    }
+
+    public static String formatDate(long time){
+        Date date = new Date(time);
+        SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        String dateText = df2.format(date);
+        return dateText;
     }
 }

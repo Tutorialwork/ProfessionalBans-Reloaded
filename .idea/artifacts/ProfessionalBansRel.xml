@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="ProfessionalBansRel">
-    <output-path>$USER_HOME$/Documents/BungeeCord_Proxy/plugins</output-path>
+    <output-path>$PROJECT_DIR$/../../Netzwerk/Proxy/plugins</output-path>
     <root id="archive" name="ProfessionalBansRel.jar">
       <element id="module-output" name="ProfessionalBans Reloaded" />
     </root>

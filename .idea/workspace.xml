@@ -7,11 +7,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/ProfessionalBansRel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ProfessionalBansRel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/BungeeCord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/BungeeCord.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/LogManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/LogManager.java" afterDir="false" />
     </list>
@@ -49,7 +49,7 @@
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="professionalbans_reloaded" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Netzwerk/Proxy/BungeeCord.jar!/" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -280,10 +280,10 @@
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser/0.23.1440.797@0.23.1440.797" timestamp="1579450542644" />
-    <state x="606" y="337" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1579450302012">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1579703663713">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578048168259" />
+    <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579703663713" />
     <state x="606" y="337" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1440.797@0.23.1440.797" timestamp="1579450302012" />
     <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1579695531647">
       <screen x="0" y="23" width="1440" height="799" />
@@ -293,11 +293,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578320102849" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1578576108148">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579704027889">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1576678318772" />
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578576108148" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579704027889" />
     <state width="1398" height="204" key="GridCell.Tab.0.bottom" timestamp="1579636964043">
       <screen x="0" y="23" width="1440" height="799" />
     </state>
@@ -318,10 +318,10 @@
     </state>
     <state width="1398" height="204" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1579525581121" />
     <state width="1398" height="204" key="GridCell.Tab.0.right/0.23.1440.799@0.23.1440.799" timestamp="1579636964042" />
-    <state x="330" y="23" key="SettingsEditor" timestamp="1579461064011">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="440" y="95" key="SettingsEditor" timestamp="1579704030191">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="440" y="95" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578853227507" />
+    <state x="440" y="95" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579704030191" />
     <state x="330" y="23" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1579461064011" />
     <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1578320106420">
       <screen x="0" y="0" width="1920" height="1040" />
