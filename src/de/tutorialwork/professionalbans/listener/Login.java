@@ -2,10 +2,7 @@ package de.tutorialwork.professionalbans.listener;
 
 import de.tutorialwork.professionalbans.commands.SupportChat;
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.IPManager;
-import de.tutorialwork.professionalbans.utils.BanManager;
-import de.tutorialwork.professionalbans.utils.MessagesManager;
-import de.tutorialwork.professionalbans.utils.UUIDFetcher;
+import de.tutorialwork.professionalbans.utils.*;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
@@ -18,8 +15,11 @@ import net.md_5.bungee.event.EventHandler;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Login implements Listener {
+
+    public static HashMap<ProxiedPlayer, Long> logintimes = new HashMap<>();
 
     @EventHandler
     public void onJoin(LoginEvent e){
@@ -138,7 +138,7 @@ public class Login implements Listener {
             p.sendMessage("§8[]===================================[]");
         }
 
-        MessagesManager.updateOnlineStatus(p.getUniqueId().toString(), 1);
+        TimeManager.updateOnlineStatus(p.getUniqueId().toString(), 1);
+        logintimes.put(p, System.currentTimeMillis());
     }
-
 }

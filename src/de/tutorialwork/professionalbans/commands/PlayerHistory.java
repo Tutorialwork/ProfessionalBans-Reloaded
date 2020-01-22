@@ -3,6 +3,7 @@ package de.tutorialwork.professionalbans.commands;
 import de.tutorialwork.professionalbans.main.Main;
 import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
+import de.tutorialwork.professionalbans.utils.TimeManager;
 import de.tutorialwork.professionalbans.utils.UUIDFetcher;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -31,7 +32,7 @@ public class PlayerHistory extends Command {
                             String action = LogManager.getLogAction(logid);
                             String teamname = BanManager.getNameByUUID(LogManager.getLogTeam(logid));
                             String note = LogManager.getLogNote(logid);
-                            String date = " §8- §e"+Main.formatDate(Long.valueOf(LogManager.getLogDate(logid)));
+                            String date = " §8- §e"+ TimeManager.formatDate(Long.valueOf(LogManager.getLogDate(logid)));
 
                             String log_prefix = "§8» ";
 

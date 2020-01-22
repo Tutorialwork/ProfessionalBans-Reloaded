@@ -7,9 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/TimeManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Reports.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MessagesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MessagesManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +248,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579705005323</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Added command to toggle reports notify">
+      <created>1579705812847</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1579705812847</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -277,7 +290,8 @@
     <MESSAGE value="Fixed Issue #3" />
     <MESSAGE value="Release 2.7" />
     <MESSAGE value="Make history command better readable" />
-    <option name="LAST_COMMIT_MESSAGE" value="Make history command better readable" />
+    <MESSAGE value="Added command to toggle reports notify" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added command to toggle reports notify" />
   </component>
   <component name="WindowStateProjectService">
     <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser" timestamp="1579450542644">
@@ -293,15 +307,15 @@
       <screen x="0" y="23" width="1440" height="799" />
     </state>
     <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.799@0.23.1440.799" timestamp="1579695531647" />
-    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1579705791162">
+    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1579712311754">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579705791162" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579704027889">
+    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579712311754" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579707674150">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1576678318772" />
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579704027889" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579707674150" />
     <state width="1398" height="204" key="GridCell.Tab.0.bottom" timestamp="1579636964043">
       <screen x="0" y="23" width="1440" height="799" />
     </state>
@@ -335,5 +349,9 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="656" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578856533712" />
+    <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1579707640053">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579707640053" />
   </component>
 </project>

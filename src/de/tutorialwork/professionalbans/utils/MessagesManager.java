@@ -181,8 +181,4 @@ public class MessagesManager {
         } catch (IOException e){ }
     }
 
-    public static void updateOnlineStatus(String UUID, Integer status){
-        Main.mysql.update("UPDATE bans SET ONLINE_STATUS = "+status+" WHERE UUID = '" + UUID+"'");
-    }
-
 }

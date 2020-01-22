@@ -446,7 +446,7 @@ public class Main extends Plugin {
         mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD, MySQLConnect.PORT);
         mysql.update("CREATE TABLE IF NOT EXISTS accounts(UUID varchar(64) UNIQUE, USERNAME varchar(255), PASSWORD varchar(255), RANK int(11), GOOGLE_AUTH varchar(255), AUTHCODE varchar(255));");
         mysql.update("CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT varchar(11), BANS int(11), PERMS varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS bans(UUID varchar(64) UNIQUE, NAME varchar(64), BANNED int(11), MUTED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11), MUTES int(11), FIRSTLOGIN varchar(255), LASTLOGIN varchar(255));");
+        mysql.update("CREATE TABLE IF NOT EXISTS bans(UUID varchar(64) UNIQUE, NAME varchar(64), BANNED int(11), MUTED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11), MUTES int(11), FIRSTLOGIN varchar(255), LASTLOGIN varchar(255), ONLINE_STATUS int(11) NULL DEFAULT '0', ONLINE_TIME BIGINT(19) NULL DEFAULT '0');");
         mysql.update("CREATE TABLE IF NOT EXISTS ips(IP varchar(64) UNIQUE, USED_BY varchar(64), USED_AT varchar(64), BANNED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11));");
         mysql.update("CREATE TABLE IF NOT EXISTS reports(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(64), REPORTER varchar(64), TEAM varchar(64), REASON varchar(64), LOG varchar(64), STATUS int(11), CREATED_AT long);");
         mysql.update("CREATE TABLE IF NOT EXISTS chat(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(64), SERVER varchar(64), MESSAGE varchar(2500), SENDDATE varchar(255));");
@@ -465,6 +465,8 @@ public class Main extends Plugin {
         //SQL Update 2.5
         mysql.update("ALTER TABLE apptokens ADD COLUMN FIREBASE_TOKEN varchar(255)");
         mysql.update("ALTER TABLE bans ADD ONLINE_STATUS int(11) NULL DEFAULT '0'");
+        //SQL Update 2.8
+        mysql.update("ALTER TABLE bans ADD COLUMN ONLINE_TIME BIGINT(19) NULL DEFAULT '0'");
     }
 
     private void Commands() {
@@ -543,12 +545,5 @@ public class Main extends Plugin {
         }
 
         return sb.toString();
-    }
-
-    public static String formatDate(long time){
-        Date date = new Date(time);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-        String dateText = df2.format(date);
-        return dateText;
     }
 }

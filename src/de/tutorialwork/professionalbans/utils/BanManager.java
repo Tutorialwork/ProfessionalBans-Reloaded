@@ -3,6 +3,10 @@ package de.tutorialwork.professionalbans.utils;
 import de.tutorialwork.professionalbans.commands.Reports;
 import de.tutorialwork.professionalbans.main.Main;
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.sql.ResultSet;
@@ -306,7 +310,11 @@ public class BanManager {
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
                     if(!Reports.not_logged.contains(all)){
-                        all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
+                        TextComponent tc = new TextComponent();
+                        tc.setText(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
+                        tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/reports"));
+                        tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Alle §eoffenen §7Reports anzeigen").create()));
+                        all.sendMessage(tc);
                     }
                 }
             }
