@@ -2,6 +2,10 @@ package de.tutorialwork.professionalbans.utils;
 
 import de.tutorialwork.professionalbans.main.Main;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 public class LogManager {
 
     //DATABASE STRUCTURE
@@ -16,6 +20,56 @@ public class LogManager {
     public static void createEntry(String UUID, String ByUUID, String Action, String Note){
         Main.mysql.update("INSERT INTO log(UUID, BYUUID, ACTION, NOTE, DATE) " +
                 "VALUES ('" + UUID + "', '" + ByUUID + "', '" + Action + "', '" + Note + "', '" + System.currentTimeMillis() + "')");
+    }
+
+    public static ArrayList getLog(String UUID){
+        ArrayList<Integer> logs = new ArrayList<>();
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM log WHERE UUID='" + UUID + "' ORDER BY DATE DESC");
+            while (rs.next()){
+                logs.add(rs.getInt("ID"));
+            }
+            return logs;
+        } catch (SQLException exc){
+
+        }
+        return null;
+    }
+
+    public static String getLogAction(int ID){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM log WHERE ID='" + ID + "'");
+            if (rs.next()){
+                return rs.getString("ACTION");
+            }
+        } catch (SQLException exc){
+
+        }
+        return null;
+    }
+
+    public static String getLogTeam(int ID){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM log WHERE ID='" + ID + "'");
+            if (rs.next()){
+                return rs.getString("BYUUID");
+            }
+        } catch (SQLException exc){
+
+        }
+        return null;
+    }
+
+    public static String getLogNote(int ID){
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM log WHERE ID='" + ID + "'");
+            if (rs.next()){
+                return rs.getString("NOTE");
+            }
+        } catch (SQLException exc){
+
+        }
+        return null;
     }
 
 }

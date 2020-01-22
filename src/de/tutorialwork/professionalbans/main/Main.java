@@ -498,6 +498,7 @@ public class Main extends Plugin {
             if(cfg.getBoolean("COMMANDS.BROADCAST")){
                 getProxy().getPluginManager().registerCommand(this, new Broadcast("bc"));
             }
+            getProxy().getPluginManager().registerCommand(this, new PlayerHistory("history"));
         } catch (IOException e) {
             e.printStackTrace();
         }

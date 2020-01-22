@@ -7,9 +7,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/ProfessionalBansRel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/ProfessionalBansRel.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/BungeeCord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/BungeeCord.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/LogManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/LogManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,13 +50,14 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="de.tutorialwork.professionalbans.commands" />
       <recent name="de.tutorialwork.commands" />
       <recent name="de.tutorialwork.main" />
       <recent name="de.tutorialwork.listener" />
@@ -271,10 +276,19 @@
     <option name="LAST_COMMIT_MESSAGE" value="Release 2.7" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1578048168259">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser" timestamp="1579450542644">
+      <screen x="0" y="23" width="1440" height="797" />
+    </state>
+    <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser/0.23.1440.797@0.23.1440.797" timestamp="1579450542644" />
+    <state x="606" y="337" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1579450302012">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578048168259" />
+    <state x="606" y="337" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1440.797@0.23.1440.797" timestamp="1579450302012" />
+    <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1579695531647">
+      <screen x="0" y="23" width="1440" height="799" />
+    </state>
+    <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.799@0.23.1440.799" timestamp="1579695531647" />
     <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1578320102849">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -284,10 +298,31 @@
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1576678318772" />
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578576108148" />
-    <state x="440" y="95" key="SettingsEditor" timestamp="1578853227507">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1398" height="204" key="GridCell.Tab.0.bottom" timestamp="1579636964043">
+      <screen x="0" y="23" width="1440" height="799" />
+    </state>
+    <state width="1398" height="204" key="GridCell.Tab.0.bottom/0.23.1440.797@0.23.1440.797" timestamp="1579525581122" />
+    <state width="1398" height="204" key="GridCell.Tab.0.bottom/0.23.1440.799@0.23.1440.799" timestamp="1579636964043" />
+    <state width="1398" height="204" key="GridCell.Tab.0.center" timestamp="1579636964042">
+      <screen x="0" y="23" width="1440" height="799" />
+    </state>
+    <state width="1398" height="204" key="GridCell.Tab.0.center/0.23.1440.797@0.23.1440.797" timestamp="1579525581121" />
+    <state width="1398" height="204" key="GridCell.Tab.0.center/0.23.1440.799@0.23.1440.799" timestamp="1579636964042" />
+    <state width="1398" height="204" key="GridCell.Tab.0.left" timestamp="1579636964042">
+      <screen x="0" y="23" width="1440" height="799" />
+    </state>
+    <state width="1398" height="204" key="GridCell.Tab.0.left/0.23.1440.797@0.23.1440.797" timestamp="1579525581120" />
+    <state width="1398" height="204" key="GridCell.Tab.0.left/0.23.1440.799@0.23.1440.799" timestamp="1579636964042" />
+    <state width="1398" height="204" key="GridCell.Tab.0.right" timestamp="1579636964042">
+      <screen x="0" y="23" width="1440" height="799" />
+    </state>
+    <state width="1398" height="204" key="GridCell.Tab.0.right/0.23.1440.797@0.23.1440.797" timestamp="1579525581121" />
+    <state width="1398" height="204" key="GridCell.Tab.0.right/0.23.1440.799@0.23.1440.799" timestamp="1579636964042" />
+    <state x="330" y="23" key="SettingsEditor" timestamp="1579461064011">
+      <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="440" y="95" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578853227507" />
+    <state x="330" y="23" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1579461064011" />
     <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1578320106420">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
