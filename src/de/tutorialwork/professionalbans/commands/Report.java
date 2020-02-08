@@ -68,7 +68,7 @@ public class Report extends Command {
                                         if(!players.contains(p)){
                                             players.add(p);
                                             BanManager.createReport(UUID, p.getUniqueId().toString(), args[1].toUpperCase(), null);
-                                            p.sendMessage(Main.Prefix+"Der Spieler §e§l"+target.getName()+" §7(§4Offline§7) wurde erfolgreich wegen §e§l"+args[1].toUpperCase()+" §7gemeldet");
+                                            p.sendMessage(Main.Prefix+"Der Spieler §e§l"+args[0]+" §7(§4Offline§7) wurde erfolgreich wegen §e§l"+args[1].toUpperCase()+" §7gemeldet");
                                             LogManager.createEntry(UUID, p.getUniqueId().toString(), "REPORT_OFFLINE", args[1].toUpperCase());
                                         } else {
                                             p.sendMessage(Main.Prefix+"§cBitte warte einen Moment bevor du erneut einen Spieler meldest");

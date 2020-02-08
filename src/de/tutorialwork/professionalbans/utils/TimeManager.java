@@ -5,6 +5,7 @@ import de.tutorialwork.professionalbans.main.Main;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +43,20 @@ public class TimeManager {
         return 0;
     }
 
+    public static ArrayList<String> getTopOnlineTime(){
+        ArrayList<String> players = new ArrayList<>();
+        try {
+            ResultSet rs = Main.mysql.query("SELECT * FROM bans ORDER BY ONLINE_TIME DESC LIMIT 10");
+            while (rs.next()){
+                players.add(rs.getString("UUID"));
+            }
+            return players;
+        } catch (SQLException exc){
+
+        }
+        return new ArrayList<String>();
+    }
+
     public static String formatDate(long time){
         Date date = new Date(time);
         SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -50,12 +65,30 @@ public class TimeManager {
     }
 
     public static String formatOnlineTime(long time){
-        return String.format("%h Stunden, %d Minuten und %d Sekunden",
-                TimeUnit.MILLISECONDS.toHours(time),
-                TimeUnit.MILLISECONDS.toMinutes(time),
-                TimeUnit.MILLISECONDS.toSeconds(time) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time))
-        );
+        long diff = time;
+
+        long diffSeconds = diff / 1000 % 60;
+        long diffMinutes = diff / (60 * 1000) % 60;
+        long diffHours = diff / (60 * 60 * 1000) % 24;
+        long diffDays = diff / (24 * 60 * 60 * 1000);
+
+        if(diffHours != 0){
+            if(diffHours == 1){
+                return diffHours+" Stunde, "+diffMinutes+" Minuten";
+            } else if(diffMinutes == 1){
+                return diffHours+" Stunden, "+diffMinutes+" Minute";
+            } else if(diffHours == 1 && diffMinutes == 1){
+                return diffHours+" Stunde, "+diffMinutes+" Minute";
+            } else {
+                return diffHours+" Stunden, "+diffMinutes+" Minuten";
+            }
+        } else {
+            if(diffMinutes == 1){
+                return diffMinutes+" Minute";
+            } else {
+                return diffMinutes+" Minuten";
+            }
+        }
     }
 
 }
