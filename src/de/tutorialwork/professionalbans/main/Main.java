@@ -81,6 +81,7 @@ public class Main extends Plugin {
                                 String MSG = configcfg.getString("LAYOUT.TEMPBAN");
                                 MSG = MSG.replace("%grund%", BanManager.getReasonString(all.getUniqueId().toString()));
                                 MSG = MSG.replace("%dauer%", BanManager.getEnd(all.getUniqueId().toString()));
+                                MSG = MSG.replace("%ea-status%", BanManager.getEAStatus(all.getUniqueId().toString()));
                                 all.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
                             }
                         }
