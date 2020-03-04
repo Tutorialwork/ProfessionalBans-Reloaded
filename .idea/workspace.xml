@@ -7,15 +7,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/TimeManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MessagesManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/MessagesManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +45,7 @@
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="professionalbans_reloaded" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Netzwerk/Proxy/BungeeCord.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -255,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579705812847</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Online time has been added and check command was revised">
+      <created>1579712430058</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1579712430058</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -291,7 +292,8 @@
     <MESSAGE value="Release 2.7" />
     <MESSAGE value="Make history command better readable" />
     <MESSAGE value="Added command to toggle reports notify" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added command to toggle reports notify" />
+    <MESSAGE value="Online time has been added and check command was revised" />
+    <option name="LAST_COMMIT_MESSAGE" value="Online time has been added and check command was revised" />
   </component>
   <component name="WindowStateProjectService">
     <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser" timestamp="1579450542644">
@@ -307,10 +309,10 @@
       <screen x="0" y="23" width="1440" height="799" />
     </state>
     <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.799@0.23.1440.799" timestamp="1579695531647" />
-    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1579712311754">
+    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1579712428444">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579712311754" />
+    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579712428444" />
     <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579707674150">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -345,13 +347,17 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="552" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578320106420" />
-    <state x="656" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1578856533712">
+    <state x="656" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1581703117004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="656" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1578856533712" />
+    <state x="656" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581703117004" />
     <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1579707640053">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579707640053" />
+    <state x="342" y="141" key="new project wizard" timestamp="1581703212651">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="342" y="141" key="new project wizard/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581703212651" />
   </component>
 </project>
