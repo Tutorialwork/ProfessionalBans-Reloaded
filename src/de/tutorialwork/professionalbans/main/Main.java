@@ -503,6 +503,7 @@ public class Main extends Plugin {
                 getProxy().getPluginManager().registerCommand(this, new Broadcast("bc"));
             }
             getProxy().getPluginManager().registerCommand(this, new PlayerHistory("history"));
+            getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinezeit"));
         } catch (IOException e) {
             e.printStackTrace();
         }
