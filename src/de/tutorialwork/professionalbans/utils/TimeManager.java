@@ -72,7 +72,21 @@ public class TimeManager {
         long diffHours = diff / (60 * 60 * 1000) % 24;
         long diffDays = diff / (24 * 60 * 60 * 1000);
 
-        if(diffHours != 0){
+        if(diffHours != 0 && diffDays != 0){
+            if(diffDays == 1){
+                return diffDays+" "+Main.messages.getString("day")+", "+diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minutes");
+            } else if(diffHours == 1){
+                return diffDays+" "+Main.messages.getString("days")+", "+diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minutes");
+            } else if(diffMinutes == 1){
+                return diffDays+" "+Main.messages.getString("days")+", "+diffHours+" "+Main.messages.getString("hours")+", "+diffMinutes+" "+Main.messages.getString("minute");
+            } else if(diffHours == 1 && diffMinutes == 1){
+                return diffDays+" "+Main.messages.getString("days")+", "+diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minute");
+            } else if(diffHours == 1 && diffMinutes == 1 && diffDays == 1){
+                return diffDays+" "+Main.messages.getString("day")+", "+diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minute");
+            } else {
+                return diffDays+" "+Main.messages.getString("days")+", "+diffHours+" "+Main.messages.getString("hours")+", "+diffMinutes+" "+Main.messages.getString("minutes");
+            }
+        } else if(diffHours != 0){
             if(diffHours == 1){
                 return diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minutes");
             } else if(diffMinutes == 1){
