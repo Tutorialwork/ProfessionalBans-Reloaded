@@ -4,10 +4,7 @@ import de.tutorialwork.professionalbans.commands.*;
 import de.tutorialwork.professionalbans.listener.Chat;
 import de.tutorialwork.professionalbans.listener.Login;
 import de.tutorialwork.professionalbans.listener.Quit;
-import de.tutorialwork.professionalbans.utils.Metrics;
-import de.tutorialwork.professionalbans.utils.BanManager;
-import de.tutorialwork.professionalbans.utils.MessagesManager;
-import de.tutorialwork.professionalbans.utils.MySQLConnect;
+import de.tutorialwork.professionalbans.utils.*;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -23,14 +20,20 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
 public class Main extends Plugin {
 
+    public static Locale locale_en = new Locale("en");
+    public static Locale locale_de = new Locale("de");
+    public static ResourceBundle messages = ResourceBundle.getBundle("messages", locale_en);
+
     public static Main main;
     public static MySQLConnect mysql;
-    public static String Prefix = "§e§lBANS §8• §7";
-    public static String NoPerms = Prefix + "§cDu hast keine Berechtigung diesen Befehl zu nutzen";
+    public static String Prefix = "§6§lP§e§lBANS §8• §7";
+    public static String NoPerms = Prefix + messages.getString("no_perms");
 
     public static ArrayList<String> reportreasons = new ArrayList<>();
     public static ArrayList<String> blacklist = new ArrayList<>();
@@ -47,7 +50,7 @@ public class Main extends Plugin {
 
     //==============================================
     //Plugin Informationen
-    public static String Version = "2.8";
+    public static final String Version = "2.9";
     //==============================================
 
     @Override
@@ -57,12 +60,15 @@ public class Main extends Plugin {
         MySQL();
         Commands();
         Listener();
+        if(Language.getLanguage().equals("de")){
+            Language.initLanguage(locale_de);
+        }
         //==============================================
         //Konsolen Nachricht über das Plugin
         BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
         BungeeCord.getInstance().getConsole().sendMessage("§e§lProfessionalBans §7§oReloaded §8| §7Version: §c"+Version);
         BungeeCord.getInstance().getConsole().sendMessage("§7Developer: §e§lTutorialwork");
-        BungeeCord.getInstance().getConsole().sendMessage("§5YT §7Kanal: §cyoutube.com/Tutorialwork");
+        BungeeCord.getInstance().getConsole().sendMessage("§5YT §7"+messages.getString("channel")+": §cyoutube.com/Tutorialwork");
         BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
         //==============================================
         //==============================================
@@ -99,7 +105,7 @@ public class Main extends Plugin {
         if(!callURL("https://api.spigotmc.org/legacy/update.php?resource=63657").equals(Version)){
             BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
             BungeeCord.getInstance().getConsole().sendMessage("§e§lProfessionalBans §7Reloaded §8| §7Version §c"+Version);
-            BungeeCord.getInstance().getConsole().sendMessage("§cDu benutzt eine §c§lVERALTETE §cVersion des Plugins!");
+            BungeeCord.getInstance().getConsole().sendMessage(messages.getString("update"));
             BungeeCord.getInstance().getConsole().sendMessage("§7Update: §4§lhttps://spigotmc.org/resources/63657");
             BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
         }
@@ -137,21 +143,21 @@ public class Main extends Plugin {
             if(!config.exists()){
                 config.createNewFile();
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
-                configcfg.set("WEBINTERFACE.URL", "https://DeinServer.de/Webinterface");
-                configcfg.set("PREFIX", "&e&lBANS &8• &7");
+                configcfg.set("WEBINTERFACE.URL", "https://YourServer.com/Path/to/Webinterface");
+                configcfg.set("PREFIX", "&6&lP&e&lBANS &8• &7");
                 configcfg.set("CHATFORMAT.MSG", "&5&lMSG &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.TEAMCHAT", "&e&lTEAM &8• &7%from% » &e%message%");
-                configcfg.set("CHATFORMAT.BROADCAST", "&8• &c&lMITTEILUNG &8• \n &8» &7%message%");
-                configcfg.set("LAYOUT.BAN", "&8[]===================================[] \n\n &4&lDu wurdest GEBANNT \n\n &eGrund: §c§l%grund% \n\n%ea-status% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.KICK", "&8[]===================================[] \n\n &e&lDu wurdest GEKICKT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.TEMPBAN", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEBANNT \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n%ea-status% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.MUTE", "&8[]===================================[] \n\n &4&lDu wurdest GEMUTET \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.TEMPMUTE", "&8[]===================================[] \n\n &4&lDu wurdest temporär GEMUTET \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.IPBAN", "&8[]===================================[] \n\n &4&lDeine IP-Adresse wurde GEBANNT \n\n &eGrund: §c§l%grund% \n\n&8[]===================================[]");
-                configcfg.set("LAYOUT.TEMPIPBAN", "&8[]===================================[] \n\n &4&lDeine IP-Adresse wurde temporär GEBANNT \n\n &eGrund: §c§l%grund% \n &eRestzeit: &c&l%dauer% \n\n&8[]===================================[]");
+                configcfg.set("CHATFORMAT.BROADCAST", "&8• &c&lBROADCAST &8• \n &8» &7%message%");
+                configcfg.set("LAYOUT.BAN", "&8[]===================================[] \n\n &4&lYou are BANNED \n\n &eReason: §c§l%grund% \n\n%ea-status% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.KICK", "&8[]===================================[] \n\n &e&lYou are KICKED \n\n &eReason: §c§l%grund% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.TEMPBAN", "&8[]===================================[] \n\n &4&lYou are temporarily BANNED \n\n &eGrund: §c§l%grund% \n &eTime remeaning: &c&l%dauer% \n\n%ea-status% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.MUTE", "&8[]===================================[] \n\n &4&lYou are MUTED \n\n &eReason: §c§l%grund% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.TEMPMUTE", "&8[]===================================[] \n\n &4&lYou are temporarily MUTED \n\n &eGrund: §c§l%grund% \n &eTime remeaning: &c&l%dauer% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.IPBAN", "&8[]===================================[] \n\n &4&lYour IP was BANNED \n\n &eReason: §c§l%grund% \n\n&8[]===================================[]");
+                configcfg.set("LAYOUT.TEMPIPBAN", "&8[]===================================[] \n\n &4&lYour IP was temporarily BANNED \n\n &eReason: §c§l%grund% \n &eTime remeaning: &c&l%dauer% \n\n&8[]===================================[]");
                 configcfg.set("VPN.BLOCKED", true);
                 configcfg.set("VPN.KICK", true);
-                configcfg.set("VPN.KICKMSG", "&7Das benutzen einer &4VPN &7ist auf unserem Netzwerk &cUNTERSAGT");
+                configcfg.set("VPN.KICKMSG", "&7Using a &4VPN &7is &cDISALLOWED");
                 configcfg.set("VPN.BAN", false);
                 configcfg.set("VPN.BANID", 0);
                 ipwhitelist.add("8.8.8.8");
@@ -159,17 +165,16 @@ public class Main extends Plugin {
                 configcfg.set("VPN.APIKEY", "Go to https://proxycheck.io/dashboard and register with your email and enter here your API Key");
                 configcfg.set("REPORTS.ENABLED", true);
                 reportreasons.add("Hacking");
-                reportreasons.add("Verhalten");
+                reportreasons.add("Behavior");
                 reportreasons.add("Teaming");
-                reportreasons.add("TPA-Falle");
-                reportreasons.add("Werbung");
+                reportreasons.add("TPA-Trap");
+                reportreasons.add("Ads");
                 configcfg.set("REPORTS.REASONS", reportreasons);
                 configcfg.set("REPORTS.OFFLINEREPORTS", false);
                 configcfg.set("REPORTS.COOLDOWN_MIN", 1);
                 configcfg.set("CHATLOG.ENABLED", true);
                 configcfg.set("AUTOMUTE.ENABLED", false);
                 configcfg.set("AUTOMUTE.AUTOREPORT", true);
-                //configcfg.set("AUTOMUTE.AUTOREPORT.REASON", "Automatischer Report");
                 configcfg.set("AUTOMUTE.MUTEID", 0);
                 configcfg.set("AUTOMUTE.ADMUTEID", 0);
                 configcfg.set("BANTIME-INCREASE.ENABLED", true);
@@ -190,7 +195,7 @@ public class Main extends Plugin {
                     //Setze VPN Einstellung zurück!
                     configcfg.set("VPN.BLOCKED", true);
                     configcfg.set("VPN.KICK", true);
-                    configcfg.set("VPN.KICKMSG", "&7Das benutzen einer &4VPN &7ist auf unserem Netzwerk &cUNTERSAGT");
+                    configcfg.set("VPN.KICKMSG", "&7Using a &4VPN &7is &cDISALLOWED");
                     configcfg.set("VPN.BAN", false);
                     configcfg.set("VPN.BANID", 0);
                 }
@@ -206,7 +211,7 @@ public class Main extends Plugin {
                 if(configcfg.getString("VPN.APIKEY").length() == 27){
                     APIKey = configcfg.getString("VPN.APIKEY");
                 }
-                if(!configcfg.getString("WEBINTERFACE.URL").equals("https://DeinServer.de/Webinterface")){
+                if(!configcfg.getString("WEBINTERFACE.URL").equals("https://YourServer.com/Path/to/Webinterface")){
                     WebURL = configcfg.getString("WEBINTERFACE.URL");
                     if(!WebURL.startsWith("https://") && !WebURL.startsWith("http://")){
                         WebURL = "https://" + WebURL;
@@ -504,6 +509,8 @@ public class Main extends Plugin {
             }
             getProxy().getPluginManager().registerCommand(this, new PlayerHistory("history"));
             getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinezeit"));
+            getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinetime"));
+            getProxy().getPluginManager().registerCommand(this, new Language("language"));
         } catch (IOException e) {
             e.printStackTrace();
         }

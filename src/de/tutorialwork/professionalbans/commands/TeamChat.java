@@ -40,11 +40,11 @@ public class TeamChat extends Command {
                                 if(!all.getUniqueId().toString().equals(p.getUniqueId().toString())){
                                     all.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", p.getName()).replace("%message%", message)));
                                 } else {
-                                    all.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", "Du").replace("%message%", message)));
+                                    all.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.TEAMCHAT").replace("%from%", Main.messages.getString("you")).replace("%message%", message)));
                                 }
                                 MessagesManager.insertMessage(p.getUniqueId().toString(), "TEAM", message);
                                 if(MessagesManager.getFirebaseToken(all.getUniqueId().toString()) != null){
-                                    MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(all.getUniqueId().toString()), "Nachricht von "+p.getName(), message);
+                                    MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(all.getUniqueId().toString()), Main.messages.getString("message_from")+" "+p.getName(), message);
                                 }
 
                             } catch (IOException e) {
@@ -53,13 +53,13 @@ public class TeamChat extends Command {
                         }
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"/tc <Nachricht>");
+                    p.sendMessage(Main.Prefix+"/tc <"+Main.messages.getString("message")+">");
                 }
             } else {
-                p.sendMessage(Main.Prefix+"§cDu kannst den Teamchat nicht benutzen");
+                p.sendMessage(Main.NoPerms);
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Befehl kann nur als Spieler genutzt werden");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

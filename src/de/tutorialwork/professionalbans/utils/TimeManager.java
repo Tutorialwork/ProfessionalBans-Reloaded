@@ -59,7 +59,7 @@ public class TimeManager {
 
     public static String formatDate(long time){
         Date date = new Date(time);
-        SimpleDateFormat df2 = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat df2 = new SimpleDateFormat(Main.messages.getString("date_format"));
         String dateText = df2.format(date);
         return dateText;
     }
@@ -74,19 +74,19 @@ public class TimeManager {
 
         if(diffHours != 0){
             if(diffHours == 1){
-                return diffHours+" Stunde, "+diffMinutes+" Minuten";
+                return diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minutes");
             } else if(diffMinutes == 1){
-                return diffHours+" Stunden, "+diffMinutes+" Minute";
+                return diffHours+" "+Main.messages.getString("hours")+", "+diffMinutes+" "+Main.messages.getString("minute");
             } else if(diffHours == 1 && diffMinutes == 1){
-                return diffHours+" Stunde, "+diffMinutes+" Minute";
+                return diffHours+" "+Main.messages.getString("hour")+", "+diffMinutes+" "+Main.messages.getString("minute");
             } else {
-                return diffHours+" Stunden, "+diffMinutes+" Minuten";
+                return diffHours+" "+Main.messages.getString("hours")+", "+diffMinutes+" "+Main.messages.getString("minutes");
             }
         } else {
             if(diffMinutes == 1){
-                return diffMinutes+" Minute";
+                return diffMinutes+" "+Main.messages.getString("minute");
             } else {
-                return diffMinutes+" Minuten";
+                return diffMinutes+" "+Main.messages.getString("minutes");
             }
         }
     }

@@ -17,7 +17,7 @@ public class ProfessionalBans extends Command {
         p.sendMessage("§8[]===================================[]");
         p.sendMessage("§e§lProfessionalBans §7§oReloaded §8• §7Version §8» §c"+ Main.Version);
         p.sendMessage("§7Developer §8» §e§lTutorialwork");
-        p.sendMessage("§5YT §7Kanal §8» §cyoutube.com/Tutorialwork");
+        p.sendMessage("§5YT §7"+Main.messages.getString("channel")+" §8» §cyoutube.com/Tutorialwork");
         p.sendMessage("§8[]===================================[]");
         p.sendMessage("");
     }

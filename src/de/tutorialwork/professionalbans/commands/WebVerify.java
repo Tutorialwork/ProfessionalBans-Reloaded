@@ -25,12 +25,12 @@ public class WebVerify extends Command {
                         if(args[0].length() == 25){
                             if(BanManager.getAuthCode(UUID).equals(args[0])){
                                 BanManager.updateAuthStatus(UUID);
-                                p.sendMessage(Main.Prefix+"§a§lErfolgreich! §7Du kannst jetzt dein Passwort festlegen.");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("webverify_success"));
                             } else {
-                                p.sendMessage(Main.Prefix+"§cDer eingegebene Token ist ungültig");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("token_invalid"));
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+"§cDer eingegebene Token ist ungültig");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("token_invalid"));
                         }
                     } else {
                         p.sendMessage(Main.Prefix+"§cEs wurde keine Verifizierungsanfrage von dir gefunden");
@@ -40,7 +40,7 @@ public class WebVerify extends Command {
                 }
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Befehl ist nur als Spieler nutzbar");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

@@ -28,19 +28,19 @@ public class Ban extends Command {
             if(p.hasPermission("professionalbans.ban") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
                     BanManager.getBanReasonsList(p);
-                    p.sendMessage(Main.Prefix+"/ban <Spieler> <Grund-ID>");
+                    p.sendMessage(Main.Prefix+"/ban <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+"-ID>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
                     int ID;
                     try {
                         ID = Integer.valueOf(args[1]);
                     } catch (NumberFormatException e) {
-                        p.sendMessage(Main.Prefix + "§cBitte gebe eine Gültige Grund-ID an.");
+                        p.sendMessage(Main.Prefix + Main.messages.getString("invalid_id"));
                         return;
                     }
                     if(BanManager.playerExists(UUID)){
                         if(BanManager.isWebaccountAdmin(UUID)){
-                            p.sendMessage(Main.Prefix+"§cDiesen Spieler kannst du nicht bannen/muten");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("not_punishable"));
                             return;
                         }
                         if(BanManager.getReasonByID(ID) != null){
@@ -48,7 +48,7 @@ public class Ban extends Command {
                             if(BanManager.isBanReason(ID)){
                                 if(BanManager.hasExtraPerms(ID)){
                                     if(!p.hasPermission(BanManager.getExtraPerms(ID))){
-                                        p.sendMessage(Main.Prefix+"§cDu hast keine Berechtigung diesen Bangrund zu nutzen");
+                                        p.sendMessage(Main.Prefix+Main.messages.getString("no_perm_ban"));
                                         return;
                                     }
                                 }
@@ -78,7 +78,7 @@ public class Ban extends Command {
                             } else {
                                 if(BanManager.hasExtraPerms(ID)){
                                     if(!p.hasPermission(BanManager.getExtraPerms(ID))){
-                                        p.sendMessage(Main.Prefix+"§cDu hast keine Berechtigung diesen Mutegrund zu nutzen");
+                                        p.sendMessage(Main.Prefix+Main.messages.getString("no_perm_mute"));
                                         return;
                                     }
                                 }
@@ -106,10 +106,10 @@ public class Ban extends Command {
                                 }
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+"§cDieser Grund existiert nicht");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("reason_404"));
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDieser Spieler hat den Server noch nie betreten");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             } else {
@@ -124,13 +124,13 @@ public class Ban extends Command {
                         BungeeCord.getInstance().getConsole().sendMessage("§7"+zaehler+" §8| §e"+BanManager.getReasonByID(zaehler)+" §8(§cMUTE§8)");
                     }
                 }
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/ban <Spieler> <Grund-ID>");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/ban <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+"-ID>");
             } else {
                 String UUID = UUIDFetcher.getUUID(args[0]);
                 int ID = Integer.valueOf(args[1]);
                 if(BanManager.playerExists(UUID)){
                     if(BanManager.isWebaccountAdmin(UUID)){
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDiesen Spieler kannst du nicht bannen/muten");
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("not_punishable"));
                         return;
                     }
                     if(BanManager.getReasonByID(ID) != null){
@@ -184,10 +184,10 @@ public class Ban extends Command {
                             }
                         }
                     } else {
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Grund existiert nicht");
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("reason_404"));
                     }
                 } else {
-                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Spieler hat den Server noch nie betreten");
+                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                 }
             }
         }

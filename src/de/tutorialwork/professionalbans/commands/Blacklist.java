@@ -25,8 +25,8 @@ public class Blacklist extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.blacklist") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
-                    p.sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                    p.sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                    p.sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                    p.sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
                 } else if(args.length == 2){
                     File blacklist = new File(Main.main.getDataFolder(), "blacklist.yml");
                     try {
@@ -42,7 +42,7 @@ public class Blacklist extends Command {
                             tempblacklist.add(Wort);
                             Main.blacklist.add(Wort);
                             cfg.set("BLACKLIST", tempblacklist);
-                            p.sendMessage(Main.Prefix+"§e§l"+Wort+" §7wurde zur Blacklist hinzugefügt");
+                            p.sendMessage(Main.Prefix+"§e§l"+Wort+" "+Main.messages.getString("wordblacklist_add"));
                             LogManager.createEntry(null, p.getUniqueId().toString(), "ADD_WORD_BLACKLIST", Wort);
                         } else if(args[0].equalsIgnoreCase("del")){
                             String Wort = args[1];
@@ -53,14 +53,14 @@ public class Blacklist extends Command {
                                 tempblacklist.remove(Wort);
                                 Main.blacklist.remove(Wort);
                                 cfg.set("BLACKLIST", tempblacklist);
-                                p.sendMessage(Main.Prefix+"§e§l"+Wort+" §7wurde von der Blacklist entfernt");
+                                p.sendMessage(Main.Prefix+"§e§l"+Wort+" "+Main.messages.getString("wordblacklist_del"));
                                 LogManager.createEntry(null, p.getUniqueId().toString(), "DEL_WORD_BLACKLIST", Wort);
                             } else {
-                                p.sendMessage(Main.Prefix+"§cDieses Wort steht nicht auf der Blacklist");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("word_404"));
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                            p.sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                            p.sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
                         }
 
                         ConfigurationProvider.getProvider(YamlConfiguration.class).save(cfg, blacklist);
@@ -69,8 +69,8 @@ public class Blacklist extends Command {
                         e.printStackTrace();
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                    p.sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                    p.sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                    p.sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
                 }
             } else {
                 p.sendMessage(Main.NoPerms);
@@ -78,8 +78,8 @@ public class Blacklist extends Command {
         } else {
             //KONSOLE
             if(args.length == 0 || args.length == 1){
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
             } else if(args.length == 2){
                 File blacklist = new File(Main.main.getDataFolder(), "blacklist.yml");
                 try {
@@ -95,7 +95,7 @@ public class Blacklist extends Command {
                         tempblacklist.add(Wort);
                         Main.blacklist.add(Wort);
                         cfg.set("BLACKLIST", tempblacklist);
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+Wort+" §7wurde zur Blacklist hinzugefügt");
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+Wort+" "+Main.messages.getString("wordblacklist_add"));
                         LogManager.createEntry(null, "KONSOLE", "ADD_WORD_BLACKLIST", Wort);
                     } else if(args[0].equalsIgnoreCase("del")){
                         String Wort = args[1];
@@ -106,14 +106,14 @@ public class Blacklist extends Command {
                             tempblacklist.remove(Wort);
                             Main.blacklist.remove(Wort);
                             cfg.set("BLACKLIST", tempblacklist);
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+Wort+" §7wurde von der Blacklist entfernt");
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+Wort+" "+Main.messages.getString("wordblacklist_del"));
                             LogManager.createEntry(null, "KONSOLE", "DEL_WORD_BLACKLIST", Wort);
                         } else {
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieses Wort steht nicht auf der Blacklist");
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("word_404"));
                         }
                     } else {
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
                     }
 
                     ConfigurationProvider.getProvider(YamlConfiguration.class).save(cfg, blacklist);
@@ -122,8 +122,8 @@ public class Blacklist extends Command {
                     e.printStackTrace();
                 }
             } else {
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"Derzeit sind §e§l"+Main.blacklist.size()+" Wörter §7auf der Blacklist");
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <Wort>");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("wordblacklist").replace("%count%", Main.blacklist.size()+""));
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/blacklist <add/del> <"+Main.messages.getString("word")+">");
             }
         }
     }

@@ -664,7 +664,7 @@ public class BanManager {
 
     public static String formatTimestamp(long timestamp){
         Date date = new Date(timestamp);
-        SimpleDateFormat jdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat jdf = new SimpleDateFormat(Main.messages.getString("date_format"));
         return jdf.format(date);
     }
 

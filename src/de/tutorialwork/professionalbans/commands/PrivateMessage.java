@@ -42,24 +42,24 @@ public class PrivateMessage extends Command {
                             for(int i = 1; i < args.length; i++){
                                 message = message + " " + args[i];
                             }
-                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.MSG").replace("%from%", "Du").replace("%message%", message)));
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.MSG").replace("%from%", Main.messages.getString("you")).replace("%message%", message)));
                             MessagesManager.insertMessage(p.getUniqueId().toString(), UUIDFetcher.getUUID(args[0]), message);
                             if(MessagesManager.getFirebaseToken(UUIDFetcher.getUUID(args[0])) != null){
-                                MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(UUIDFetcher.getUUID(args[0])), "Nachricht von "+p.getName(), message);
+                                MessagesManager.sendPushNotify(MessagesManager.getFirebaseToken(UUIDFetcher.getUUID(args[0])), Main.messages.getString("messages_from")+" "+p.getName(), message);
                             }
 
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDieser Spieler ist zur Zeit offline");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             } else {
-                p.sendMessage(Main.Prefix+"/msg <Spieler> <Nachricht>");
+                p.sendMessage(Main.Prefix+"/msg <"+Main.messages.getString("player")+"> <"+Main.messages.getString("message")+">");
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Befehl kann nur als Spieler genutzt werden");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

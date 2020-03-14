@@ -19,10 +19,10 @@ public class Quit implements Listener {
             for(ProxiedPlayer key : SupportChat.activechats.keySet()){
                 //Key has started the support chat
                 if(key == p){
-                    SupportChat.activechats.get(p).sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7hat den Support hat §cbeeendet");
+                    SupportChat.activechats.get(p).sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                     SupportChat.activechats.remove(p);
                 } else {
-                    key.sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7hat den Support Chat §cbeeendet");
+                    key.sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                     SupportChat.activechats.remove(key);
                 }
             }

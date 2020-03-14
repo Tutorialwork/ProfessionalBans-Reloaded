@@ -38,11 +38,11 @@ public class Report extends Command {
                         reasons = reasons + reason;
                     }
                 }
-                p.sendMessage(Main.Prefix+"Verfügbare Reportgründe: §e§l"+reasons);
-                p.sendMessage(Main.Prefix+"/report <Spieler> <Grund>");
+                p.sendMessage(Main.Prefix+Main.messages.getString("reason")+": §e§l"+reasons);
+                p.sendMessage(Main.Prefix+"/report <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
             } else {
                 if(args[0].toUpperCase().equals(p.getName().toUpperCase())){
-                    p.sendMessage(Main.Prefix+"§cDu kannst dich nicht selbst melden");
+                    p.sendMessage(Main.Prefix+Main.messages.getString("no_self_report"));
                     return;
                 }
                 if(Main.reportreasons.contains(args[1].toUpperCase())){
@@ -51,11 +51,11 @@ public class Report extends Command {
                         if(!players.contains(p)){
                             players.add(p);
                             BanManager.createReport(target.getUniqueId().toString(), p.getUniqueId().toString(), args[1].toUpperCase(), null);
-                            p.sendMessage(Main.Prefix+"Der Spieler §e§l"+target.getName()+" §7wurde erfolgreich wegen §e§l"+args[1].toUpperCase()+" §7gemeldet");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("report_success").replace("%player%", target.getName()).replace("%reason%", args[1].toUpperCase()));
                             BanManager.sendNotify("REPORT", target.getName(), p.getName(), args[1].toUpperCase());
                             LogManager.createEntry(target.getUniqueId().toString(), p.getUniqueId().toString(), "REPORT", args[1].toUpperCase());
                         } else {
-                            p.sendMessage(Main.Prefix+"§cBitte warte einen Moment bevor du erneut einen Spieler meldest");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("wait"));
                         }
                     } else {
                         try{
@@ -68,30 +68,30 @@ public class Report extends Command {
                                         if(!players.contains(p)){
                                             players.add(p);
                                             BanManager.createReport(UUID, p.getUniqueId().toString(), args[1].toUpperCase(), null);
-                                            p.sendMessage(Main.Prefix+"Der Spieler §e§l"+args[0]+" §7(§4Offline§7) wurde erfolgreich wegen §e§l"+args[1].toUpperCase()+" §7gemeldet");
+                                            p.sendMessage(Main.Prefix+Main.messages.getString("report_success").replace("%player%", args[0]).replace("%reason%", args[1].toUpperCase()));
                                             LogManager.createEntry(UUID, p.getUniqueId().toString(), "REPORT_OFFLINE", args[1].toUpperCase());
                                         } else {
-                                            p.sendMessage(Main.Prefix+"§cBitte warte einen Moment bevor du erneut einen Spieler meldest");
+                                            p.sendMessage(Main.Prefix+Main.messages.getString("wait"));
                                         }
                                     } else {
-                                        p.sendMessage(Main.Prefix+"§cDieser Spieler wurde nicht gefunden");
+                                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                                     }
                                 } else {
-                                    p.sendMessage(Main.Prefix+"§cDieser Spieler wurde nicht gefunden");
+                                    p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                                 }
                             } else {
-                                p.sendMessage(Main.Prefix+"§cDieser Spieler ist offline");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"§cDer eingegebene Reportgrund wurde nicht gefunden");
+                    p.sendMessage(Main.Prefix+Main.messages.getString("report_reason_404"));
                 }
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§lReports §7sind nur als Spieler verfügbar");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

@@ -30,17 +30,17 @@ public class SupportChat extends Command {
                         for(ProxiedPlayer key : SupportChat.activechats.keySet()){
                             //Key has started the support chat
                             if(key == p){
-                                SupportChat.activechats.get(p).sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7hat den Support Chat §cbeeendet");
+                                SupportChat.activechats.get(p).sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                                 activechats.remove(key);
                             } else {
-                                key.sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7hat den Support Chat §cbeeendet");
+                                key.sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                                 activechats.remove(key);
                             }
                         }
-                        p.sendMessage(Main.Prefix+"§cDu hast den Support Chat beendet");
+                        p.sendMessage(Main.Prefix+"§e§l"+Main.messages.getString("you")+" "+Main.messages.getString("supportchat_end"));
                         return;
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDu hast derzeit keinen offenen Support Chat");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("no_support_chat"));
                         return;
                     }
                 }
@@ -53,13 +53,12 @@ public class SupportChat extends Command {
                             if (openchats.containsKey(all)) {
                                 activechats.put(all, p);
                                 openchats.remove(all);
-                                all.sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7ist jetzt mit dir im Support Chat");
-                                all.sendMessage(Main.Prefix+"§8§oDu kannst in den Support Chat schreiben in dem du einfach eine normale Nachricht schreibst");
-                                all.sendMessage(Main.Prefix+"§8§oDu kannst den Support Chat mit §7§o/support end §8§obeenden");
-                                p.sendMessage(Main.Prefix+"§e§l"+all.getName()+" §7ist jetzt im Support Chat mit dir");
-                                p.sendMessage(Main.Prefix+"§8§oDu kannst den Support Chat mit §7§o/support end §8§obeenden");
+                                all.sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("start_supportchat"));
+                                all.sendMessage(Main.Prefix+Main.messages.getString("stop_supportchat_notify"));
+                                p.sendMessage(Main.Prefix+"§e§l"+all.getName()+" "+Main.messages.getString("start_supportchat"));
+                                p.sendMessage(Main.Prefix+Main.messages.getString("stop_supportchat_notify"));
                             } else {
-                                p.sendMessage(Main.Prefix+"§cDiese Anfrage ist ausgelaufen");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("expire_supportchat"));
                             }
                         }
                     }
@@ -70,23 +69,23 @@ public class SupportChat extends Command {
                         for(ProxiedPlayer key : SupportChat.openchats.keySet()){
                             p.sendMessage("§e§l"+key+" §8• §9"+SupportChat.openchats.get(key));
                             TextComponent tc = new TextComponent();
-                            tc.setText("§aSupport Chat starten");
+                            tc.setText(Main.messages.getString("start_supportchat_hover"));
                             tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/support "+key));
-                            tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Klicken um den Chat mit §e§l"+key+" §7zu starten").create()));
+                            tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.messages.getString("start_supportchat_hover_text").replace("%player%", key.getName())).create()));
                             p.sendMessage(tc);
                             i++;
                         }
                         p.sendMessage("§8[]===================================[]");
-                        p.sendMessage(Main.Prefix+"Es sind derzeit §e§l"+i+" Support Chats §7Anfragen §aoffen");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("open_supportchats").replace("%count%", i+""));
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDerzeit sind keine Support Chats Anfragen offen");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("no_support_chat"));
                     }
                 }
             } else {
                 //Normal Member
                 if(args.length == 0){
-                    p.sendMessage(Main.Prefix+"Wenn du den §e§lSupport Chat §7starten möchtest gebe ein §8§oBetreff §7ein");
-                    p.sendMessage(Main.Prefix+"Möchtest du eine Anfrage abbrechen? §8§o/support cancel");
+                    p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_syntax"));
+                    p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_syntax_cancel"));
                 } else {
                     int supporter = 0;
                     for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
@@ -102,36 +101,36 @@ public class SupportChat extends Command {
                         if(!openchats.containsKey(p)){
                             if(supporter > 0){
                                 openchats.put(p, subject);
-                                p.sendMessage(Main.Prefix+"Du hast eine Anfrage mit dem Betreff §e§l"+subject+" §7gestartet");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_started").replace("%subject%", subject));
                                 for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                                     if(all.hasPermission("professionalbans.supportchat") || all.hasPermission("professionalbans.*")){
-                                        all.sendMessage(Main.Prefix+"§e§l"+p.getName()+" §7benötigt Support §8(§e§o"+subject+"§8)");
+                                        all.sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_notify")+" §8(§e§o"+subject+"§8)");
                                         TextComponent tc = new TextComponent();
-                                        tc.setText("§aSupport Chat starten");
+                                        tc.setText(Main.messages.getString("supportchat_start"));
                                         tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/support "+p.getName()));
-                                        tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Klicken um den Chat mit §e§l"+p.getName()+" §7zu starten").create()));
+                                        tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.messages.getString("start_supportchat_hover_text").replace("%player%", p.getName())).create()));
                                         all.sendMessage(tc);
                                     }
                                 }
                             } else {
-                                p.sendMessage(Main.Prefix+"§cDerzeit ist kein Supporter online");
+                                p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_no_online"));
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+"Du hast bereits eine §e§lSupport Chat §7Anfrage gestellt");
-                            p.sendMessage(Main.Prefix+"Möchtest du diese Anfrage §cabbrechen §7benutze §c§l/support cancel");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_already"));
+                            p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_syntax_cancel"));
                         }
                     } else {
                         if(!openchats.containsKey(p)){
                             openchats.remove(p);
-                            p.sendMessage(Main.Prefix+"Deine Anfrage wurde erfolgreich §cgelöscht");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("supportchat_deleted"));
                         } else {
-                            p.sendMessage(Main.Prefix+"§cDu hast derzeit keine offene Anfrage");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("no_support_chat"));
                         }
                     }
                 }
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"Der §e§lSupport Chat §7ist nur als Spieler verfügbar");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

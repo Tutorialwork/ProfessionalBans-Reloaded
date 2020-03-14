@@ -47,7 +47,7 @@ public class Broadcast extends Command {
                         e.printStackTrace();
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"/bc <Nachricht>");
+                    p.sendMessage(Main.Prefix+"/bc <"+Main.messages.getString("message")+">");
                 }
             } else {
                 p.sendMessage(Main.NoPerms);

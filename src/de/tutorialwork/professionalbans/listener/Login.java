@@ -1,9 +1,14 @@
 package de.tutorialwork.professionalbans.listener;
 
+import de.tutorialwork.professionalbans.commands.Language;
 import de.tutorialwork.professionalbans.commands.SupportChat;
 import de.tutorialwork.professionalbans.main.Main;
 import de.tutorialwork.professionalbans.utils.*;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.LoginEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -113,12 +118,12 @@ public class Login implements Listener {
         ProxiedPlayer p = e.getPlayer();
         if(p.hasPermission("professionalbans.reports") || p.hasPermission("professionalbans.*")){
             if(BanManager.countOpenReports() != 0){
-                p.sendMessage(Main.Prefix+"Derzeit sind noch §e§l"+BanManager.countOpenReports()+" Reports §7offen");
+                p.sendMessage(Main.Prefix+Main.messages.getString("open_report_notify").replace("%count%", BanManager.countOpenReports()+""));
             }
         }
         if(p.hasPermission("professionalbans.supportchat") || p.hasPermission("professionalbans.*")){
             if(SupportChat.openchats.size() != 0){
-                p.sendMessage(Main.Prefix+"Derzeit sind noch §e§l"+SupportChat.openchats.size()+" §7Support Chat Anfragen §aoffen");
+                p.sendMessage(Main.Prefix+Main.messages.getString("open_support_notify").replace("%count%", SupportChat.openchats.size()+""));
             }
         }
         //Update Check
@@ -126,7 +131,7 @@ public class Login implements Listener {
             if(!Main.callURL("https://api.spigotmc.org/legacy/update.php?resource=63657").equals(Main.Version)){
                 p.sendMessage("§8[]===================================[]");
                 p.sendMessage("§e§lProfessionalBans §7Reloaded §8| §7Version §c"+Main.Version);
-                p.sendMessage("§cDu benutzt eine §c§lVERALTETE §cVersion des Plugins!");
+                p.sendMessage(Main.messages.getString("update"));
                 p.sendMessage("§7Update: §4§lhttps://spigotmc.org/resources/63657");
                 p.sendMessage("§8[]===================================[]");
             }
@@ -134,7 +139,29 @@ public class Login implements Listener {
         //WebURL Conf Check
         if(Main.WebURL == null){
             p.sendMessage("§8[]===================================[]");
-            p.sendMessage("§7Bitte stelle in der §e§lconfig.yml §7unter §e§lWEBINTERFACE.URL §7deine URL zu deinem Webinterface ein.");
+            p.sendMessage(Main.messages.getString("config_notify"));
+            p.sendMessage("§8[]===================================[]");
+        }
+        //Language Check
+        if(!Language.isLanguageSet()){
+            p.sendMessage("§8[]===================================[]");
+
+            p.sendMessage("§6§lProfessional§e§lBans §7by §bTutorialwork");
+            p.sendMessage("§7Please select a language.");
+
+            TextComponent en = new TextComponent();
+            en.setText("§8• §cEnglish");
+            en.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/language en"));
+            en.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Click to set language to §cEnglish").create()));
+
+            TextComponent de = new TextComponent();
+            de.setText("§8• §aGerman");
+            de.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/language de"));
+            de.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Click to set language to §aGerman").create()));
+
+            p.sendMessage(en);
+            p.sendMessage(de);
+
             p.sendMessage("§8[]===================================[]");
         }
 

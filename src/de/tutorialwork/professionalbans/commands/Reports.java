@@ -30,14 +30,14 @@ public class Reports extends Command {
                 if(args.length == 0){
                     if(BanManager.countOpenReports() != 0){
                         p.sendMessage("§8[]===================================[]");
-                        p.sendMessage("§e§loffene Reports §7(§8"+BanManager.countOpenReports()+"§7)");
+                        p.sendMessage(Main.messages.getString("open_reports")+" §7(§8"+BanManager.countOpenReports()+"§7)");
                         int offline = 0;
                         for(int i = 0; i < BanManager.getIDsFromOpenReports().size(); ++i) {
                             int id = (int) BanManager.getIDsFromOpenReports().get(i);
                             ProxiedPlayer target = BungeeCord.getInstance().getPlayer(BanManager.getNameByReportID(id));
                             if(target != null){
                                 TextComponent tc = new TextComponent();
-                                tc.setText("§e§l"+target.getName()+" §7gemeldet wegen §c§l "+BanManager.getReasonByReportID(id)+" §8| §7Online auf §e§l"+target.getServer().getInfo().getName());
+                                tc.setText("§e§l"+target.getName()+" "+Main.messages.getString("reported_from")+" §c§l "+BanManager.getReasonByReportID(id)+" §8| §7Online @ §e§l"+target.getServer().getInfo().getName());
                                 tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/reports jump "+target.getName()+" "+id));
                                 tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Klicken um §e§l"+target.getName()+" §7nachzuspringen").create()));
                                 p.sendMessage(tc);
@@ -46,11 +46,11 @@ public class Reports extends Command {
                             }
                         }
                         if(offline != 0){
-                            p.sendMessage("§4§o"+offline+" Reports §7§ovon Spieler die offline sind ausgeblendet");
+                            p.sendMessage("§4§o"+offline+" "+Main.messages.getString("open_reports_count"));
                         }
                         p.sendMessage("§8[]===================================[]");
                     } else {
-                        p.sendMessage(Main.Prefix+"§cEs sind derzeit keine Reports offen");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("no_reports_open"));
                     }
                 } else if(args[0].equalsIgnoreCase("jump")){
                     ProxiedPlayer target = BungeeCord.getInstance().getPlayer(args[1]);
@@ -59,25 +59,25 @@ public class Reports extends Command {
                         int id = Integer.parseInt(args[2]);
                         BanManager.setReportDone(id);
                         BanManager.setReportTeamUUID(id, p.getUniqueId().toString());
-                        p.sendMessage(Main.Prefix+"Du hast den Report von §e§l"+BanManager.getNameByReportID(id)+" §7wegen §c§l"+BanManager.getReasonByReportID(id)+" §aangenommen");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("report_accepted").replace("%player%", BanManager.getNameByReportID(id)).replace("%reason%", BanManager.getReasonByID(id)));
                         LogManager.createEntry(p.getUniqueId().toString(), null, "REPORT_ACCEPT", String.valueOf(id));
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDieser Spieler ist nicht mehr online");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                     }
                 } else if(args[0].equalsIgnoreCase("toggle")){
                     if(not_logged.contains(p)){
                         not_logged.remove(p);
-                        p.sendMessage(Main.Prefix+"§a§lDu wirst nun wieder von dem System über ankommende Reports benachrichtigt");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("report_toggle_on"));
                     } else {
                         not_logged.add(p);
-                        p.sendMessage(Main.Prefix+"§cDu wirst nun temporär über §c§lkeine §cneuen Reports benachrichtigt");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("report_toggle_off"));
                     }
                 }
             } else {
                 p.sendMessage(Main.NoPerms);
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§lReports §7sind nur als Spieler verfügbar");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

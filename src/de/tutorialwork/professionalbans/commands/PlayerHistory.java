@@ -21,7 +21,7 @@ public class PlayerHistory extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.history") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0){
-                    p.sendMessage(Main.Prefix+"/history <§eSpieler§7>");
+                    p.sendMessage(Main.Prefix+"/history <§e"+Main.messages.getString("player")+"§7>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
                     if(UUID != null && BanManager.playerExists(UUID)){
@@ -44,23 +44,23 @@ public class PlayerHistory extends Command {
                             || action.equals("AUTOMUTE_BLACKLIST") || action.equals("AUTOMUTE_ADBLACKLIST")){
                                 switch (action){
                                     case "BAN":
-                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7gebannt wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note))+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_ban").replace("%note%", teamname)+BanManager.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_BAN":
-                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7entbannt"+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_unban").replace("%note%", teamname)+date);
                                         break;
                                     case "MUTE":
-                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7gemutet wegen §e§l"+BanManager.getReasonByID(Integer.parseInt(note))+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_mute").replace("%note%", teamname)+BanManager.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_MUTE":
-                                        p.sendMessage(log_prefix+"§7Wurde von §e"+teamname+" §7entmutet"+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_unmute").replace("%note%", teamname)+date);
                                         break;
                                     case "AUTOMUTE_BLACKLIST":
-                                        p.sendMessage(log_prefix+"§7Wurde wegen seinem Verhalten von dem §cSystem §7gemutet ("
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_automute_blacklist").replace("%note%", teamname)
                                                 + LogManager.getLogNote(logid) +
                                                 ")"+date);
                                     case "AUTOMUTE_ADBLACKLIST":
-                                        p.sendMessage(log_prefix+"§7Wurde wegen Werbung von dem §cSystem §7gemutet ("
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_automute_adblacklist").replace("%note%", teamname)
                                                 + LogManager.getLogNote(logid) +
                                                 ")"+date);
                                 }
@@ -72,7 +72,7 @@ public class PlayerHistory extends Command {
                         }
                         p.sendMessage("§8[]=================================="+spaces+"[]");
                     } else {
-                        p.sendMessage(Main.Prefix+"§cZu diesem Spieler ist kein Verlauf verfügbar");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("no_history"));
                     }
                 }
             } else {

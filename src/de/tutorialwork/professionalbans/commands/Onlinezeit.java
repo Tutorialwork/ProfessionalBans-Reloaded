@@ -23,7 +23,7 @@ public class Onlinezeit extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(args.length == 0){
                 ArrayList<String> players = TimeManager.getTopOnlineTime();
-                p.sendMessage("§8[]============§8[§e§l Top "+players.size()+" Onlinezeiten §8]============[]");
+                p.sendMessage("§8[]============§8[§e§l Top "+players.size()+" "+Main.messages.getString("ontime")+" §8]============[]");
                 for(int i = 0; i < players.size(); i++){
                     int rank = i + 1;
                     String name = BanManager.getNameByUUID(players.get(i));
@@ -37,9 +37,9 @@ public class Onlinezeit extends Command {
                         p.sendMessage("§8[]=================§8[§e§l "+BanManager.getNameByUUID(UUID)+" §8]=================[]");
 
                         if(target != null){
-                            p.sendMessage("§7Dieser Spieler ist gerade §a§lonline§7. Seine Onlinezeit beträgt: \n §e§l"+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
+                            p.sendMessage(Main.messages.getString("ontime_on_msg")+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
                         } else {
-                            p.sendMessage("§7Dieser Spieler ist gerade §c§loffline§7, er wurde zuletzt am §e"+BanManager.formatTimestamp(Long.valueOf(BanManager.getLastLogin(UUID)))+" §7gesehen. Seine Onlinezeit beträgt: \n §e§l"+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
+                            p.sendMessage(Main.messages.getString("ontime_off_msg").replace("%date%", BanManager.formatTimestamp(Long.valueOf(BanManager.getLastLogin(UUID))))+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
                         }
 
                         String spaces = "";
@@ -48,14 +48,14 @@ public class Onlinezeit extends Command {
                         }
                         p.sendMessage("§8[]=================================="+spaces+"[]");
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDieser Spieler hat das Netzwerk noch nie betreten");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"/onlinezeit <§eSpieler§7>");
+                    p.sendMessage(Main.Prefix+"/onlinezeit <§e"+Main.messages.getString("player")+"§7>");
                 }
             }
         } else {
-
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

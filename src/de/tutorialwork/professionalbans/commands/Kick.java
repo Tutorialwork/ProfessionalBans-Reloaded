@@ -26,7 +26,7 @@ public class Kick extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.kick") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
-                    p.sendMessage(Main.Prefix+"/kick <Spieler> <Grund>");
+                    p.sendMessage(Main.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
                 } else {
                     ProxiedPlayer tokick = BungeeCord.getInstance().getPlayer(args[0]);
                     if(tokick != null){
@@ -45,7 +45,7 @@ public class Kick extends Command {
                             e.printStackTrace();
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+"§cDieser Spieler ist nicht online");
+                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             } else {
@@ -53,7 +53,7 @@ public class Kick extends Command {
             }
         } else {
             if(args.length == 0 || args.length == 1){
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/kick <Spieler> <Grund>");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
             } else {
                 ProxiedPlayer tokick = BungeeCord.getInstance().getPlayer(args[0]);
                 if(tokick != null){
@@ -72,7 +72,7 @@ public class Kick extends Command {
                         e.printStackTrace();
                     }
                 } else {
-                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Spieler ist nicht online");
+                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("player_404"));
                 }
             }
         }

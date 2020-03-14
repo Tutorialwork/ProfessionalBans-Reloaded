@@ -6,8 +6,36 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="Release 2.8">
+    <list default="true" id="1e73add8-8e82-4da6-af59-707eb24f2b62" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Language.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/messages_de.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/messages_en.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Ban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Ban.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Blacklist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Blacklist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Broadcast.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Broadcast.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Chatlog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Chatlog.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Check.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/IPBan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/IPBan.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Kick.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Kick.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Onlinezeit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Onlinezeit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PlayerHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessageReply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/PrivateMessageReply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/ProfessionalBans.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/ProfessionalBans.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Report.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Reports.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Reports.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/SupportChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/SupportChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/TeamChat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/TeamChat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Unban.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/Unban.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebVerify.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/commands/WebVerify.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Login.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/listener/Quit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/main/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/BanManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/TimeManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/de/tutorialwork/professionalbans/utils/TimeManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,19 +65,26 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="professionalbans_reloaded" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Development\IdeaProjects\ProfessionalBans Reloaded\src" />
+    </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="de.tutorialwork.professionalbans.commands" />
       <recent name="de.tutorialwork.commands" />
@@ -261,7 +296,14 @@
       <option name="project" value="LOCAL" />
       <updated>1583335598685</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Register new command :O">
+      <created>1583336087296</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1583336087296</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -299,31 +341,38 @@
     <MESSAGE value="Added command to toggle reports notify" />
     <MESSAGE value="Online time has been added and check command was revised" />
     <MESSAGE value="Release 2.8" />
-    <option name="LAST_COMMIT_MESSAGE" value="Release 2.8" />
+    <MESSAGE value="Register new command :O" />
+    <option name="LAST_COMMIT_MESSAGE" value="Register new command :O" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser" timestamp="1579450542644">
-      <screen x="0" y="23" width="1440" height="797" />
+    <state x="711" y="150" key="#com.intellij.ide.util.MemberChooser" timestamp="1584127003613">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
+    <state x="711" y="150" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1584127003613" />
     <state x="533" y="138" key="#com.intellij.ide.util.MemberChooser/0.23.1440.797@0.23.1440.797" timestamp="1579450542644" />
     <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1583335877880">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="808" y="410" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583335877880" />
     <state x="606" y="337" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.23.1440.797@0.23.1440.797" timestamp="1579450302012" />
-    <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1579695531647">
-      <screen x="0" y="23" width="1440" height="799" />
-    </state>
-    <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.799@0.23.1440.799" timestamp="1579695531647" />
-    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1583335633643">
+    <state x="544" y="185" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1584028080264">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583335633643" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1579707674150">
+    <state x="544" y="185" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1584028080264" />
+    <state x="408" y="165" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.23.1440.799@0.23.1440.799" timestamp="1579695531647" />
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1584031253491">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1584031253491" />
+    <state x="550" y="115" key="CommitChangelistDialog2" timestamp="1583336085446">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="550" y="115" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583336085446" />
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1584127759600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/-1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1576678318772" />
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579707674150" />
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1584127759600" />
     <state width="1398" height="204" key="GridCell.Tab.0.bottom" timestamp="1579636964043">
       <screen x="0" y="23" width="1440" height="799" />
     </state>
@@ -348,19 +397,23 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="672" y="236" key="MultipleFileMergeDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583335691863" />
-    <state x="440" y="95" key="SettingsEditor" timestamp="1579704030191">
+    <state x="440" y="95" key="SettingsEditor" timestamp="1583337844241">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="440" y="95" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1579704030191" />
+    <state x="440" y="95" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583337844241" />
     <state x="330" y="23" key="SettingsEditor/0.23.1440.797@0.23.1440.797" timestamp="1579461064011" />
-    <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1583335751710">
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2" timestamp="1583336088573">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="552" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583335751710" />
+    <state x="552" y="254" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1583336088573" />
     <state x="656" y="345" key="com.intellij.ide.util.TipDialog" timestamp="1581703117004">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="656" y="345" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1581703117004" />
+    <state x="664" y="413" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1584126989067">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="664" y="413" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1584126989067" />
     <state x="769" y="438" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583335629736">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

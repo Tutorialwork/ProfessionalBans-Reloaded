@@ -24,13 +24,13 @@ public class PrivateMessageReply extends Command {
                     }
                     MessagesManager.sendMessage(p, MessagesManager.getLastChatPlayer(p), message);
                 } else {
-                    p.sendMessage(Main.Prefix+"/r <Nachricht> - §8§oAntwortet §e§l"+MessagesManager.getLastChatPlayer(p).getName());
+                    p.sendMessage(Main.Prefix+"/r <"+Main.messages.getString("message")+"> - §8§oAntwortet §e§l"+MessagesManager.getLastChatPlayer(p).getName());
                 }
             } else {
-                p.sendMessage(Main.Prefix+"§cDu kannst niemanden antworten");
+                p.sendMessage(Main.Prefix+Main.messages.getString("no_reply"));
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDieser Befehl kann nur als Spieler genutzt werden");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

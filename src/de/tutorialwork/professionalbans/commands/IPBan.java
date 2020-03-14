@@ -33,7 +33,7 @@ public class IPBan extends Command {
                             p.sendMessage("§7"+zaehler+" §8| §e"+BanManager.getReasonByID(zaehler));
                         }
                     }
-                    p.sendMessage(Main.Prefix+"/ipban <IP/Spieler> <Grund-ID>");
+                    p.sendMessage(Main.Prefix+"/ipban <IP/"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+"-ID>");
                 } else {
                     String IP = args[0];
                     int ID = Integer.valueOf(args[1]);
@@ -52,7 +52,7 @@ public class IPBan extends Command {
                             disconnectIPBannedPlayers(IP);
                             LogManager.createEntry(null, p.getUniqueId().toString(), "IPBAN_IP", IP);
                         } else {
-                            p.sendMessage(Main.Prefix+"§cDieser Grund existiert nicht");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("reason_404"));
                         }
                     } else {
                         String UUID = UUIDFetcher.getUUID(args[0]);
@@ -64,7 +64,7 @@ public class IPBan extends Command {
                             disconnectIPBannedPlayers(DBIP);
                             LogManager.createEntry(UUID, p.getUniqueId().toString(), "IPBAN_PLAYER", String.valueOf(ID));
                         } else {
-                            p.sendMessage(Main.Prefix+"§cZu diesem Spieler ist keine IP-Adresse gespeichert");
+                            p.sendMessage(Main.Prefix+Main.messages.getString("player_ip_404"));
                         }
                     }
                 }
