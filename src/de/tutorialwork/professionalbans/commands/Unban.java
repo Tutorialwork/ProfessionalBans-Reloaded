@@ -1,8 +1,6 @@
 package de.tutorialwork.professionalbans.commands;
 
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.IPManager;
-import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
 import de.tutorialwork.professionalbans.utils.UUIDFetcher;
 import net.md_5.bungee.BungeeCord;
@@ -21,72 +19,72 @@ public class Unban extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.unban") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0){
-                    p.sendMessage(Main.Prefix+"/unban <"+Main.messages.getString("player")+"/IP>");
+                    p.sendMessage(Main.data.Prefix+"/unban <"+Main.messages.getString("player")+"/IP>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
                     if(IPBan.validate(args[0])){
-                        IPManager.unban(args[0]);
-                        BanManager.sendNotify("UNBANIP", args[0], p.getName(), null);
-                        p.sendMessage(Main.Prefix+Main.messages.getString("unban_ip").replace("%ip%", args[0]));
+                        Main.ip.unban(args[0]);
+                        Main.ban.sendNotify("UNBANIP", args[0], p.getName(), null);
+                        p.sendMessage(Main.data.Prefix+Main.messages.getString("unban_ip").replace("%ip%", args[0]));
                         LogManager.createEntry(null, p.getUniqueId().toString(), "UNBAN_IP", args[0]);
                     } else {
-                        if(BanManager.playerExists(UUID)){
-                            if(IPManager.isBanned(IPManager.getIPFromPlayer(UUID))){
-                                IPManager.unban(IPManager.getIPFromPlayer(UUID));
-                                p.sendMessage(Main.Prefix+Main.messages.getString("unban_ban_ip").replace("%player%", IPManager.getIPFromPlayer(UUID)));
+                        if(Main.ban.playerExists(UUID)){
+                            if(Main.ip.isBanned(Main.ip.getIPFromPlayer(UUID))){
+                                Main.ip.unban(Main.ip.getIPFromPlayer(UUID));
+                                p.sendMessage(Main.data.Prefix+Main.messages.getString("unban_ban_ip").replace("%player%", Main.ip.getIPFromPlayer(UUID)));
                             }
-                            if(BanManager.isBanned(UUID)){
-                                BanManager.unban(UUID);
-                                BanManager.sendNotify("UNBAN", BanManager.getNameByUUID(UUID), p.getName(), "null");
-                                p.sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_ban"));
+                            if(Main.ban.isBanned(UUID)){
+                                Main.ban.unban(UUID);
+                                Main.ban.sendNotify("UNBAN", Main.ban.getNameByUUID(UUID), p.getName(), "null");
+                                p.sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_ban"));
                                 LogManager.createEntry(UUID, p.getUniqueId().toString(), "UNBAN_BAN", null);
-                            } else if(BanManager.isMuted(UUID)) {
-                                BanManager.unmute(UUID);
-                                BanManager.sendNotify("UNMUTE", BanManager.getNameByUUID(UUID), p.getName(), "null");
-                                p.sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_mute"));
+                            } else if(Main.ban.isMuted(UUID)) {
+                                Main.ban.unmute(UUID);
+                                Main.ban.sendNotify("UNMUTE", Main.ban.getNameByUUID(UUID), p.getName(), "null");
+                                p.sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_mute"));
                                 LogManager.createEntry(UUID, p.getUniqueId().toString(), "UNBAN_MUTE", null);
                             } else {
-                                p.sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_not_banned"));
+                                p.sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_not_banned"));
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
                         }
                     }
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         } else {
             if(args.length == 0){
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/unban <"+Main.messages.getString("player")+"/IP>");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"/unban <"+Main.messages.getString("player")+"/IP>");
             } else {
                 String UUID = UUIDFetcher.getUUID(args[0]);
                 if(IPBan.validate(args[0])){
-                    IPManager.unban(args[0]);
-                    BanManager.sendNotify("UNBANIP", args[0], "KONSOLE", null);
-                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("unban_ip").replace("%ip%", args[0]));
+                    Main.ip.unban(args[0]);
+                    Main.ban.sendNotify("UNBANIP", args[0], "KONSOLE", null);
+                    BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("unban_ip").replace("%ip%", args[0]));
                     LogManager.createEntry(null, "KONSOLE", "UNBAN_IP", args[0]);
                 } else {
-                    if(BanManager.playerExists(UUID)){
-                        if(IPManager.isBanned(IPManager.getIPFromPlayer(UUID))){
-                            IPManager.unban(IPManager.getIPFromPlayer(UUID));
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("unban_ban_ip").replace("%player%", IPManager.getIPFromPlayer(UUID)));
+                    if(Main.ban.playerExists(UUID)){
+                        if(Main.ip.isBanned(Main.ip.getIPFromPlayer(UUID))){
+                            Main.ip.unban(Main.ip.getIPFromPlayer(UUID));
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("unban_ban_ip").replace("%player%", Main.ip.getIPFromPlayer(UUID)));
                         }
-                        if(BanManager.isBanned(UUID)){
-                            BanManager.unban(UUID);
-                            BanManager.sendNotify("UNBAN", BanManager.getNameByUUID(UUID), "KONSOLE", "null");
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_ban"));
+                        if(Main.ban.isBanned(UUID)){
+                            Main.ban.unban(UUID);
+                            Main.ban.sendNotify("UNBAN", Main.ban.getNameByUUID(UUID), "KONSOLE", "null");
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_ban"));
                             LogManager.createEntry(UUID, "KONSOLE", "UNBAN_BAN", null);
-                        } else if(BanManager.isMuted(UUID)) {
-                            BanManager.unmute(UUID);
-                            BanManager.sendNotify("UNMUTE", BanManager.getNameByUUID(UUID), "KONSOLE", "null");
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_mute"));
+                        } else if(Main.ban.isMuted(UUID)) {
+                            Main.ban.unmute(UUID);
+                            Main.ban.sendNotify("UNMUTE", Main.ban.getNameByUUID(UUID), "KONSOLE", "null");
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_mute"));
                             LogManager.createEntry(UUID, "KONSOLE", "UNBAN_MUTE", null);
                         } else {
-                            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§e§l"+BanManager.getNameByUUID(UUID)+" "+Main.messages.getString("unban_not_banned"));
+                            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"§e§l"+Main.ban.getNameByUUID(UUID)+" "+Main.messages.getString("unban_not_banned"));
                         }
                     } else {
-                        BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("player_404"));
+                        BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             }

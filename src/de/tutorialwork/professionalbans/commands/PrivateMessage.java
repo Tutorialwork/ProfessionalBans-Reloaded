@@ -52,14 +52,14 @@ public class PrivateMessage extends Command {
                             e.printStackTrace();
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
+                        p.sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             } else {
-                p.sendMessage(Main.Prefix+"/msg <"+Main.messages.getString("player")+"> <"+Main.messages.getString("message")+">");
+                p.sendMessage(Main.data.Prefix+"/msg <"+Main.messages.getString("player")+"> <"+Main.messages.getString("message")+">");
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

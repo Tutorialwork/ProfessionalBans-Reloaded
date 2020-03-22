@@ -32,9 +32,9 @@ public class MySQLConnect {
     public void connect() {
         try {
             con = DriverManager.getConnection("jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + "?autoReconnect=true", USER, PASSWORD);
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§aDie Verbindung mit der MySQL Datenbank wurde erfolgreich hergestellt");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("mysql_success"));
         } catch (SQLException e) {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§cDie Verbindung mit der MySQL Datenbank ist fehlgeschlagen: §4" + e.getMessage());
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("mysql_fail")+ e.getMessage());
         }
     }
 
@@ -47,6 +47,7 @@ public class MySQLConnect {
         }
     }
 
+    /*
     public void update(String qry) {
         try {
             Statement st = con.createStatement();
@@ -69,5 +70,11 @@ public class MySQLConnect {
             System.err.println(e);
         }
         return rs;
+    }
+    */
+
+
+    public Connection getCon(){
+        return con;
     }
 }

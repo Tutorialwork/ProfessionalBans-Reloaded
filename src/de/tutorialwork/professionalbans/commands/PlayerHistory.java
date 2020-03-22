@@ -1,7 +1,6 @@
 package de.tutorialwork.professionalbans.commands;
 
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
 import de.tutorialwork.professionalbans.utils.TimeManager;
 import de.tutorialwork.professionalbans.utils.UUIDFetcher;
@@ -21,16 +20,16 @@ public class PlayerHistory extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.history") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0){
-                    p.sendMessage(Main.Prefix+"/history <§e"+Main.messages.getString("player")+"§7>");
+                    p.sendMessage(Main.data.Prefix+"/history <§e"+Main.messages.getString("player")+"§7>");
                 } else {
                     String UUID = UUIDFetcher.getUUID(args[0]);
-                    if(UUID != null && BanManager.playerExists(UUID)){
-                        p.sendMessage("§8[]=================§8[§e§l "+BanManager.getNameByUUID(UUID)+" §8]=================[]");
+                    if(UUID != null && Main.ban.playerExists(UUID)){
+                        p.sendMessage("§8[]=================§8[§e§l "+Main.ban.getNameByUUID(UUID)+" §8]=================[]");
                         ArrayList ids = LogManager.getLog(UUID);
                         for (int i = 0; i < LogManager.getLog(UUID).size(); i++){
                             int logid = Integer.parseInt(ids.get(i).toString());
                             String action = LogManager.getLogAction(logid);
-                            String teamname = BanManager.getNameByUUID(LogManager.getLogTeam(logid));
+                            String teamname = Main.ban.getNameByUUID(LogManager.getLogTeam(logid));
                             String note = LogManager.getLogNote(logid);
                             String date = " §8- §e"+ TimeManager.formatDate(Long.valueOf(LogManager.getLogDate(logid)));
 
@@ -44,13 +43,13 @@ public class PlayerHistory extends Command {
                             || action.equals("AUTOMUTE_BLACKLIST") || action.equals("AUTOMUTE_ADBLACKLIST")){
                                 switch (action){
                                     case "BAN":
-                                        p.sendMessage(log_prefix+Main.messages.getString("event_ban").replace("%note%", teamname)+BanManager.getReasonByID(Integer.parseInt(note))+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_ban").replace("%note%", teamname)+Main.ban.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_BAN":
                                         p.sendMessage(log_prefix+Main.messages.getString("event_unban").replace("%note%", teamname)+date);
                                         break;
                                     case "MUTE":
-                                        p.sendMessage(log_prefix+Main.messages.getString("event_mute").replace("%note%", teamname)+BanManager.getReasonByID(Integer.parseInt(note))+date);
+                                        p.sendMessage(log_prefix+Main.messages.getString("event_mute").replace("%note%", teamname)+Main.ban.getReasonByID(Integer.parseInt(note))+date);
                                         break;
                                     case "UNBAN_MUTE":
                                         p.sendMessage(log_prefix+Main.messages.getString("event_unmute").replace("%note%", teamname)+date);
@@ -67,16 +66,16 @@ public class PlayerHistory extends Command {
                             }
                         }
                         String spaces = "";
-                        for(int i = 0; i < BanManager.getNameByUUID(UUID).length() + 4; i++){
+                        for(int i = 0; i < Main.ban.getNameByUUID(UUID).length() + 4; i++){
                             spaces = spaces + "=";
                         }
                         p.sendMessage("§8[]=================================="+spaces+"[]");
                     } else {
-                        p.sendMessage(Main.Prefix+Main.messages.getString("no_history"));
+                        p.sendMessage(Main.data.Prefix+Main.messages.getString("no_history"));
                     }
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         } else {
 

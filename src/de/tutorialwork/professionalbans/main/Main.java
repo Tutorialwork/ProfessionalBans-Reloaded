@@ -7,6 +7,7 @@ import de.tutorialwork.professionalbans.listener.Quit;
 import de.tutorialwork.professionalbans.utils.*;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -17,9 +18,6 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -32,94 +30,60 @@ public class Main extends Plugin {
 
     public static Main main;
     public static MySQLConnect mysql;
-    public static String Prefix = "§6§lP§e§lBANS §8• §7";
-    public static String NoPerms = Prefix + messages.getString("no_perms");
-
-    public static ArrayList<String> reportreasons = new ArrayList<>();
-    public static ArrayList<String> blacklist = new ArrayList<>();
-    public static ArrayList<String> adblacklist = new ArrayList<>();
-    public static ArrayList<String> adwhitelist = new ArrayList<>();
-    public static ArrayList<String> ipwhitelist = new ArrayList<>();
-
-    public static boolean increaseBans = true;
-    public static Integer increaseValue = 50;
-
-    public static String APIKey = null;
-    public static String WebURL = null;
-    public static Integer ReportCooldown = 1;
+    public static BanManager ban;
+    public static IPManager ip;
+    public static Data data;
 
     //==============================================
     //Plugin Informationen
-    public static final String Version = "2.9";
+    public static final String Version = "2.9.1";
     //==============================================
 
     @Override
     public void onEnable() {
+        init();
+        data.sendConsoleStartupMessage();
+        data.checkUpdateConsole();
+        Metrics metrics = new Metrics(this);
+    }
+
+    private void init(){
         main = this;
+
+        BanManager banManager = new BanManager();
+        ban = banManager;
+
+        IPManager ipManager = new IPManager();
+        ip = ipManager;
+
+        Data dataManager = new Data();
+        data = dataManager;
+
         Config();
         MySQL();
         Commands();
         Listener();
+        Schedulers();
+
         if(Language.getLanguage().equals("de")){
             Language.initLanguage(locale_de);
         }
-        //==============================================
-        //Konsolen Nachricht über das Plugin
-        BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
-        BungeeCord.getInstance().getConsole().sendMessage("§e§lProfessionalBans §7§oReloaded §8| §7Version: §c"+Version);
-        BungeeCord.getInstance().getConsole().sendMessage("§7Developer: §e§lTutorialwork");
-        BungeeCord.getInstance().getConsole().sendMessage("§5YT §7"+messages.getString("channel")+": §cyoutube.com/Tutorialwork");
-        BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
-        //==============================================
-        //==============================================
-        //Überprüft auf Bans aus dem Webinterface
+    }
+
+    private void Schedulers(){
         getProxy().getScheduler().schedule(this, new Runnable() {
             @Override
             public void run() {
-                File config = new File(Main.main.getDataFolder(), "config.yml");
-                try {
-                    Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
-                    for(ProxiedPlayer all : getProxy().getPlayers()){
-                        if(BanManager.isBanned(all.getUniqueId().toString())){
-                            if(BanManager.getRAWEnd(all.getUniqueId().toString()) == -1L){
-                                all.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonString(all.getUniqueId().toString()))));
-                            } else {
-                                String MSG = configcfg.getString("LAYOUT.TEMPBAN");
-                                MSG = MSG.replace("%grund%", BanManager.getReasonString(all.getUniqueId().toString()));
-                                MSG = MSG.replace("%dauer%", BanManager.getEnd(all.getUniqueId().toString()));
-                                all.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
-                            }
-                        }
-                        MessagesManager.sendOpenMessages();
-                        MessagesManager.sendOpenBroadcasts();
-                    }
-                    ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                data.webChecker();
             }
         }, 5, 5, TimeUnit.SECONDS);
-        //==============================================
-        //==============================================
-        //Updater
-        if(!callURL("https://api.spigotmc.org/legacy/update.php?resource=63657").equals(Version)){
-            BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
-            BungeeCord.getInstance().getConsole().sendMessage("§e§lProfessionalBans §7Reloaded §8| §7Version §c"+Version);
-            BungeeCord.getInstance().getConsole().sendMessage(messages.getString("update"));
-            BungeeCord.getInstance().getConsole().sendMessage("§7Update: §4§lhttps://spigotmc.org/resources/63657");
-            BungeeCord.getInstance().getConsole().sendMessage("§8[]===================================[]");
-        }
-        //==============================================
-        Metrics metrics = new Metrics(this);
-        //==============================================
-        //Report Cooldown
+
         getProxy().getScheduler().schedule(this, new Runnable() {
             @Override
             public void run() {
                 Report.players.clear();
             }
-        }, ReportCooldown, ReportCooldown, TimeUnit.MINUTES);
-        //==============================================
+        }, data.ReportCooldown, data.ReportCooldown, TimeUnit.MINUTES);
     }
 
     private void Config() {
@@ -144,7 +108,7 @@ public class Main extends Plugin {
                 config.createNewFile();
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
                 configcfg.set("WEBINTERFACE.URL", "https://YourServer.com/Path/to/Webinterface");
-                configcfg.set("PREFIX", "&6&lP&e&lBANS &8• &7");
+                configcfg.set("Prefix", "&6&lP&e&lBANS &8• &7");
                 configcfg.set("CHATFORMAT.MSG", "&5&lMSG &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.TEAMCHAT", "&e&lTEAM &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.BROADCAST", "&8• &c&lBROADCAST &8• \n &8» &7%message%");
@@ -160,16 +124,10 @@ public class Main extends Plugin {
                 configcfg.set("VPN.KICKMSG", "&7Using a &4VPN &7is &cDISALLOWED");
                 configcfg.set("VPN.BAN", false);
                 configcfg.set("VPN.BANID", 0);
-                ipwhitelist.add("8.8.8.8");
-                configcfg.set("VPN.WHITELIST", ipwhitelist);
+                configcfg.set("VPN.WHITELIST", data.ipwhitelist);
                 configcfg.set("VPN.APIKEY", "Go to https://proxycheck.io/dashboard and register with your email and enter here your API Key");
                 configcfg.set("REPORTS.ENABLED", true);
-                reportreasons.add("Hacking");
-                reportreasons.add("Behavior");
-                reportreasons.add("Teaming");
-                reportreasons.add("TPA-Trap");
-                reportreasons.add("Ads");
-                configcfg.set("REPORTS.REASONS", reportreasons);
+                configcfg.set("REPORTS.REASONS", data.reportreasons);
                 configcfg.set("REPORTS.OFFLINEREPORTS", false);
                 configcfg.set("REPORTS.COOLDOWN_MIN", 1);
                 configcfg.set("CHATLOG.ENABLED", true);
@@ -200,24 +158,24 @@ public class Main extends Plugin {
                     configcfg.set("VPN.BANID", 0);
                 }
                 for(String reasons : configcfg.getStringList("REPORTS.REASONS")){
-                    reportreasons.add(reasons.toUpperCase());
+                    data.reportreasons.add(reasons.toUpperCase());
                 }
                 for(String ips : configcfg.getStringList("VPN.WHITELIST")){
-                    ipwhitelist.add(ips);
+                    data.ipwhitelist.add(ips);
                 }
-                Prefix = configcfg.getString("PREFIX").replace("&", "§");
-                increaseBans = configcfg.getBoolean("BANTIME-INCREASE.ENABLED");
-                increaseValue = configcfg.getInt("BANTIME-INCREASE.PERCENTRATE");
+                data.Prefix = configcfg.getString("Prefix").replace("&", "§");
+                data.increaseBans = configcfg.getBoolean("BANTIME-INCREASE.ENABLED");
+                data.increaseValue = configcfg.getInt("BANTIME-INCREASE.PERCENTRATE");
                 if(configcfg.getString("VPN.APIKEY").length() == 27){
-                    APIKey = configcfg.getString("VPN.APIKEY");
+                    data.APIKey = configcfg.getString("VPN.APIKEY");
                 }
                 if(!configcfg.getString("WEBINTERFACE.URL").equals("https://YourServer.com/Path/to/Webinterface")){
-                    WebURL = configcfg.getString("WEBINTERFACE.URL");
-                    if(!WebURL.startsWith("https://") && !WebURL.startsWith("http://")){
-                        WebURL = "https://" + WebURL;
+                    Main.data.WebURL = configcfg.getString("WEBINTERFACE.URL");
+                    if(!data.WebURL.startsWith("https://") && !data.WebURL.startsWith("http://")){
+                        data.WebURL = "https://" + data.WebURL;
                     }
-                    if(!WebURL.endsWith("/")){
-                        WebURL = WebURL + "/";
+                    if(!data.WebURL.endsWith("/")){
+                        data.WebURL = data.WebURL + "/";
                     }
                 } else {
                     //==============================================
@@ -231,200 +189,28 @@ public class Main extends Plugin {
                     //==============================================
                 }
                 if(configcfg.getInt("REPORTS.COOLDOWN_MIN") != 0){ //Is config file updated?
-                    ReportCooldown = configcfg.getInt("REPORTS.COOLDOWN_MIN");
+                    data.ReportCooldown = configcfg.getInt("REPORTS.COOLDOWN_MIN");
                 }
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             }
             if(!blacklistfile.exists()){
                 blacklistfile.createNewFile();
                 Configuration blacklistcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(blacklistfile);
-                adwhitelist.add("DeinServer.net");
-                adwhitelist.add("forum.DeinServer.net");
-                adwhitelist.add("ts.DeinServer.net");
-                blacklistcfg.set("ADWHITELIST", adwhitelist);
-                adblacklist.add(".com");
-                adblacklist.add(".org");
-                adblacklist.add(".net");
-                adblacklist.add(".us");
-                adblacklist.add(".co");
-                adblacklist.add(".de");
-                adblacklist.add(".biz");
-                adblacklist.add(".info");
-                adblacklist.add(".name");
-                adblacklist.add(".yt");
-                adblacklist.add(".tv");
-                adblacklist.add(".xyz");
-                adblacklist.add(".fr");
-                adblacklist.add(".ch");
-                adblacklist.add(".au");
-                adblacklist.add(".at");
-                adblacklist.add(".in");
-                adblacklist.add(".jp");
-                adblacklist.add(".nl");
-                adblacklist.add(".uk");
-                adblacklist.add(".no");
-                adblacklist.add(".ru");
-                adblacklist.add(".br");
-                adblacklist.add(".tk");
-                adblacklist.add(".ml");
-                adblacklist.add(".ga");
-                adblacklist.add(".cf");
-                adblacklist.add(".gq");
-                adblacklist.add(".ip");
-                adblacklist.add(".dee");
-                adblacklist.add(".d e");
-                adblacklist.add("[punkt]");
-                adblacklist.add("(punkt)");
-                adblacklist.add("join now");
-                adblacklist.add("join");
-                adblacklist.add("mein server");
-                adblacklist.add("mein netzwerk");
-                adblacklist.add("www");
-                adblacklist.add("[.]");
-                adblacklist.add("(,)");
-                adblacklist.add("(.)");
-                blacklistcfg.set("ADBLACKLIST", adblacklist);
-                blacklist.add("anal");
-                blacklist.add("anus");
-                blacklist.add("b1tch");
-                blacklist.add("bang");
-                blacklist.add("banger");
-                blacklist.add("bastard");
-                blacklist.add("biatch");
-                blacklist.add("bitch");
-                blacklist.add("bitches");
-                blacklist.add("blow job");
-                blacklist.add("blow");
-                blacklist.add("blowjob");
-                blacklist.add("boob");
-                blacklist.add("boobs");
-                blacklist.add("bullshit");
-                blacklist.add("bull shit");
-                blacklist.add("c0ck");
-                blacklist.add("cock");
-                blacklist.add("d1ck");
-                blacklist.add("d1ld0");
-                blacklist.add("d1ldo");
-                blacklist.add("dick");
-                blacklist.add("doggie-style");
-                blacklist.add("doggy-style");
-                blacklist.add("f.u.c.k");
-                blacklist.add("fack");
-                blacklist.add("faggit");
-                blacklist.add("faggot");
-                blacklist.add("fagot");
-                blacklist.add("fuck");
-                blacklist.add("f-u-c-k");
-                blacklist.add("ficken");
-                blacklist.add("fick");
-                blacklist.add("fuckoff");
-                blacklist.add("fucks");
-                blacklist.add("fuk");
-                blacklist.add("fvck");
-                blacklist.add("fxck");
-                blacklist.add("gai");
-                blacklist.add("gay");
-                blacklist.add("schwul");
-                blacklist.add("schwuchtel");
-                blacklist.add("h0m0");
-                blacklist.add("h0mo");
-                blacklist.add("hitler");
-                blacklist.add("homo");
-                blacklist.add("lesbe");
-                blacklist.add("nigga");
-                blacklist.add("niggah");
-                blacklist.add("nigger");
-                blacklist.add("nippel");
-                blacklist.add("pedo");
-                blacklist.add("pedo");
-                blacklist.add("penis");
-                blacklist.add("porn");
-                blacklist.add("porno");
-                blacklist.add("pornografie");
-                blacklist.add("sex");
-                blacklist.add("sh1t");
-                blacklist.add("s-h-1-t");
-                blacklist.add("shit");
-                blacklist.add("s-h-i-t");
-                blacklist.add("scheiße");
-                blacklist.add("scheisse");
-                blacklist.add("xxx");
-                blacklist.add("Fotze");
-                blacklist.add("Hackfresse");
-                blacklist.add("Hurensohn");
-                blacklist.add("Huso");
-                blacklist.add("Hure");
-                blacklist.add("hirnamputiert");
-                blacklist.add("Honk");
-                blacklist.add("kek");
-                blacklist.add("Loser");
-                blacklist.add("Mongo");
-                blacklist.add("Pimmel");
-                blacklist.add("Pimmelfresse");
-                blacklist.add("Schlampe");
-                blacklist.add("Spastard");
-                blacklist.add("abspritzer");
-                blacklist.add("afterlecker");
-                blacklist.add("arschficker");
-                blacklist.add("arschgeburt");
-                blacklist.add("arschgeige");
-                blacklist.add("arschgesicht");
-                blacklist.add("arschlecker");
-                blacklist.add("arschloch");
-                blacklist.add("arschlöcher");
-                blacklist.add("assi");
-                blacklist.add("beklopter");
-                blacklist.add("bummsen");
-                blacklist.add("bumsen");
-                blacklist.add("drecksack");
-                blacklist.add("drecksau");
-                blacklist.add("drecksfotze");
-                blacklist.add("drecksnigger");
-                blacklist.add("drecksnutte");
-                blacklist.add("dreckspack");
-                blacklist.add("dreckvotze");
-                blacklist.add("fagette");
-                blacklist.add("fagitt");
-                blacklist.add("ficker");
-                blacklist.add("fickfehler");
-                blacklist.add("fickfresse");
-                blacklist.add("fickgesicht");
-                blacklist.add("ficknudel");
-                blacklist.add("ficksau");
-                blacklist.add("hackfresse");
-                blacklist.add("lusche");
-                blacklist.add("heil");
-                blacklist.add("missgeburt");
-                blacklist.add("mißgeburt");
-                blacklist.add("miststück");
-                blacklist.add("nazi");
-                blacklist.add("nazis");
-                blacklist.add("penner");
-                blacklist.add("scheisser");
-                blacklist.add("sieg heil");
-                blacklist.add("vollidiot");
-                blacklist.add("volldepp");
-                blacklist.add("wanker");
-                blacklist.add("wichser");
-                blacklist.add("wichsvorlage");
-                blacklist.add("wixa");
-                blacklist.add("wixen");
-                blacklist.add("wixer");
-                blacklist.add("wixxer");
-                blacklist.add("wixxxer");
-                blacklist.add("wixxxxer");
-                blacklistcfg.set("BLACKLIST", blacklist);
+                data.seedArrays();
+                blacklistcfg.set("ADWHITELIST", data.adwhitelist);
+                blacklistcfg.set("ADBLACKLIST", data.adblacklist);
+                blacklistcfg.set("BLACKLIST", data.blacklist);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(blacklistcfg, blacklistfile);
             } else {
                 Configuration blacklistcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(blacklistfile);
                 for(String congigstr : blacklistcfg.getStringList("BLACKLIST")){
-                    blacklist.add(congigstr);
+                    data.blacklist.add(congigstr);
                 }
                 for(String congigstr : blacklistcfg.getStringList("ADBLACKLIST")){
-                    adblacklist.add(congigstr);
+                    data.adblacklist.add(congigstr);
                 }
                 for(String congigstr : blacklistcfg.getStringList("ADWHITELIST")){
-                    adwhitelist.add(congigstr.toUpperCase());
+                    data.adwhitelist.add(congigstr.toUpperCase());
                 }
             }
         } catch (IOException e) {
@@ -449,29 +235,7 @@ public class Main extends Plugin {
             e.printStackTrace();
         }
         mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD, MySQLConnect.PORT);
-        mysql.update("CREATE TABLE IF NOT EXISTS accounts(UUID varchar(64) UNIQUE, USERNAME varchar(255), PASSWORD varchar(255), RANK int(11), GOOGLE_AUTH varchar(255), AUTHCODE varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT varchar(11), BANS int(11), PERMS varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS bans(UUID varchar(64) UNIQUE, NAME varchar(64), BANNED int(11), MUTED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11), MUTES int(11), FIRSTLOGIN varchar(255), LASTLOGIN varchar(255), ONLINE_STATUS int(11) NULL DEFAULT '0', ONLINE_TIME BIGINT(19) NULL DEFAULT '0');");
-        mysql.update("CREATE TABLE IF NOT EXISTS ips(IP varchar(64) UNIQUE, USED_BY varchar(64), USED_AT varchar(64), BANNED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11));");
-        mysql.update("CREATE TABLE IF NOT EXISTS reports(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(64), REPORTER varchar(64), TEAM varchar(64), REASON varchar(64), LOG varchar(64), STATUS int(11), CREATED_AT long);");
-        mysql.update("CREATE TABLE IF NOT EXISTS chat(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(64), SERVER varchar(64), MESSAGE varchar(2500), SENDDATE varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS chatlog(ID int(11) AUTO_INCREMENT UNIQUE, LOGID varchar(255), UUID varchar(64), CREATOR_UUID varchar(64), SERVER varchar(64), MESSAGE varchar(2500), SENDDATE varchar(255), CREATED_AT varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS log(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(255), BYUUID varchar(255), ACTION varchar(255), NOTE varchar(255), DATE varchar(255));");
-        mysql.update("CREATE TABLE IF NOT EXISTS unbans(ID int(11) AUTO_INCREMENT UNIQUE, UUID varchar(255), FAIR int(11), MESSAGE varchar(10000), DATE varchar(255), STATUS int(11));");
-        mysql.update("CREATE TABLE IF NOT EXISTS apptokens(UUID varchar(36) UNIQUE, TOKEN varchar(555));");
-        mysql.update("CREATE TABLE IF NOT EXISTS privatemessages(ID int(11) AUTO_INCREMENT UNIQUE, SENDER varchar(255), RECEIVER varchar(255), MESSAGE varchar(2500), STATUS int(11), DATE varchar(255));");
-        //SQL Update 2.0
-        mysql.update("ALTER TABLE accounts ADD IF NOT EXISTS AUTHSTATUS int(11);");
-        //SQL Update 2.2
-        mysql.update("ALTER TABLE bans ADD IF NOT EXISTS FIRSTLOGIN varchar(255);");
-        mysql.update("ALTER TABLE bans ADD IF NOT EXISTS LASTLOGIN varchar(255);");
-        //SQL Update 2.4
-        mysql.update("ALTER TABLE reasons ADD COLUMN SORTINDEX int(11)");
-        //SQL Update 2.5
-        mysql.update("ALTER TABLE apptokens ADD COLUMN FIREBASE_TOKEN varchar(255)");
-        mysql.update("ALTER TABLE bans ADD ONLINE_STATUS int(11) NULL DEFAULT '0'");
-        //SQL Update 2.8
-        mysql.update("ALTER TABLE bans ADD COLUMN ONLINE_TIME BIGINT(19) NULL DEFAULT '0'");
+        data.seedDatabase();
     }
 
     private void Commands() {

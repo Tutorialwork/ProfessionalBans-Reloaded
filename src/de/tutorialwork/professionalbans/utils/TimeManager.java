@@ -2,6 +2,7 @@ package de.tutorialwork.professionalbans.utils;
 
 import de.tutorialwork.professionalbans.main.Main;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -12,33 +13,61 @@ import java.util.concurrent.TimeUnit;
 public class TimeManager {
 
     public static void updateOnlineStatus(String UUID, Integer status){
-        Main.mysql.update("UPDATE bans SET ONLINE_STATUS = "+status+" WHERE UUID = '" + UUID+"'");
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET ONLINE_STATUS = ? WHERE UUID = ?");
+            ps.setInt(1, status);
+            ps.setString(2, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static Integer getOnlineStatus(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getInt("ONLINE_STATUS");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return 0;
     }
 
     public static void setOnlineTime(String UUID, long newTime){
-        Main.mysql.update("UPDATE bans SET ONLINE_TIME = "+newTime+" WHERE UUID = '" + UUID+"'");
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET ONLINE_TIME = ? WHERE UUID = ?");
+            ps.setLong(1, newTime);
+            ps.setString(2, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static long getOnlineTime(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getLong("ONLINE_TIME");
             }
+            rs.close();
+            ps.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return 0;
     }
@@ -46,13 +75,17 @@ public class TimeManager {
     public static ArrayList<String> getTopOnlineTime(){
         ArrayList<String> players = new ArrayList<>();
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans ORDER BY ONLINE_TIME DESC LIMIT 10");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans ORDER BY ONLINE_TIME DESC LIMIT 10");
+            ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 players.add(rs.getString("UUID"));
             }
+            ps.close();
+            rs.close();
             return players;
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return new ArrayList<String>();
     }

@@ -4,6 +4,7 @@ import de.tutorialwork.professionalbans.commands.Language;
 import de.tutorialwork.professionalbans.commands.SupportChat;
 import de.tutorialwork.professionalbans.main.Main;
 import de.tutorialwork.professionalbans.utils.*;
+import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -30,29 +31,29 @@ public class Login implements Listener {
     public void onJoin(LoginEvent e){
         String UUID = UUIDFetcher.getUUID(e.getConnection().getName());
         String IP = e.getConnection().getAddress().getHostString();
-        BanManager.createPlayer(UUID, e.getConnection().getName());
-        IPManager.insertIP(IP, UUID);
+        Main.ban.createPlayer(UUID, e.getConnection().getName());
+        Main.ip.insertIP(IP, UUID);
         File config = new File(Main.main.getDataFolder(), "config.yml");
         try{
             Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
             if(cfg.getBoolean("VPN.BLOCKED")){
-                if(!Main.ipwhitelist.contains(IP)){
-                    if(IPManager.isVPN(IP)){
+                if(!Main.data.ipwhitelist.contains(IP)){
+                    if(Main.ip.isVPN(IP)){
                         if(cfg.getBoolean("VPN.KICK")){
                             e.setCancelled(true);
                             e.setCancelReason(ChatColor.translateAlternateColorCodes('&', cfg.getString("VPN.KICKMSG")));
                         }
                         if(cfg.getBoolean("VPN.BAN")){
                             int id = cfg.getInt("VPN.BANID");
-                            BanManager.ban(UUID, id, "KONSOLE", Main.increaseValue, Main.increaseBans);
-                            BanManager.sendNotify("IPBAN", e.getConnection().getAddress().getHostString(), "KONSOLE", BanManager.getReasonByID(id));
+                            Main.ban.ban(UUID, id, "KONSOLE", Main.data.increaseValue, Main.data.increaseBans);
+                            Main.ban.sendNotify("IPBAN", e.getConnection().getAddress().getHostString(), "KONSOLE", Main.ban.getReasonByID(id));
                             e.setCancelled(true);
-                            if(BanManager.getRAWEnd(UUID) == -1L){
-                                e.setCancelReason(ChatColor.translateAlternateColorCodes('&', cfg.getString("LAYOUT.IPBAN").replace("%grund%", BanManager.getReasonByID(id))));
+                            if(Main.ban.getRAWEnd(UUID) == -1L){
+                                e.setCancelReason(ChatColor.translateAlternateColorCodes('&', cfg.getString("LAYOUT.IPBAN").replace("%grund%", Main.ban.getReasonByID(id))));
                             } else {
                                 String MSG = cfg.getString("LAYOUT.TEMPIPBAN");
-                                MSG = MSG.replace("%grund%", BanManager.getReasonString(UUID));
-                                MSG = MSG.replace("%dauer%", BanManager.getEnd(UUID));
+                                MSG = MSG.replace("%grund%", Main.ban.getReasonString(UUID));
+                                MSG = MSG.replace("%dauer%", Main.ban.getEnd(UUID));
                                 e.setCancelReason(ChatColor.translateAlternateColorCodes('&', MSG));
                             }
                         }
@@ -62,51 +63,47 @@ public class Login implements Listener {
         } catch (IOException er){
             er.printStackTrace();
         }
-        if(IPManager.isBanned(IP)){
+        if(Main.ip.isBanned(IP)){
             try {
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
 
-                if(IPManager.getRAWEnd(IP) == -1L){
+                if(Main.ip.getRAWEnd(IP) == -1L){
                     e.setCancelled(true);
-                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.IPBAN").replace("%grund%", IPManager.getReasonString(IP))));
+                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.IPBAN").replace("%grund%", Main.ip.getReasonString(IP))));
                 } else {
-                    if(System.currentTimeMillis() < IPManager.getRAWEnd(IP)){
+                    if(System.currentTimeMillis() < Main.ip.getRAWEnd(IP)){
                         e.setCancelled(true);
                         String MSG = configcfg.getString("LAYOUT.TEMPIPBAN");
-                        MSG = MSG.replace("%grund%", IPManager.getReasonString(IP));
-                        MSG = MSG.replace("%dauer%", IPManager.getEnd(IP));
+                        MSG = MSG.replace("%grund%", Main.ip.getReasonString(IP));
+                        MSG = MSG.replace("%dauer%", Main.ip.getEnd(IP));
                         e.setCancelReason(ChatColor.translateAlternateColorCodes('&', MSG));
                     } else {
-                        IPManager.unban(IP);
+                        Main.ip.unban(IP);
                     }
                 }
-
-                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
         }
-        if(BanManager.isBanned(UUID)){
+        if(Main.ban.isBanned(UUID)){
             try {
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
 
-                if(BanManager.getRAWEnd(UUID) == -1L){
+                if(Main.ban.getRAWEnd(UUID) == -1L){
                     e.setCancelled(true);
-                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", BanManager.getReasonString(UUID)).replace("%ea-status%", BanManager.getEAStatus(UUID))));
+                    e.setCancelReason(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.BAN").replace("%grund%", Main.ban.getReasonString(UUID)).replace("%ea-status%", Main.ban.getEAStatus(UUID))));
                 } else {
-                    if(System.currentTimeMillis() < BanManager.getRAWEnd(UUID)){
+                    if(System.currentTimeMillis() < Main.ban.getRAWEnd(UUID)){
                         e.setCancelled(true);
                         String MSG = configcfg.getString("LAYOUT.TEMPBAN");
-                        MSG = MSG.replace("%grund%", BanManager.getReasonString(UUID));
-                        MSG = MSG.replace("%dauer%", BanManager.getEnd(UUID));
-                        MSG = MSG.replace("%ea-status%", BanManager.getEAStatus(UUID));
+                        MSG = MSG.replace("%grund%", Main.ban.getReasonString(UUID));
+                        MSG = MSG.replace("%dauer%", Main.ban.getEnd(UUID));
+                        MSG = MSG.replace("%ea-status%", Main.ban.getEAStatus(UUID));
                         e.setCancelReason(ChatColor.translateAlternateColorCodes('&', MSG));
                     } else {
-                        BanManager.unban(UUID);
+                        Main.ban.unban(UUID);
                     }
                 }
-
-                ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             } catch (IOException e2) {
                 e2.printStackTrace();
             }
@@ -117,13 +114,13 @@ public class Login implements Listener {
     public void onFinalLogin(PostLoginEvent e){
         ProxiedPlayer p = e.getPlayer();
         if(p.hasPermission("professionalbans.reports") || p.hasPermission("professionalbans.*")){
-            if(BanManager.countOpenReports() != 0){
-                p.sendMessage(Main.Prefix+Main.messages.getString("open_report_notify").replace("%count%", BanManager.countOpenReports()+""));
+            if(Main.ban.countOpenReports() != 0){
+                p.sendMessage(Main.data.Prefix+Main.messages.getString("open_report_notify").replace("%count%", Main.ban.countOpenReports()+""));
             }
         }
         if(p.hasPermission("professionalbans.supportchat") || p.hasPermission("professionalbans.*")){
             if(SupportChat.openchats.size() != 0){
-                p.sendMessage(Main.Prefix+Main.messages.getString("open_support_notify").replace("%count%", SupportChat.openchats.size()+""));
+                p.sendMessage(Main.data.Prefix+Main.messages.getString("open_support_notify").replace("%count%", SupportChat.openchats.size()+""));
             }
         }
         //Update Check
@@ -137,7 +134,7 @@ public class Login implements Listener {
             }
         }
         //WebURL Conf Check
-        if(Main.WebURL == null){
+        if(Main.data.WebURL == null){
             p.sendMessage("§8[]===================================[]");
             p.sendMessage(Main.messages.getString("config_notify"));
             p.sendMessage("§8[]===================================[]");

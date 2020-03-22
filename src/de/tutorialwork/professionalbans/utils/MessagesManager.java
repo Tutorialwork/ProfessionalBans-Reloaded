@@ -11,6 +11,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,22 +37,30 @@ public class MessagesManager {
 
     public static void sendOpenMessages(){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM privatemessages WHERE STATUS = 0");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM privatemessages WHERE STATUS = 0");
+            ResultSet rs = ps.executeQuery();
             while (rs.next()){
 
-                ProxiedPlayer target = BungeeCord.getInstance().getPlayer(BanManager.getNameByUUID(rs.getString("RECEIVER")));
+                ProxiedPlayer target = BungeeCord.getInstance().getPlayer(Main.ban.getNameByUUID(rs.getString("RECEIVER")));
                 if(target != null){
-                    target.sendMessage(getRowMSGFormat().replace("%from%", BanManager.getNameByUUID(rs.getString("SENDER"))).replace("%message%", rs.getString("MESSAGE")));
+                    target.sendMessage(getRowMSGFormat().replace("%from%", Main.ban.getNameByUUID(rs.getString("SENDER"))).replace("%message%", rs.getString("MESSAGE")));
                     setDoneMessage(rs.getInt("ID"));
                 }
 
             }
-        } catch (SQLException exc){ }
+            ps.close();
+            rs.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static void sendOpenBroadcasts(){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM privatemessages WHERE STATUS = 0 AND RECEIVER = 'BROADCAST'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM privatemessages WHERE STATUS = 0 AND RECEIVER = 'BROADCAST'");
+            ResultSet rs = ps.executeQuery();
             while (rs.next()){
 
                 try{
@@ -88,12 +97,31 @@ public class MessagesManager {
     }
 
     public static void setDoneMessage(int ID){
-        Main.mysql.update("UPDATE privatemessages SET STATUS = 1 WHERE ID = " + ID);
+        try {
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE privatemessages SET STATUS = 1 WHERE ID = ?");
+            ps.setInt(1, ID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static void insertMessage(String SenderUUID, String ReceiverUUID, String Message){
-        Main.mysql.update("INSERT INTO privatemessages(SENDER, RECEIVER, MESSAGE, STATUS, DATE) " +
-                "VALUES ('" + SenderUUID + "', '" + ReceiverUUID + "', '" + Message + "', '1', '" + System.currentTimeMillis() + "')");
+        try {
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("INSERT INTO privatemessages(SENDER, RECEIVER, MESSAGE, STATUS, DATE) "+
+                            "VALUES (?, ?, ?, '1', ?)");
+            ps.setString(1, SenderUUID);
+            ps.setString(2, ReceiverUUID);
+            ps.setString(3, Message);
+            ps.setLong(4, System.currentTimeMillis());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     public static void updateLastChat(ProxiedPlayer player, ProxiedPlayer to){
@@ -113,7 +141,10 @@ public class MessagesManager {
 
     public static boolean hasApp(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM apptokens WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM apptokens WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 if(rs.getString("UUID") == null){
                     return false;
@@ -127,7 +158,10 @@ public class MessagesManager {
 
     public static String getFirebaseToken(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM apptokens WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM apptokens WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("FIREBASE_TOKEN");
             }

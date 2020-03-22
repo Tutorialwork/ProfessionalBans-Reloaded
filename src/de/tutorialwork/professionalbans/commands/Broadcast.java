@@ -47,13 +47,13 @@ public class Broadcast extends Command {
                         e.printStackTrace();
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"/bc <"+Main.messages.getString("message")+">");
+                    p.sendMessage(Main.data.Prefix+"/bc <"+Main.messages.getString("message")+">");
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         } else {
-
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

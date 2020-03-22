@@ -19,10 +19,10 @@ public class Quit implements Listener {
             for(ProxiedPlayer key : SupportChat.activechats.keySet()){
                 //Key has started the support chat
                 if(key == p){
-                    SupportChat.activechats.get(p).sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
+                    SupportChat.activechats.get(p).sendMessage(Main.data.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                     SupportChat.activechats.remove(p);
                 } else {
-                    key.sendMessage(Main.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
+                    key.sendMessage(Main.data.Prefix+"§e§l"+p.getName()+" "+Main.messages.getString("supportchat_end"));
                     SupportChat.activechats.remove(key);
                 }
             }
@@ -34,7 +34,7 @@ public class Quit implements Listener {
             long currentonlinetime = System.currentTimeMillis() - logintime;
             TimeManager.setOnlineTime(p.getUniqueId().toString(), onlinetime + currentonlinetime);
         } catch (NullPointerException e1){
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"§c§lFEHLER: §cOnlinezeit konnte für "+p.getName()+" nicht aktualisiert werden");
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"§c§lFEHLER: §cOnlinezeit konnte für "+p.getName()+" nicht aktualisiert werden");
         }
     }
 

@@ -24,22 +24,22 @@ public class Language extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.*")){
                 if(args.length == 0){
-                    p.sendMessage(Main.Prefix+"/language <name>");
+                    p.sendMessage(Main.data.Prefix+"/language <name>");
                 } else {
                     setLanguage(args[0]);
                     switch (args[0]){
                         case "en":
-                            p.sendMessage(Main.Prefix+"The language was set to §e§lEnglish");
+                            p.sendMessage(Main.data.Prefix+"The language was set to §e§lEnglish");
                             Language.initLanguage(Main.locale_en);
                             break;
                         case "de":
-                            p.sendMessage(Main.Prefix+"Die Sprache wurde zu §e§lDeutsch §7gesetzt");
+                            p.sendMessage(Main.data.Prefix+"Die Sprache wurde zu §e§lDeutsch §7gesetzt");
                             Language.initLanguage(Main.locale_de);
                             break;
                     }
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         }
     }

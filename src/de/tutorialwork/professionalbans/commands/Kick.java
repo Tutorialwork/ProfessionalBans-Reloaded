@@ -1,7 +1,6 @@
 package de.tutorialwork.professionalbans.commands;
 
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.ChatColor;
@@ -26,7 +25,7 @@ public class Kick extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.kick") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
-                    p.sendMessage(Main.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
+                    p.sendMessage(Main.data.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
                 } else {
                     ProxiedPlayer tokick = BungeeCord.getInstance().getPlayer(args[0]);
                     if(tokick != null){
@@ -37,7 +36,7 @@ public class Kick extends Command {
                             for(int i = 1; i < args.length; i++){
                                 grund = grund + " " + args[i];
                             }
-                            BanManager.sendNotify("KICK", tokick.getName(), p.getName(), grund);
+                            Main.ban.sendNotify("KICK", tokick.getName(), p.getName(), grund);
                             LogManager.createEntry(tokick.getUniqueId().toString(), p.getUniqueId().toString(), "KICK", grund);
                             tokick.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.KICK").replace("%grund%", grund)));
                             ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
@@ -45,15 +44,15 @@ public class Kick extends Command {
                             e.printStackTrace();
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+Main.messages.getString("player_404"));
+                        p.sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
                     }
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         } else {
             if(args.length == 0 || args.length == 1){
-                BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
+                BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+"/kick <"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+">");
             } else {
                 ProxiedPlayer tokick = BungeeCord.getInstance().getPlayer(args[0]);
                 if(tokick != null){
@@ -64,7 +63,7 @@ public class Kick extends Command {
                         for(int i = 1; i < args.length; i++){
                             grund = grund + " " + args[i];
                         }
-                        BanManager.sendNotify("KICK", tokick.getName(), "KONSOLE", grund);
+                        Main.ban.sendNotify("KICK", tokick.getName(), "KONSOLE", grund);
                         LogManager.createEntry(tokick.getUniqueId().toString(), "KONSOLE", "KICK", grund);
                         tokick.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.KICK").replace("%grund%", grund)));
                         ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
@@ -72,7 +71,7 @@ public class Kick extends Command {
                         e.printStackTrace();
                     }
                 } else {
-                    BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("player_404"));
+                    BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
                 }
             }
         }

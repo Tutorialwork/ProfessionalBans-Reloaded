@@ -1,6 +1,9 @@
 package de.tutorialwork.professionalbans.utils;
 
 import de.tutorialwork.professionalbans.main.Main;
+import net.md_5.bungee.api.ProxyServer;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -8,54 +11,100 @@ public class IPManager {
 
     //ips(IP varchar(64) UNIQUE, USED_BY varchar(64), USED_AT varchar(64), BANNED int(11), REASON varchar(64), END long, TEAMUUID varchar(64), BANS int(11));
 
-    public static boolean IPExists(String IP){
+    public boolean IPExists(String IP){
         try {
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM ips WHERE IP = ?");
 
-            ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
-            if(rs.next()){
-                return rs.getString("IP") != null;
+            ps.setString(1, IP);
+            ResultSet rSet = ps.executeQuery();
+
+            if(rSet.next()){
+                return rSet.getString("IP") != null;
             }
 
-        } catch (SQLException exc){
-
+            rSet.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return false;
-
     }
 
-    public static void insertIP(String IP, String UUID){
-        if(!IPExists(IP)){
-            Main.mysql.update("INSERT INTO ips(IP, USED_BY, USED_AT, BANNED, REASON, END, TEAMUUID, BANS) " +
-                    "VALUES ('" + IP + "', '" + UUID + "', '" + System.currentTimeMillis() + "', '0', 'null', 'null', 'null', '0')");
-        } else {
-            updateIPInfos(IP, UUID);
+    public void insertIP(String IP, String UUID){
+        ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+            try{
+                if(!IPExists(IP)){
+                    PreparedStatement ps = Main.mysql.getCon()
+                            .prepareStatement("INSERT INTO ips(IP, USED_BY, USED_AT, BANNED, REASON, END, TEAMUUID, BANS) "+
+                                    "VALUES (?, ?, ?, '0', 'null', 'null', 'null', '0')");
+                    ps.setString(1, IP);
+                    ps.setString(2, UUID);
+                    ps.setLong(3, System.currentTimeMillis());
+                    ps.executeUpdate();
+                    ps.close();
+                } else {
+                    updateIPInfos(IP, UUID);
+                }
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void updateIPInfos(String IP, String newUUID){
+        ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+            try{
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE ips SET USED_BY = ?, USED_AT= ? WHERE IP= ?");
+                ps.setString(1, newUUID);
+                ps.setLong(2, System.currentTimeMillis());
+                ps.setString(3, IP);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void ban(String IP, int GrundID, String TeamUUID){
+        try {
+            long current = System.currentTimeMillis();
+            long end = current + Main.ban.getReasonTime(GrundID) * 60000L;
+            if(Main.ban.getReasonTime(GrundID) == -1){
+                //Perma Ban
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE ips SET BANNED='1', REASON=?, END='-1', TEAMUUID=? WHERE IP=?");
+                ps.setString(1, Main.ban.getReasonByID(GrundID));
+                ps.setString(2, TeamUUID);
+                ps.setString(3, IP);
+                ps.executeUpdate();
+                ps.close();
+            } else {
+                //Temp Ban
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE ips SET BANNED='1', REASON=?, END=?, TEAMUUID=? WHERE IP=?");
+                ps.setString(1, Main.ban.getReasonByID(GrundID));
+                ps.setLong(2, end);
+                ps.setString(3, TeamUUID);
+                ps.setString(4, IP);
+                ps.executeUpdate();
+                ps.close();
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static void updateIPInfos(String IP, String newUUID){
-        if(IPExists(IP)){
-            Main.mysql.update("UPDATE ips SET USED_BY = '"+newUUID+"', USED_AT='" + System.currentTimeMillis() + "' WHERE IP='" + IP + "'");
-        }
-    }
 
-    public static void ban(String IP, int GrundID, String TeamUUID){
-        long current = System.currentTimeMillis();
-        long end = current + BanManager.getReasonTime(GrundID) * 60000L;
-        if(BanManager.getReasonTime(GrundID) == -1){
-            //Perma Ban
-            Main.mysql.update("UPDATE ips SET BANNED='1', REASON='" + BanManager.getReasonByID(GrundID) + "', END='-1', TEAMUUID='" + TeamUUID + "' WHERE IP='" + IP + "'");
-        } else {
-            //Temp Ban
-            Main.mysql.update("UPDATE ips SET BANNED='1', REASON='" + BanManager.getReasonByID(GrundID) + "', END='" + end + "', TEAMUUID='" + TeamUUID + "' WHERE IP='" + IP + "'");
-        }
-    }
-
-
-    public static boolean isBanned(String IP){
+    public boolean isBanned(String IP){
         if(IPExists(IP)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM ips WHERE IP=?");
+                ps.setString(1, IP);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     if(rs.getInt("BANNED") == 1){
                         return true;
@@ -63,42 +112,54 @@ public class IPManager {
                         return false;
                     }
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return false;
     }
 
-    public static String getReasonString(String IP){
+    public String getReasonString(String IP){
         if(IPExists(IP)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM ips WHERE IP=?");
+                ps.setString(1, IP);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getString("REASON");
                 }
+                rs.close();
+                ps.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
     }
 
-    public static Long getRAWEnd(String IP){
+    public Long getRAWEnd(String IP){
         if(IPExists(IP)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM ips WHERE IP=?");
+                ps.setString(1, IP);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getLong("END");
                 }
+                rs.close();
+                ps.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
     }
 
-    public static String getEnd(String UUID) {
+    public String getEnd(String UUID) {
         long uhrzeit = System.currentTimeMillis();
         long end = getRAWEnd(UUID);
 
@@ -143,16 +204,24 @@ public class IPManager {
         //return "§a" + tage + " §7Tag(e) §a" + stunden + " §7Stunde(n) §a" + minuten + " §7Minute(n) §a" + sekunden + " §7Sekunde(n)";
     }
 
-    public static void unban(String IP){
+    public void unban(String IP){
         if(IPExists(IP)){
-            Main.mysql.update("UPDATE ips SET BANNED='0' WHERE IP='" + IP + "'");
+            try {
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE ips SET BANNED='0' WHERE IP=?");
+                ps.setString(1, IP);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
         }
     }
 
-    public static boolean isVPN(String IP){
+    public boolean isVPN(String IP){
         if(!IP.equals("127.0.0.1")){
-            if(Main.APIKey != null){
-                String json = Main.callURL("http://proxycheck.io/v2/"+IP+"?key="+Main.APIKey);
+            if(Main.data.APIKey != null){
+                String json = Main.callURL("http://proxycheck.io/v2/"+IP+"?key="+Main.data.APIKey);
                 json = json.replace("{\n" +
                         "    \"status\": \"ok\",\n" +
                         "    \""+IP+"\": {\n" +
@@ -185,9 +254,12 @@ public class IPManager {
         }
     }
 
-    public static String getIPFromPlayer(String UUID){
+    public String getIPFromPlayer(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE USED_BY='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM ips WHERE USED_BY=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("IP");
             }
@@ -197,51 +269,73 @@ public class IPManager {
         return null;
     }
 
-    public static String getPlayerFromIP(String IP){
+    public String getPlayerFromIP(String IP){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM ips WHERE IP=?");
+            ps.setString(1, IP);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("USED_BY");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static Integer getBans(String IP){
+    public Integer getBans(String IP){
         if(IPExists(IP)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM ips WHERE IP=?");
+                ps.setString(1, IP);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getInt("BANS");
                 }
+                rs.close();
+                ps.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
     }
 
-    public static void setBans(String IP, int Bans){
-        if(IPExists(IP)){
-            Main.mysql.update("UPDATE ips SET BANS='" + Bans + "' WHERE IP='" + IP + "'");
+    public void setBans(String IP, int Bans){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE ips SET BANS=? WHERE IP=?");
+            ps.setInt(1, Bans);
+            ps.setString(2, IP);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static void addBan(String IP){
+    public void addBan(String IP){
         setBans(IP, getBans(IP) + 1);
     }
 
-    public static long getLastUseLong(String IP){
+    public long getLastUseLong(String IP){
         if(IPExists(IP)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM ips WHERE IP='" + IP + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM ips WHERE IP=?");
+                ps.setString(1, IP);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return Long.valueOf(rs.getString("USED_AT"));
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return 0;

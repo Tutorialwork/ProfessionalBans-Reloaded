@@ -1,8 +1,6 @@
 package de.tutorialwork.professionalbans.commands;
 
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.IPManager;
-import de.tutorialwork.professionalbans.utils.BanManager;
 import de.tutorialwork.professionalbans.utils.LogManager;
 import de.tutorialwork.professionalbans.utils.UUIDFetcher;
 import net.md_5.bungee.api.ChatColor;
@@ -28,48 +26,48 @@ public class IPBan extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(p.hasPermission("professionalbans.ipban") || p.hasPermission("professionalbans.*")){
                 if(args.length == 0 || args.length == 1){
-                    for(int zaehler = 1; zaehler < BanManager.countReasons()+1; zaehler++) {
-                        if(BanManager.isBanReason(zaehler)){
-                            p.sendMessage("§7"+zaehler+" §8| §e"+BanManager.getReasonByID(zaehler));
+                    for(int zaehler = 1; zaehler < Main.ban.countReasons()+1; zaehler++) {
+                        if(Main.ban.isBanReason(zaehler)){
+                            p.sendMessage("§7"+zaehler+" §8| §e"+Main.ban.getReasonByID(zaehler));
                         }
                     }
-                    p.sendMessage(Main.Prefix+"/ipban <IP/"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+"-ID>");
+                    p.sendMessage(Main.data.Prefix+"/ipban <IP/"+Main.messages.getString("player")+"> <"+Main.messages.getString("reason")+"-ID>");
                 } else {
                     String IP = args[0];
                     int ID = Integer.valueOf(args[1]);
                     if(validate(IP)){
-                        if(BanManager.getReasonByID(ID) != null){
-                            if(IPManager.IPExists(IP)){
-                                IPManager.ban(IP, ID, p.getUniqueId().toString());
-                                IPManager.addBan(IP);
-                                BanManager.sendNotify("IPBAN", IP, p.getName(), BanManager.getReasonByID(ID));
+                        if(Main.ban.getReasonByID(ID) != null){
+                            if(Main.ip.IPExists(IP)){
+                                Main.ip.ban(IP, ID, p.getUniqueId().toString());
+                                Main.ip.addBan(IP);
+                                Main.ban.sendNotify("IPBAN", IP, p.getName(), Main.ban.getReasonByID(ID));
                             } else {
-                                IPManager.insertIP(IP, null);
-                                IPManager.ban(IP, ID, p.getUniqueId().toString());
-                                IPManager.addBan(IP);
-                                BanManager.sendNotify("IPBAN", IP, p.getName(), BanManager.getReasonByID(ID));
+                                Main.ip.insertIP(IP, null);
+                                Main.ip.ban(IP, ID, p.getUniqueId().toString());
+                                Main.ip.addBan(IP);
+                                Main.ban.sendNotify("IPBAN", IP, p.getName(), Main.ban.getReasonByID(ID));
                             }
                             disconnectIPBannedPlayers(IP);
                             LogManager.createEntry(null, p.getUniqueId().toString(), "IPBAN_IP", IP);
                         } else {
-                            p.sendMessage(Main.Prefix+Main.messages.getString("reason_404"));
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("reason_404"));
                         }
                     } else {
                         String UUID = UUIDFetcher.getUUID(args[0]);
-                        if(IPManager.getIPFromPlayer(UUID) != null){
-                            String DBIP = IPManager.getIPFromPlayer(UUID);
-                            IPManager.ban(DBIP, ID, p.getUniqueId().toString());
-                            IPManager.addBan(DBIP);
-                            BanManager.sendNotify("IPBAN", DBIP, p.getName(), BanManager.getReasonByID(ID));
+                        if(Main.ip.getIPFromPlayer(UUID) != null){
+                            String DBIP = Main.ip.getIPFromPlayer(UUID);
+                            Main.ip.ban(DBIP, ID, p.getUniqueId().toString());
+                            Main.ip.addBan(DBIP);
+                            Main.ban.sendNotify("IPBAN", DBIP, p.getName(), Main.ban.getReasonByID(ID));
                             disconnectIPBannedPlayers(DBIP);
                             LogManager.createEntry(UUID, p.getUniqueId().toString(), "IPBAN_PLAYER", String.valueOf(ID));
                         } else {
-                            p.sendMessage(Main.Prefix+Main.messages.getString("player_ip_404"));
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("player_ip_404"));
                         }
                     }
                 }
             } else {
-                p.sendMessage(Main.NoPerms);
+                p.sendMessage(Main.data.NoPerms);
             }
         }
     }
@@ -81,16 +79,16 @@ public class IPBan extends Command {
                 try {
                     Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
 
-                    if(IPManager.getRAWEnd(IP) == -1L){
-                        all.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.IPBAN").replace("%grund%", IPManager.getReasonString(IP))));
+                    if(Main.ip.getRAWEnd(IP) == -1L){
+                        all.disconnect(ChatColor.translateAlternateColorCodes('&', configcfg.getString("LAYOUT.IPBAN").replace("%grund%", Main.ip.getReasonString(IP))));
                     } else {
-                        if(System.currentTimeMillis() < IPManager.getRAWEnd(IP)){
+                        if(System.currentTimeMillis() < Main.ip.getRAWEnd(IP)){
                             String MSG = configcfg.getString("LAYOUT.TEMPIPBAN");
-                            MSG = MSG.replace("%grund%", IPManager.getReasonString(IP));
-                            MSG = MSG.replace("%dauer%", IPManager.getEnd(IP));
+                            MSG = MSG.replace("%grund%", Main.ip.getReasonString(IP));
+                            MSG = MSG.replace("%dauer%", Main.ip.getEnd(IP));
                             all.disconnect(ChatColor.translateAlternateColorCodes('&', MSG));
                         } else {
-                            IPManager.unban(IP);
+                            Main.ip.unban(IP);
                         }
                     }
 

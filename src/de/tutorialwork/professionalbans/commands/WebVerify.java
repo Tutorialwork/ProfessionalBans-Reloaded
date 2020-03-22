@@ -1,7 +1,6 @@
 package de.tutorialwork.professionalbans.commands;
 
 import de.tutorialwork.professionalbans.main.Main;
-import de.tutorialwork.professionalbans.utils.BanManager;
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -17,30 +16,30 @@ public class WebVerify extends Command {
         if(sender instanceof ProxiedPlayer){
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(args.length == 0){
-                p.sendMessage(Main.Prefix+"/webverify <Token>");
+                p.sendMessage(Main.data.Prefix+"/webverify <Token>");
             } else {
                 String UUID = p.getUniqueId().toString();
-                if(BanManager.webaccountExists(UUID)){
-                    if(BanManager.hasAuthToken(UUID)){
+                if(Main.ban.webaccountExists(UUID)){
+                    if(Main.ban.hasAuthToken(UUID)){
                         if(args[0].length() == 25){
-                            if(BanManager.getAuthCode(UUID).equals(args[0])){
-                                BanManager.updateAuthStatus(UUID);
-                                p.sendMessage(Main.Prefix+Main.messages.getString("webverify_success"));
+                            if(Main.ban.getAuthCode(UUID).equals(args[0])){
+                                Main.ban.updateAuthStatus(UUID);
+                                p.sendMessage(Main.data.Prefix+Main.messages.getString("webverify_success"));
                             } else {
-                                p.sendMessage(Main.Prefix+Main.messages.getString("token_invalid"));
+                                p.sendMessage(Main.data.Prefix+Main.messages.getString("token_invalid"));
                             }
                         } else {
-                            p.sendMessage(Main.Prefix+Main.messages.getString("token_invalid"));
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("token_invalid"));
                         }
                     } else {
-                        p.sendMessage(Main.Prefix+"§cEs wurde keine Verifizierungsanfrage von dir gefunden");
+                        p.sendMessage(Main.data.Prefix+"§cEs wurde keine Verifizierungsanfrage von dir gefunden");
                     }
                 } else {
-                    p.sendMessage(Main.Prefix+"§cDu hast keinen Account im Webinterface");
+                    p.sendMessage(Main.data.Prefix+"§cDu hast keinen Account im Webinterface");
                 }
             }
         } else {
-            BungeeCord.getInstance().getConsole().sendMessage(Main.Prefix+Main.messages.getString("only_player_cmd"));
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("only_player_cmd"));
         }
     }
 }

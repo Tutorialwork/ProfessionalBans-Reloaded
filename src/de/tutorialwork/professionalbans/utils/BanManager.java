@@ -3,12 +3,14 @@ package de.tutorialwork.professionalbans.utils;
 import de.tutorialwork.professionalbans.commands.Reports;
 import de.tutorialwork.professionalbans.main.Main;
 import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -17,58 +19,83 @@ import java.util.Date;
 
 public class BanManager {
 
-    //DATENBANK Struktur
-    //UUID varchar(64) UNIQUE, NAME varchar(64), BANNED int(11), MUTED int(11), REASON varchar(64), END long(255), TEAMUUID varchar(64), BANS int(11), MUTES int(11)
-
-    public static boolean playerExists(String UUID){
+    public boolean playerExists(String UUID){
         try {
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE UUID = ?");
 
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
-            if(rs.next()){
-                return rs.getString("UUID") != null;
+            ps.setString(1, UUID);
+            ResultSet rSet = ps.executeQuery();
+
+            if(rSet.next()){
+                return rSet.getString("UUID") != null;
             }
 
-        } catch (SQLException exc){
-
+            rSet.close();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return false;
-
     }
 
-    public static void createPlayer(String UUID, String Name){
-        if(!playerExists(UUID)){
-            Main.mysql.update("INSERT INTO bans(UUID, NAME, BANNED, MUTED, REASON, END, TEAMUUID, BANS, MUTES, FIRSTLOGIN, LASTLOGIN) " +
-                    "VALUES ('" + UUID + "', '" + Name + "', '0', '0', 'null', 'null', 'null', '0', '0', '" + System.currentTimeMillis() + "', '" + System.currentTimeMillis() + "')");
-        } else {
-            updateName(UUID, Name);
-            updateLastLogin(UUID);
-        }
+    public void createPlayer(String UUID, String Name){
+        ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+            if(!playerExists(UUID)){
+                try{
+                    PreparedStatement ps = Main.mysql.getCon()
+                            .prepareStatement("INSERT INTO bans (UUID, NAME, BANNED, MUTED, REASON, END, TEAMUUID, BANS, MUTES, FIRSTLOGIN, LASTLOGIN) "
+                            + "VALUES (?, ?, '0', '0', 'null', 'null', 'null', '0', '0', ?, ?)");
+                    ps.setString(1, UUID);
+                    ps.setString(2, Name);
+                    ps.setLong(3, System.currentTimeMillis());
+                    ps.setLong(4, System.currentTimeMillis());
+                    ps.executeUpdate();
+                    ps.close();
+                } catch (SQLException e){
+                    e.printStackTrace();
+                }
+            } else {
+                updateName(UUID, Name);
+                updateLastLogin(UUID);
+            }
+        });
     }
 
-    public static void getBanReasonsList(ProxiedPlayer p){
+    public void getBanReasonsList(ProxiedPlayer p){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons ORDER BY SORTINDEX ASC");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons ORDER BY SORTINDEX ASC");
+            ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("ID");
-                if(BanManager.isBanReason(id)){
-                    p.sendMessage("§7"+id+" §8| §e"+BanManager.getReasonByID(id));
+                if(isBanReason(id)){
+                    p.sendMessage("§7"+id+" §8| §e"+getReasonByID(id));
                 } else {
-                    p.sendMessage("§7"+id+" §8| §e"+BanManager.getReasonByID(id)+" §8(§cMUTE§8)");
+                    p.sendMessage("§7"+id+" §8| §e"+getReasonByID(id)+" §8(§cMUTE§8)");
                 }
             }
-        } catch (SQLException exc){ }
+            ps.close();
+            rs.close();
+        } catch (SQLException exc){
+            exc.printStackTrace();
+        }
     }
 
-    public static String getNameByUUID(String UUID){
+    public String getNameByUUID(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getString("NAME");
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
@@ -76,73 +103,139 @@ public class BanManager {
 
     public static String getUUIDByName(String Name){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE NAME='" + Name + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE NAME=?");
+            ps.setString(1, Name);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("UUID");
             }
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static void updateName(String UUID, String newName){
-        if(playerExists(UUID)){
-            Main.mysql.update("UPDATE bans SET NAME='" + newName + "' WHERE UUID='" + UUID + "'");
+    public void updateName(String UUID, String newName){
+        ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+            try {
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE bans SET NAME=? WHERE UUID=?");
+                ps.setString(1, newName);
+                ps.setString(2, UUID);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void ban(String UUID, int GrundID, String TeamUUID, int Prozentsatz, boolean increaseBans){
+        try{
+            if(getReasonTime(GrundID) == -1){
+                //Perma Ban
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE bans SET BANNED='1', REASON=?, END='-1', TEAMUUID=? WHERE UUID=?");
+                ps.setString(1, getReasonByID(GrundID));
+                ps.setString(2, TeamUUID);
+                ps.setString(3, UUID);
+                ps.executeUpdate();
+                ps.close();
+            } else {
+                //Temp Ban
+                //Formel: 1.50 * Anzahl an Tagen = Ergebniss (50%)
+                int bans = getBans(UUID);
+                int defaultmins = getReasonTime(GrundID);
+                long current = System.currentTimeMillis();
+                long end = current + getReasonTime(GrundID) * 60000L;
+                long increaseEnd = current + Prozentsatz / 100 + 1 * defaultmins * bans * 60000L; //Formel!!!!!
+                if(increaseBans){
+                    if(bans > 0){
+                        PreparedStatement ps = Main.mysql.getCon()
+                                .prepareStatement("UPDATE bans SET BANNED='1', REASON=?, END=?, TEAMUUID=? WHERE UUID=?");
+                        ps.setString(1, getReasonByID(GrundID));
+                        ps.setLong(2, end);
+                        ps.setString(3, TeamUUID);
+                        ps.setString(4, UUID);
+                        ps.executeUpdate();
+                        ps.close();
+                    } else {
+                        PreparedStatement ps = Main.mysql.getCon()
+                                .prepareStatement("UPDATE bans SET BANNED='1', REASON=?, END=?, TEAMUUID=? WHERE UUID=?");
+                        ps.setString(1, getReasonByID(GrundID));
+                        ps.setLong(2, increaseEnd);
+                        ps.setString(3, TeamUUID);
+                        ps.setString(4, UUID);
+                        ps.executeUpdate();
+                        ps.close();
+                    }
+                } else {
+                    PreparedStatement ps = Main.mysql.getCon()
+                            .prepareStatement("UPDATE bans SET BANNED='1', REASON=?, END=?, TEAMUUID=? WHERE UUID=?");
+                    ps.setString(1, getReasonByID(GrundID));
+                    ps.setLong(2, end);
+                    ps.setString(3, TeamUUID);
+                    ps.setString(4, UUID);
+                    ps.executeUpdate();
+                    ps.close();
+                }
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static void ban(String UUID, int GrundID, String TeamUUID, int Prozentsatz, boolean increaseBans){
-        if(getReasonTime(GrundID) == -1){
-            //Perma Ban
-            Main.mysql.update("UPDATE bans SET BANNED='1', REASON='" + getReasonByID(GrundID) + "', END='-1', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
-        } else {
-            //Temp Ban
-            //Formel: 1.50 * Anzahl an Tagen = Ergebniss (50%)
-            int bans = getBans(UUID);
-            int defaultmins = getReasonTime(GrundID);
+    public void mute(String UUID, int GrundID, String TeamUUID){
+        try{
             long current = System.currentTimeMillis();
             long end = current + getReasonTime(GrundID) * 60000L;
-            long increaseEnd = current + Prozentsatz / 100 + 1 * defaultmins * bans * 60000L; //Formel!!!!!
-            if(increaseBans){
-                if(bans > 0){
-                    Main.mysql.update("UPDATE bans SET BANNED='1', REASON='" + getReasonByID(GrundID) + "', END='" + end + "', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
-                } else {
-                    Main.mysql.update("UPDATE bans SET BANNED='1', REASON='" + getReasonByID(GrundID) + "', END='" + increaseEnd + "', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
-                }
+            if(getReasonTime(GrundID) == -1){
+                //Perma Mute
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE bans SET MUTED='1', REASON=?, END='-1', TEAMUUID=? WHERE UUID=?");
+                ps.setString(1, getReasonByID(GrundID));
+                ps.setString(2, TeamUUID);
+                ps.setString(3, UUID);
+                ps.executeUpdate();
+                ps.close();
             } else {
-                Main.mysql.update("UPDATE bans SET BANNED='1', REASON='" + getReasonByID(GrundID) + "', END='" + end + "', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
+                //Temp Mute
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE bans SET MUTED='1', REASON=?, END=?, TEAMUUID=? WHERE UUID=?");
+                ps.setString(1, getReasonByID(GrundID));
+                ps.setLong(2, end);
+                ps.setString(3, TeamUUID);
+                ps.setString(4, UUID);
+                ps.executeUpdate();
+                ps.close();
             }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static void mute(String UUID, int GrundID, String TeamUUID){
-        long current = System.currentTimeMillis();
-        long end = current + getReasonTime(GrundID) * 60000L;
-        if(getReasonTime(GrundID) == -1){
-            //Perma Mute
-            Main.mysql.update("UPDATE bans SET MUTED='1', REASON='" + getReasonByID(GrundID) + "', END='-1', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
-        } else {
-            //Temp Mute
-            Main.mysql.update("UPDATE bans SET MUTED='1', REASON='" + getReasonByID(GrundID) + "', END='" + end + "', TEAMUUID='" + TeamUUID + "' WHERE UUID='" + UUID + "'");
-        }
-    }
-
-    public static Long getRAWEnd(String UUID){
+    public Long getRAWEnd(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getLong("END");
                 }
-            } catch (SQLException exc){
-
+                ps.close();
+                rs.close();
+            } catch (SQLException e){
+                e.printStackTrace();
             }
         }
         return null;
     }
 
-    public static String getEnd(String UUID) {
+    public String getEnd(String UUID) {
         long uhrzeit = System.currentTimeMillis();
         long end = getRAWEnd(UUID);
 
@@ -187,10 +280,13 @@ public class BanManager {
         //return "§a" + tage + " §7Tag(e) §a" + stunden + " §7Stunde(n) §a" + minuten + " §7Minute(n) §a" + sekunden + " §7Sekunde(n)";
     }
 
-    public static boolean isBanned(String UUID){
+    public boolean isBanned(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     if(rs.getInt("BANNED") == 1){
                         return true;
@@ -198,17 +294,22 @@ public class BanManager {
                         return false;
                     }
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return false;
     }
 
-    public static boolean isMuted(String UUID){
+    public boolean isMuted(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     if(rs.getInt("MUTED") == 1){
                         return true;
@@ -216,32 +317,51 @@ public class BanManager {
                         return false;
                     }
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return false;
     }
 
-    public static void unban(String UUID){
-        if(playerExists(UUID)){
-            Main.mysql.update("UPDATE bans SET BANNED='0' WHERE UUID='" + UUID + "'");
+    public void unban(String UUID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET BANNED='0' WHERE UUID=?");
+            ps.setString(1, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static void unmute(String UUID){
-        if(playerExists(UUID)){
-            Main.mysql.update("UPDATE bans SET MUTED='0' WHERE UUID='" + UUID + "'");
+    public void unmute(String UUID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET MUTED='0' WHERE UUID=?");
+            ps.setString(1, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static String getReasonString(String UUID){
+    public String getReasonString(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getString("REASON");
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
 
             }
@@ -249,60 +369,60 @@ public class BanManager {
         return null;
     }
 
-    public static void sendNotify(String Type, String BannedName, String TeamName, String Grund){
+    public void sendNotify(String Type, String BannedName, String TeamName, String Grund){
         if(Type.toUpperCase().equals("BAN")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify")){
-                    all.sendMessage(Main.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgebannt §7wegen §a"+Grund);
+                    all.sendMessage(Main.data.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgebannt §7wegen §a"+Grund);
                 }
             }
         }
         if(Type.toUpperCase().equals("IPBAN")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify")){
-                    all.sendMessage(Main.Prefix+"§7Die IP §e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgebannt §7wegen §a"+Grund);
+                    all.sendMessage(Main.data.Prefix+"§7Die IP §e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgebannt §7wegen §a"+Grund);
                 }
             }
         }
         if(Type.toUpperCase().equals("MUTE")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgemutet §7wegen §a"+Grund);
+                    all.sendMessage(Main.data.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgemutet §7wegen §a"+Grund);
                 }
             }
         }
         if(Type.toUpperCase().equals("AUTOMUTE")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§e§l"+BannedName+" §7wurde §cautomatisch gemutet §7wegen §a"+Grund+" §8(§7"+TeamName+"§8)");
+                    all.sendMessage(Main.data.Prefix+"§e§l"+BannedName+" §7wurde §cautomatisch gemutet §7wegen §a"+Grund+" §8(§7"+TeamName+"§8)");
                 }
             }
         }
         if(Type.toUpperCase().equals("KICK")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgekickt §7wegen §a"+Grund);
+                    all.sendMessage(Main.data.Prefix+"§e§l"+BannedName+" §7wurde von §c§l"+TeamName+" §cgekickt §7wegen §a"+Grund);
                 }
             }
         }
         if(Type.toUpperCase().equals("UNBAN")){
                 for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                     if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §aentbannt");
+                    all.sendMessage(Main.data.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §aentbannt");
                 }
             }
         }
         if(Type.toUpperCase().equals("UNBANIP")){
             for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat die IP-Adresse §e§l"+BannedName+" §aentbannt");
+                    all.sendMessage(Main.data.Prefix+"§c§l"+TeamName+" §7hat die IP-Adresse §e§l"+BannedName+" §aentbannt");
                 }
             }
         }
         if(Type.toUpperCase().equals("UNMUTE")){
                 for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                     if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
-                    all.sendMessage(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §aentmutet");
+                    all.sendMessage(Main.data.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §aentmutet");
                 }
             }
         }
@@ -311,7 +431,7 @@ public class BanManager {
                 if(all.hasPermission("professionalbans.notify") || all.hasPermission("professionalbans.*")){
                     if(!Reports.not_logged.contains(all)){
                         TextComponent tc = new TextComponent();
-                        tc.setText(Main.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
+                        tc.setText(Main.data.Prefix+"§c§l"+TeamName+" §7hat §e§l"+BannedName+" §7wegen §a"+Grund+" §7gemeldet");
                         tc.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/reports"));
                         tc.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("§7Alle §eoffenen §7Reports anzeigen").create()));
                         all.sendMessage(tc);
@@ -321,87 +441,128 @@ public class BanManager {
         }
     }
 
-    public static Integer getBans(String UUID){
+    public Integer getBans(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getInt("BANS");
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
     }
 
-    public static void setBans(String UUID, int Bans){
-        if(playerExists(UUID)){
-            Main.mysql.update("UPDATE bans SET BANS='" + Bans + "' WHERE UUID='" + UUID + "'");
+    public void setBans(String UUID, int Bans){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET BANS=? WHERE UUID=?");
+            ps.setInt(1, Bans);
+            ps.setString(2, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static Integer getMutes(String UUID){
+    public Integer getMutes(String UUID){
         if(playerExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     return rs.getInt("MUTES");
                 }
+                rs.close();
+                ps.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         }
         return null;
     }
 
-    public static void setMutes(String UUID, int Mutes){
-        if(playerExists(UUID)){
-            Main.mysql.update("UPDATE bans SET MUTES='" + Mutes + "' WHERE UUID='" + UUID + "'");
+    public void setMutes(String UUID, int Mutes){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE bans SET MUTES=? WHERE UUID=?");
+            ps.setInt(1, Mutes);
+            ps.setString(2, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
-    public static Integer countReasons(){
+    public Integer countReasons(){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons");
+            ResultSet rs = ps.executeQuery();
             int i = 0;
             while (rs.next()){
                 i++;
             }
+            ps.close();
+            rs.close();
             return i;
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static String getReasonByID(int Reason){
+    public String getReasonByID(int Reason){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + Reason + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, Reason);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("REASON");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static Integer getReasonTime(int ID){
+    public Integer getReasonTime(int ID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + ID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, ID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getInt("TIME");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static boolean isBanReason(int ID){
+    public boolean isBanReason(int ID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + ID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, ID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 if(rs.getInt("TYPE") == 0){
                     return true;
@@ -409,31 +570,50 @@ public class BanManager {
                     return false;
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return false;
     }
 
-    public static Integer getReasonBans(int ReasonID){
+    public Integer getReasonBans(int ReasonID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + ReasonID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, ReasonID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getInt("BANS");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static void setReasonBans(int ReasonID, int Bans){
-        Main.mysql.update("UPDATE reasons SET BANS='" + Bans + "' WHERE ID='" + ReasonID + "'");
+    public void setReasonBans(int ReasonID, int Bans){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE reasons SET BANS=? WHERE ID=?");
+            ps.setInt(1, Bans);
+            ps.setInt(2, ReasonID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public static boolean hasExtraPerms(int ReasonID){
+    public boolean hasExtraPerms(int ReasonID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + ReasonID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, ReasonID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 if(rs.getString("PERMS").equals("null")){
                     return false;
@@ -441,54 +621,84 @@ public class BanManager {
                     return true;
                 }
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return false;
     }
 
-    public static String getExtraPerms(int ReasonID){
+    public String getExtraPerms(int ReasonID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reasons WHERE ID='" + ReasonID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reasons WHERE ID=?");
+            ps.setInt(1, ReasonID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("PERMS");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
 
-    public static boolean webaccountExists(String UUID){
+    public boolean webaccountExists(String UUID){
         try {
-
-            ResultSet rs = Main.mysql.query("SELECT * FROM accounts WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("UUID") != null;
             }
-
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
-
         return false;
-
     }
 
-    public static void createWebAccount(String UUID, String Name, int Rank, String PasswordHash){
-        Main.mysql.update("INSERT INTO accounts(UUID, USERNAME, PASSWORD, RANK, GOOGLE_AUTH, AUTHCODE) " +
-                "VALUES ('" + UUID + "', '" + Name + "', '" + PasswordHash + "', '" + Rank + "', 'null', 'initialpassword')");
+    public void createWebAccount(String UUID, String Name, int Rank, String PasswordHash){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("INSERT INTO accounts(UUID, USERNAME, PASSWORD, RANK, GOOGLE_AUTH, AUTHCODE) "+
+                            "VALUES (?, ?, ?, ?, 'null', 'initialpassword')");
+            ps.setString(1, UUID);
+            ps.setString(2, Name);
+            ps.setString(3, PasswordHash);
+            ps.setInt(4, Rank);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public static void deleteWebAccount(String UUID){
-        Main.mysql.update("DELETE FROM accounts WHERE UUID='"+UUID+"'");
+    public void deleteWebAccount(String UUID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("DELETE FROM accounts WHERE UUID=?");
+            ps.setString(1, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public static boolean isWebaccountAdmin(String UUID){
+    public boolean isWebaccountAdmin(String UUID){
         if(webaccountExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM accounts WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     if(rs.getInt("RANK") == 3){
                         return true;
@@ -496,8 +706,10 @@ public class BanManager {
                         return false;
                     }
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         } else {
             return false;
@@ -505,10 +717,13 @@ public class BanManager {
         return false;
     }
 
-    public static boolean hasAuthToken(String UUID){
+    public boolean hasAuthToken(String UUID){
         if(webaccountExists(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM accounts WHERE UUID='" + UUID + "'");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     if(rs.getString("AUTHCODE") == "null"){
                         return false;
@@ -516,8 +731,10 @@ public class BanManager {
                         return true;
                     }
                 }
+                ps.close();
+                rs.close();
             } catch (SQLException exc){
-
+                exc.printStackTrace();
             }
         } else {
             return false;
@@ -525,166 +742,224 @@ public class BanManager {
         return false;
     }
 
-    public static String getAuthCode(String UUID){
+    public String getAuthCode(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM accounts WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("AUTHCODE");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static void updateAuthStatus(String UUID){
-        Main.mysql.update("UPDATE accounts SET AUTHSTATUS = 1 WHERE UUID = '"+UUID+"'");
+    public void updateAuthStatus(String UUID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE accounts SET AUTHSTATUS = 1 WHERE UUID =?");
+            ps.setString(1, UUID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public static void createReport(String UUID, String ReporterUUID, String Reason, String LogID){
-        Main.mysql.update("INSERT INTO reports(UUID, REPORTER, TEAM, REASON, LOG, STATUS, CREATED_AT) " +
-                "VALUES ('" + UUID + "', '" + ReporterUUID + "', 'null', '" + Reason  + "', '" + LogID + "', '0', '" + System.currentTimeMillis() + "')");
+    public void createReport(String UUID, String ReporterUUID, String Reason, String LogID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("INSERT INTO reports(UUID, REPORTER, TEAM, REASON, LOG, STATUS, CREATED_AT) "+
+                            "VALUES (?, ?, 'null', ?, ?, '0', ?)");
+            ps.setString(1, UUID);
+            ps.setString(2, ReporterUUID);
+            ps.setString(3, Reason);
+            ps.setString(4, LogID);
+            ps.setLong(5, System.currentTimeMillis());
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
-    public static Integer countOpenReports(){
+    public Integer countOpenReports(){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE STATUS = 0");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reports WHERE STATUS = 0");
+            ResultSet rs = ps.executeQuery();
             int i = 0;
             while (rs.next()){
                 i++;
             }
+            ps.close();
+            rs.close();
             return i;
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static ArrayList getIDsFromOpenReports(){
+    public ArrayList getIDsFromOpenReports(){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE STATUS = 0");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reports WHERE STATUS = 0");
+            ResultSet rs = ps.executeQuery();
             ArrayList<Integer> ids = new ArrayList<>();
             while (rs.next()){
                ids.add(rs.getInt("ID"));
             }
+            ps.close();
+            rs.close();
             return ids;
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static String getNameByReportID(int ReportID){
+    public String getNameByReportID(int ReportID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE ID='" + ReportID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reports WHERE ID = ?");
+            ps.setInt(1, ReportID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return getNameByUUID(rs.getString("UUID"));
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static String getReasonByReportID(int ReportID){
+    public String getReasonByReportID(int ReportID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE ID='" + ReportID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM reports WHERE ID = ?");
+            ps.setInt(1, ReportID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("REASON");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static void setReportDone(int ID){
-        Main.mysql.update("UPDATE reports SET STATUS = 1 WHERE ID = "+ID);
-    }
-
-    public static void setReportTeamUUID(int ID, String UUID){
-        Main.mysql.update("UPDATE reports SET TEAM = '"+UUID+"' WHERE ID = "+ID);
-    }
-
-    public static boolean isChatlogAvailable(int ID){
-        try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE ID='" + ID + "'");
-            if(rs.next()){
-                if(rs.getString("LOG") != "null"){
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        } catch (SQLException exc){
-
+    public void setReportDone(int ID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE reports SET STATUS = 1 WHERE ID = ?");
+            ps.setInt(1, ID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
-        return false;
     }
 
-    public static String getChatlogbyReportID(int ReportID){
-        try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM reports WHERE ID='" + ReportID + "'");
-            if(rs.next()){
-                return rs.getString("LOG");
-            }
-        } catch (SQLException exc){
-
+    public void setReportTeamUUID(int ID, String UUID){
+        try{
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("UPDATE reports SET TEAM = ? WHERE ID = ?");
+            ps.setString(1, UUID);
+            ps.setInt(2, ID);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e){
+            e.printStackTrace();
         }
-        return null;
     }
 
-    public static void updateLastLogin(String UUID){
-        Main.mysql.update("UPDATE bans SET LASTLOGIN = '" + System.currentTimeMillis() + "' WHERE UUID = '"+UUID+"'");
+    public void updateLastLogin(String UUID){
+        ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+            try{
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("UPDATE bans SET LASTLOGIN = ? WHERE UUID = ?");
+                ps.setLong(1, System.currentTimeMillis());
+                ps.setString(2, UUID);
+                ps.executeUpdate();
+                ps.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        });
     }
 
-    public static String getLastLogin(String UUID){
+    public String getLastLogin(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("LASTLOGIN");
             }
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static String getFirstLogin(String UUID){
+    public String getFirstLogin(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM bans WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM bans WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("FIRSTLOGIN");
             }
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
 
-    public static String formatTimestamp(long timestamp){
+    public String formatTimestamp(long timestamp){
         Date date = new Date(timestamp);
         SimpleDateFormat jdf = new SimpleDateFormat(Main.messages.getString("date_format"));
         return jdf.format(date);
     }
 
-    public static boolean hasEA(String UUID){
+    public boolean hasEA(String UUID){
         try {
-            ResultSet rs = Main.mysql.query("SELECT * FROM unbans WHERE UUID='" + UUID + "'");
+            PreparedStatement ps = Main.mysql.getCon()
+                    .prepareStatement("SELECT * FROM unbans WHERE UUID=?");
+            ps.setString(1, UUID);
+            ResultSet rs = ps.executeQuery();
             if(rs.next()){
                 return rs.getString("UUID") != null;
             }
-
+            ps.close();
+            rs.close();
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return false;
     }
 
-    public static String getEAStatus(String UUID){
+    public String getEAStatus(String UUID){
         if(hasEA(UUID)){
             try {
-                ResultSet rs = Main.mysql.query("SELECT * FROM unbans WHERE UUID='" + UUID + "' ORDER BY DATE DESC");
+                PreparedStatement ps = Main.mysql.getCon()
+                        .prepareStatement("SELECT * FROM unbans WHERE UUID=? ORDER BY DATE DESC");
+                ps.setString(1, UUID);
+                ResultSet rs = ps.executeQuery();
                 if(rs.next()){
                     long date = Long.valueOf(rs.getInt("DATE")*1000);
                     if(getRAWEnd(UUID) > date){
@@ -695,16 +970,19 @@ public class BanManager {
                         } else if(rs.getInt("STATUS") == 3){
                             return "§eDein Entbannungsantrag wurde abgelehnt";
                         } else {
-                            return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+                            return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
                         }
                     } else {
-                        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+                        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
                     }
                 }
-
-            } catch (SQLException exc){}
+                ps.close();
+                rs.close();
+            } catch (SQLException exc){
+                exc.printStackTrace();
+            }
         }
-        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.WebURL+"public/unban.php";
+        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
     }
 
 }
