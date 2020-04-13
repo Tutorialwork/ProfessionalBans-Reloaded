@@ -76,7 +76,7 @@ public class Data {
 
             PreparedStatement ps_reasons = Main.mysql.getCon()
                     .prepareStatement(
-                                    "CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT varchar(11), BANS int(11), PERMS varchar(255));"
+                                    "CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT datetime ON UPDATE current_timestamp(), BANS int(11), PERMS varchar(255));"
                     );
             ps_reasons.executeUpdate();
             ps_reasons.close();
@@ -154,10 +154,8 @@ public class Data {
             ps_update_2_1.executeUpdate();
             ps_update_2_1.close();
 
-            PreparedStatement ps_update_3 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE reasons ADD IF NOT EXISTS SORTINDEX int(11);");
-            ps_update_3.executeUpdate();
-            ps_update_3.close();
+            //Removed SQL Update 3
+            //Reason: Prepare for ProfessionalBans 3
 
             PreparedStatement ps_update_4 = Main.mysql.getCon()
                     .prepareStatement("ALTER TABLE apptokens ADD IF NOT EXISTS FIREBASE_TOKEN varchar(255);");
