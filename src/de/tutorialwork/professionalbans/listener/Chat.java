@@ -168,12 +168,12 @@ public class Chat implements Listener {
             ResultSet rs = ps.executeQuery();
             String ID = randomString(20);
             Long now = System.currentTimeMillis();
-            while (rs.next()){
-                int TEN_MINUTES = 10 * 60 * 1000;
-                long tenAgo = System.currentTimeMillis() - TEN_MINUTES;
-                if (Long.valueOf(rs.getString("SENDDATE")) > tenAgo) {
-                    ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
-                        try{
+            ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
+                try{
+                    while (rs.next()){
+                        int TEN_MINUTES = 10 * 60 * 1000;
+                        long tenAgo = System.currentTimeMillis() - TEN_MINUTES;
+                        if (Long.valueOf(rs.getString("SENDDATE")) > tenAgo) {
                             PreparedStatement preparedStatement = Main.mysql.getCon()
                                     .prepareStatement("INSERT INTO chatlog(LOGID, UUID, CREATOR_UUID, SERVER, MESSAGE, SENDDATE, CREATED_AT) " +
                                             "VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -186,15 +186,15 @@ public class Chat implements Listener {
                             preparedStatement.setLong(7, now);
                             preparedStatement.executeUpdate();
                             preparedStatement.close();
-                        } catch (SQLException e){
-                            e.printStackTrace();
                         }
-                    });
+                    }
+                } catch (SQLException e){
+                    e.printStackTrace();
                 }
-            }
+            });
             return ID;
         } catch (SQLException exc){
-
+            exc.printStackTrace();
         }
         return null;
     }
