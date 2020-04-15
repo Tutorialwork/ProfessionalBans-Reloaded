@@ -76,7 +76,7 @@ public class Data {
 
             PreparedStatement ps_reasons = Main.mysql.getCon()
                     .prepareStatement(
-                                    "CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT datetime ON UPDATE current_timestamp(), BANS int(11), PERMS varchar(255));"
+                                    "CREATE TABLE IF NOT EXISTS reasons(ID int(11) UNIQUE AUTO_INCREMENT, REASON varchar(255), TIME int(255), TYPE int(11), ADDED_AT datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(), BANS int(11), PERMS varchar(255));"
                     );
             ps_reasons.executeUpdate();
             ps_reasons.close();

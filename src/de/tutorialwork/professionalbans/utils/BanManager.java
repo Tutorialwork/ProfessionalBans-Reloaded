@@ -65,7 +65,7 @@ public class BanManager {
     public void getBanReasonsList(ProxiedPlayer p){
         try {
             PreparedStatement ps = Main.mysql.getCon()
-                    .prepareStatement("SELECT * FROM reasons ORDER BY SORTINDEX ASC");
+                    .prepareStatement("SELECT * FROM reasons");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("ID");
@@ -615,7 +615,7 @@ public class BanManager {
             ps.setInt(1, ReasonID);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                if(rs.getString("PERMS").equals("null")){
+                if(rs.getString("PERMS") == null){
                     return false;
                 } else {
                     return true;
