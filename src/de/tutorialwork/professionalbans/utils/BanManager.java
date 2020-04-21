@@ -63,18 +63,40 @@ public class BanManager {
     }
 
     public void getBanReasonsList(ProxiedPlayer p){
+        ArrayList<Integer> bans = new ArrayList<>();
+        ArrayList<Integer> mutes = new ArrayList<>();
+
         try {
             PreparedStatement ps = Main.mysql.getCon()
                     .prepareStatement("SELECT * FROM reasons");
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 int id = rs.getInt("ID");
+                /*
                 if(isBanReason(id)){
                     p.sendMessage("§7"+id+" §8| §e"+getReasonByID(id));
                 } else {
                     p.sendMessage("§7"+id+" §8| §e"+getReasonByID(id)+" §8(§cMUTE§8)");
                 }
+                */
+                if(isBanReason(id)){
+                    bans.add(id);
+                } else {
+                    mutes.add(id);
+                }
             }
+
+            p.sendMessage("");
+            p.sendMessage(Main.data.Prefix+Main.messages.getString("ban_reasons"));
+            for (Integer id : bans){
+                p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
+            }
+            p.sendMessage(Main.data.Prefix+Main.messages.getString("mute_reasons"));
+            for (Integer id : mutes){
+                p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
+            }
+            p.sendMessage("");
+
             ps.close();
             rs.close();
         } catch (SQLException exc){
@@ -555,6 +577,19 @@ public class BanManager {
             exc.printStackTrace();
         }
         return null;
+    }
+
+    public String getFormattedReasonTime(int id){
+        int minutes = getReasonTime(id);
+        if(minutes != -1){
+            long now = System.currentTimeMillis();
+            long calc = now + (minutes * 60 * 1000);
+            long end = calc - now;
+
+            return TimeManager.formatOnlineTime(end);
+        } else {
+            return "§4§lPERMANENT";
+        }
     }
 
     public boolean isBanReason(int ID){
