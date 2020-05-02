@@ -173,7 +173,7 @@ public class BanManager {
                 long end = current + getReasonTime(GrundID) * 60000L;
                 long increaseEnd = current + Prozentsatz / 100 + 1 * defaultmins * bans * 60000L; //Formel!!!!!
                 if(increaseBans){
-                    if(bans > 0){
+                    if(bans == 0){
                         PreparedStatement ps = Main.mysql.getCon()
                                 .prepareStatement("UPDATE bans SET BANNED='1', REASON=?, END=?, TEAMUUID=? WHERE UUID=?");
                         ps.setString(1, getReasonByID(GrundID));
