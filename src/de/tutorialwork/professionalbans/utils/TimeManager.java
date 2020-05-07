@@ -98,29 +98,22 @@ public class TimeManager {
     }
 
     public static String formatOnlineTime(long time){
-        long diff = time;
+        long diffMinutes = ( time ) % 60;
+        long diffHours = ( time / 60 ) % 24;
+        long diffDays = ( time / 60 / 24 ) % 365;
 
-        long diffSeconds = diff / 1000 % 60;
-        long diffMinutes = diff / (60 * 1000) % 60;
-        long diffHours = diff / (60 * 60 * 1000) % 24;
-        long diffDays = diff / (24 * 60 * 60 * 1000);
+        String timeString = "";
 
-        String timeStr = "";
+        if ( diffDays != 0 )
+            timeString += buildTimeSnippet( diffDays, "day", "days" ) + " ";
 
-        if(diffDays != 0){
-            timeStr += buildTimeSnippet(diffDays, "day", "days") + " ";
-        }
-        if(diffHours != 0){
-            timeStr += buildTimeSnippet(diffHours, "hour", "hours") + " ";
-        }
-        if(diffMinutes != 0){
-            timeStr += buildTimeSnippet(diffMinutes, "minute", "minutes") + " ";
-        }
-        if(diffSeconds != 0){
-            timeStr += buildTimeSnippet(diffSeconds, "second", "seconds") + " ";
-        }
+        if ( diffHours != 0 )
+            timeString += buildTimeSnippet( diffHours, "hour", "hours" ) + " ";
 
-        return timeStr;
+        if ( diffMinutes != 0 )
+            timeString += buildTimeSnippet( diffMinutes, "minute", "minutes" ) + " ";
+
+        return timeString;
     }
 
     private static String buildTimeSnippet(long diffUnit, String messageSingular, String messagePlural){

@@ -28,7 +28,7 @@ public class Onlinezeit extends Command {
                     for(int i = 0; i < players.size(); i++){
                         int rank = i + 1;
                         String name = Main.ban.getNameByUUID(players.get(i));
-                        p.sendMessage("§8#§7"+rank+" » §e"+name+" §7- "+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(players.get(i))));
+                        p.sendMessage("§8#§7"+rank+" » §e"+name+" §7- "+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(players.get(i)) / 60 / 1000));
                     }
                 });
             } else {
@@ -40,9 +40,9 @@ public class Onlinezeit extends Command {
                             p.sendMessage("§8[]=================§8[§e§l "+Main.ban.getNameByUUID(UUID)+" §8]=================[]");
 
                             if(target != null){
-                                p.sendMessage(Main.messages.getString("ontime_on_msg")+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
+                                p.sendMessage(Main.messages.getString("ontime_on_msg")+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID) / 60 / 1000));
                             } else {
-                                p.sendMessage(Main.messages.getString("ontime_off_msg").replace("%date%", Main.ban.formatTimestamp(Long.valueOf(Main.ban.getLastLogin(UUID))))+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID)));
+                                p.sendMessage(Main.messages.getString("ontime_off_msg").replace("%date%", Main.ban.formatTimestamp(Long.valueOf(Main.ban.getLastLogin(UUID))))+TimeManager.formatOnlineTime(TimeManager.getOnlineTime(UUID) / 60 / 1000));
                             }
 
                             String spaces = "";
@@ -63,3 +63,4 @@ public class Onlinezeit extends Command {
         }
     }
 }
+

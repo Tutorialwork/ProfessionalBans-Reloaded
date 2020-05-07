@@ -582,11 +582,7 @@ public class BanManager {
     public String getFormattedReasonTime(int id){
         int minutes = getReasonTime(id);
         if(minutes != -1){
-            long now = System.currentTimeMillis();
-            long calc = now + (minutes * 60 * 1000);
-            long end = calc - now;
-
-            return TimeManager.formatOnlineTime(end);
+            return TimeManager.formatOnlineTime(minutes);
         } else {
             return "§4§lPERMANENT";
         }
