@@ -86,16 +86,20 @@ public class BanManager {
                 }
             }
 
-            p.sendMessage("");
-            p.sendMessage(Main.data.Prefix+Main.messages.getString("ban_reasons"));
-            for (Integer id : bans){
-                p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
+            if(bans.size() != 0 || mutes.size() != 0){
+                p.sendMessage("");
+                p.sendMessage(Main.data.Prefix+Main.messages.getString("ban_reasons"));
+                for (Integer id : bans){
+                    p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
+                }
+                p.sendMessage(Main.data.Prefix+Main.messages.getString("mute_reasons"));
+                for (Integer id : mutes){
+                    p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
+                }
+                p.sendMessage("");
+            } else {
+                p.sendMessage(Main.data.Prefix+Main.messages.getString("no_reasons_created"));
             }
-            p.sendMessage(Main.data.Prefix+Main.messages.getString("mute_reasons"));
-            for (Integer id : mutes){
-                p.sendMessage(Main.data.Prefix+id+" §8| §a"+getReasonByID(id)+" §8- §c"+getFormattedReasonTime(id));
-            }
-            p.sendMessage("");
 
             ps.close();
             rs.close();
