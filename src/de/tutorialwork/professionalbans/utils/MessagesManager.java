@@ -171,7 +171,7 @@ public class MessagesManager {
 
     public static void sendPushNotify(String to, String title, String message) {
         try{
-            String url = "https://tutorialwork.de/api/cloudmessaging.php";
+            String url = "https://app.tutorialwork.dev/cloudmessaging/send.php";
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
             con.setRequestMethod("POST");
