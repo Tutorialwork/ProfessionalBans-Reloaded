@@ -1,14 +1,19 @@
 package de.tutorialwork.professionalbans.utils;
 
 import de.tutorialwork.professionalbans.main.Main;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.config.Configuration;
+import net.md_5.bungee.config.ConfigurationProvider;
+import net.md_5.bungee.config.YamlConfiguration;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class TimeManager {
 
@@ -78,8 +83,21 @@ public class TimeManager {
             PreparedStatement ps = Main.mysql.getCon()
                     .prepareStatement("SELECT * FROM bans ORDER BY ONLINE_TIME DESC LIMIT 10");
             ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                players.add(rs.getString("UUID"));
+            try{
+                File file = new File(Main.main.getDataFolder(), "config.yml");
+                Configuration cfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
+
+                while (rs.next()){
+                    if(cfg.getBoolean("ONLINETIME.BYPASSTEAM")){
+                        if(!Main.ban.webaccountExists(rs.getString("UUID"))){
+                            players.add(rs.getString("UUID"));
+                        }
+                    } else {
+                        players.add(rs.getString("UUID"));
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             ps.close();
             rs.close();

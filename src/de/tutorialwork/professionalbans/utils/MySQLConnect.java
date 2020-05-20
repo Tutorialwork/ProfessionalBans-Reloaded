@@ -2,9 +2,7 @@ package de.tutorialwork.professionalbans.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import de.tutorialwork.professionalbans.main.Main;
 import net.md_5.bungee.BungeeCord;

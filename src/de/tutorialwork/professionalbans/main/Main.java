@@ -135,12 +135,13 @@ public class Main extends Plugin {
                 configcfg.set("AUTOMUTE.AUTOREPORT", true);
                 configcfg.set("AUTOMUTE.MUTEID", 0);
                 configcfg.set("AUTOMUTE.ADMUTEID", 0);
-                configcfg.set("BANTIME-INCREASE.ENABLED", true);
+                configcfg.set("BANTIME-INCREASE.ENABLED", false);
                 configcfg.set("BANTIME-INCREASE.PERCENTRATE", 50);
                 configcfg.set("COMMANDS.MSG", true);
                 configcfg.set("COMMANDS.TEAMCHAT", true);
                 configcfg.set("COMMANDS.BROADCAST", true);
                 configcfg.set("COMMANDS.SUPPORT", true);
+                configcfg.set("ONLINETIME.BYPASSTEAM", false);
                 ConfigurationProvider.getProvider(YamlConfiguration.class).save(configcfg, config);
             } else {
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
