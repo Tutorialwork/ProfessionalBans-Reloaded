@@ -245,7 +245,6 @@ public class Main extends Plugin {
             getProxy().getPluginManager().registerCommand(this, new Ban("ban"));
             getProxy().getPluginManager().registerCommand(this, new Unban("unban"));
             getProxy().getPluginManager().registerCommand(this, new Kick("kick"));
-            getProxy().getPluginManager().registerCommand(this, new WebAccount("webaccount"));
             getProxy().getPluginManager().registerCommand(this, new Check("check"));
             getProxy().getPluginManager().registerCommand(this, new ProfessionalBans("professionalbans"));
             getProxy().getPluginManager().registerCommand(this, new IPBan("ipban"));
