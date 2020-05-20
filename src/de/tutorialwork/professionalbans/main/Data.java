@@ -69,7 +69,7 @@ public class Data {
         try{
             PreparedStatement ps_acc = Main.mysql.getCon()
                     .prepareStatement(
-                            "CREATE TABLE IF NOT EXISTS accounts(UUID varchar(64) UNIQUE, USERNAME varchar(255), PASSWORD varchar(255), RANK int(11), GOOGLE_AUTH varchar(255), AUTHCODE varchar(255));"
+                            "CREATE TABLE user (id INT AUTO_INCREMENT NOT NULL, uuid VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, auth TINYINT(1) NOT NULL, authcode VARCHAR(255) DEFAULT NULL, roles JSON NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB"
                     );
             ps_acc.executeUpdate();
             ps_acc.close();
@@ -123,53 +123,30 @@ public class Data {
                     );
             ps_unban.executeUpdate();
             ps_unban.close();
-            PreparedStatement ps_apptoken = Main.mysql.getCon()
-                    .prepareStatement(
-                                    "CREATE TABLE IF NOT EXISTS apptokens(UUID varchar(36) UNIQUE, TOKEN varchar(555));"
-                    );
-            ps_apptoken.executeUpdate();
-            ps_apptoken.close();
             PreparedStatement ps_privatemsg = Main.mysql.getCon()
                     .prepareStatement(
                                     "CREATE TABLE IF NOT EXISTS privatemessages(ID int(11) AUTO_INCREMENT UNIQUE, SENDER varchar(255), RECEIVER varchar(255), MESSAGE varchar(2500), STATUS int(11), DATE varchar(255));"
                     );
             ps_privatemsg.executeUpdate();
             ps_privatemsg.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-
-        try {
-            PreparedStatement ps_update_1 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE accounts ADD IF NOT EXISTS AUTHSTATUS int(11);");
-            ps_update_1.executeUpdate();
-            ps_update_1.close();
-
-            PreparedStatement ps_update_2 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE bans ADD IF NOT EXISTS FIRSTLOGIN varchar(255);");
-            ps_update_2.executeUpdate();
-            ps_update_2.close();
-            PreparedStatement ps_update_2_1 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE bans ADD IF NOT EXISTS LASTLOGIN varchar(255);");
-            ps_update_2_1.executeUpdate();
-            ps_update_2_1.close();
-
-            //Removed SQL Update 3
-            //Reason: Prepare for ProfessionalBans 3
-
-            PreparedStatement ps_update_4 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE apptokens ADD IF NOT EXISTS FIREBASE_TOKEN varchar(255);");
-            ps_update_4.executeUpdate();
-            ps_update_4.close();
-            PreparedStatement ps_update_4_1 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE bans ADD IF NOT EXISTS ONLINE_STATUS int(11) NULL DEFAULT '0';");
-            ps_update_4_1.executeUpdate();
-            ps_update_4_1.close();
-
-            PreparedStatement ps_update_5 = Main.mysql.getCon()
-                    .prepareStatement("ALTER TABLE bans ADD IF NOT EXISTS ONLINE_TIME BIGINT(19) NULL DEFAULT '0';");
-            ps_update_5.executeUpdate();
-            ps_update_5.close();
+            PreparedStatement ps_tokens = Main.mysql.getCon()
+                    .prepareStatement(
+                            "CREATE TABLE tokens (id INT AUTO_INCREMENT NOT NULL, uuid VARCHAR(255) NOT NULL, token VARCHAR(255) NOT NULL, token_description VARCHAR(255) DEFAULT NULL, firebase_token VARCHAR(255) DEFAULT NULL, created_at DATETIME NOT NULL, updated_at DATETIME NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB"
+                    );
+            ps_tokens.executeUpdate();
+            ps_tokens.close();
+            PreparedStatement ps_setting = Main.mysql.getCon()
+                    .prepareStatement(
+                            "CREATE TABLE setting (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, value VARCHAR(1000) DEFAULT NULL, UNIQUE INDEX UNIQ_9F74B8985E237E06 (name), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB"
+                    );
+            ps_setting.executeUpdate();
+            ps_setting.close();
+            PreparedStatement ps_invite = Main.mysql.getCon()
+                    .prepareStatement(
+                            "CREATE TABLE invite (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(255) NOT NULL, creator INT NOT NULL, creationdate DATE NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB"
+                    );
+            ps_invite.executeUpdate();
+            ps_invite.close();
         } catch (SQLException e){
             e.printStackTrace();
         }
