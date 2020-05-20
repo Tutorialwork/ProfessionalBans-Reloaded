@@ -685,7 +685,7 @@ public class BanManager {
     public boolean webaccountExists(String UUID){
         try {
             PreparedStatement ps = Main.mysql.getCon()
-                    .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+                    .prepareStatement("SELECT * FROM user WHERE uuid=?");
             ps.setString(1, UUID);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
@@ -699,43 +699,15 @@ public class BanManager {
         return false;
     }
 
-    public void createWebAccount(String UUID, String Name, int Rank, String PasswordHash){
-        try{
-            PreparedStatement ps = Main.mysql.getCon()
-                    .prepareStatement("INSERT INTO accounts(UUID, USERNAME, PASSWORD, RANK, GOOGLE_AUTH, AUTHCODE) "+
-                            "VALUES (?, ?, ?, ?, 'null', 'initialpassword')");
-            ps.setString(1, UUID);
-            ps.setString(2, Name);
-            ps.setString(3, PasswordHash);
-            ps.setInt(4, Rank);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void deleteWebAccount(String UUID){
-        try{
-            PreparedStatement ps = Main.mysql.getCon()
-                    .prepareStatement("DELETE FROM accounts WHERE UUID=?");
-            ps.setString(1, UUID);
-            ps.executeUpdate();
-            ps.close();
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-    }
-
     public boolean isWebaccountAdmin(String UUID){
         if(webaccountExists(UUID)){
             try {
                 PreparedStatement ps = Main.mysql.getCon()
-                        .prepareStatement("SELECT * FROM accounts WHERE UUID=?");
+                        .prepareStatement("SELECT * FROM user WHERE uuid=?");
                 ps.setString(1, UUID);
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){
-                    if(rs.getInt("RANK") == 3){
+                    if(rs.getString("roles").contains("ROLE_SUPER_ADMIN")){
                         return true;
                     } else {
                         return false;

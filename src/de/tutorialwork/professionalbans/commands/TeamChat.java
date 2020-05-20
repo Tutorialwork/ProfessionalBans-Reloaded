@@ -14,6 +14,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class TeamChat extends Command {
     public TeamChat(String tc) {
@@ -22,6 +23,7 @@ public class TeamChat extends Command {
 
     private String chatformat;
     private String message = "";
+    private ArrayList<ProxiedPlayer> notloggedplayers = new ArrayList<>();
 
     @Override
     public void execute(CommandSender sender, String[] args) {
@@ -29,6 +31,21 @@ public class TeamChat extends Command {
             ProxiedPlayer p = (ProxiedPlayer) sender;
             if(Main.ban.webaccountExists(p.getUniqueId().toString())){
                 if(args.length > 0){
+                    if(args[0].equalsIgnoreCase("toggle")){
+                        if(!notloggedplayers.contains(p)){
+                            notloggedplayers.add(p);
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("tc_logged_off"));
+                        } else {
+                            notloggedplayers.remove(p);
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("tc_logged_on"));
+                        }
+                        return;
+                    } else {
+                        if(notloggedplayers.contains(p)){
+                            p.sendMessage(Main.data.Prefix+Main.messages.getString("tc_logged_err"));
+                            return;
+                        }
+                    }
                     message = "";
                     for(int i = 0; i < args.length; i++){
                         message = message + " " + args[i];
@@ -44,7 +61,7 @@ public class TeamChat extends Command {
 
                     for(ProxiedPlayer all : BungeeCord.getInstance().getPlayers()){
                         ProxyServer.getInstance().getScheduler().runAsync(Main.main, () -> {
-                            if(Main.ban.webaccountExists(all.getUniqueId().toString())){
+                            if(Main.ban.webaccountExists(all.getUniqueId().toString()) && !notloggedplayers.contains(all)){
                                 if(!all.getUniqueId().toString().equals(p.getUniqueId().toString())){
                                     all.sendMessage(chatformat.replace("%from%", p.getName()).replace("%message%", message));
                                 } else {
