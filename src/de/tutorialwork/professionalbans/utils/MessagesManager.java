@@ -29,6 +29,7 @@ public class MessagesManager {
             p.sendMessage(ChatColor.translateAlternateColorCodes('&', cfg.getString("CHATFORMAT.MSG").replace("%from%", "Du").replace("%message%", message)));
             MessagesManager.insertMessage(p.getUniqueId().toString(), target.getUniqueId().toString(), message);
             MessagesManager.updateLastChat(p, target);
+            MessagesManager.updateLastChat(target, p);
 
         } catch (IOException e) {
             e.printStackTrace();
