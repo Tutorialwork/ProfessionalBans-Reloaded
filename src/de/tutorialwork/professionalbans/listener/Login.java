@@ -134,7 +134,7 @@ public class Login implements Listener {
             }
         }
         //WebURL Conf Check
-        if(Main.data.WebURL == null){
+        if(Main.data.WebURL == null || Main.data.WebURL == "https://bans.YourServer.com"){
             p.sendMessage("§8[]===================================[]");
             p.sendMessage(Main.messages.getString("config_notify"));
             p.sendMessage("§8[]===================================[]");

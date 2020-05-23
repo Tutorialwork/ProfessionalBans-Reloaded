@@ -977,10 +977,10 @@ public class BanManager {
                         } else if(rs.getInt("STATUS") == 3){
                             return "§eDein Entbannungsantrag wurde abgelehnt";
                         } else {
-                            return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
+                            return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"unbanrequest/create";
                         }
                     } else {
-                        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
+                        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"unbanrequest/create";
                     }
                 }
                 ps.close();
@@ -989,7 +989,7 @@ public class BanManager {
                 exc.printStackTrace();
             }
         }
-        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"public/unban.php";
+        return "§7Du kannst einen Entbannungsantrag stellen auf \n §e"+Main.data.WebURL+"unbanrequest/create";
     }
 
 }

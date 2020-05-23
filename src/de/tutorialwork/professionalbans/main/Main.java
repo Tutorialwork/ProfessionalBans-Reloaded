@@ -104,7 +104,7 @@ public class Main extends Plugin {
             if(!config.exists()){
                 config.createNewFile();
                 Configuration configcfg = ConfigurationProvider.getProvider(YamlConfiguration.class).load(config);
-                configcfg.set("WEBINTERFACE.URL", "https://YourServer.com/Path/to/Webinterface");
+                configcfg.set("WEBINTERFACE.URL", "https://bans.YourServer.com");
                 configcfg.set("Prefix", "&6&lP&e&lBANS &8• &7");
                 configcfg.set("CHATFORMAT.MSG", "&5&lMSG &8• &7%from% » &e%message%");
                 configcfg.set("CHATFORMAT.TEAMCHAT", "&e&lTEAM &8• &7%from% » &e%message%");
@@ -167,7 +167,7 @@ public class Main extends Plugin {
                 if(configcfg.getString("VPN.APIKEY").length() == 27){
                     data.APIKey = configcfg.getString("VPN.APIKEY");
                 }
-                if(!configcfg.getString("WEBINTERFACE.URL").equals("https://YourServer.com/Path/to/Webinterface")){
+                if(!configcfg.getString("WEBINTERFACE.URL").equals("https://bans.YourServer.com")){
                     Main.data.WebURL = configcfg.getString("WEBINTERFACE.URL");
                     if(!data.WebURL.startsWith("https://") && !data.WebURL.startsWith("http://")){
                         data.WebURL = "https://" + data.WebURL;
