@@ -272,6 +272,7 @@ public class Main extends Plugin {
             getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinezeit"));
             getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinetime"));
             getProxy().getPluginManager().registerCommand(this, new Language("language"));
+            getProxy().getPluginManager().registerCommand(this, new MSGToggle("msgtoggle"));
         } catch (IOException e) {
             e.printStackTrace();
         }

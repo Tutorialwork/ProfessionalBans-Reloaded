@@ -31,7 +31,11 @@ public class PrivateMessageReply extends Command {
                             message = message + " " + args[i];
                         }
                         if(!Main.ban.isMuted(MessagesManager.getLastChatPlayer(p).getUniqueId().toString())){
-                            MessagesManager.sendMessage(p, MessagesManager.getLastChatPlayer(p), message);
+                            if(!MSGToggle.toggle.contains(MessagesManager.getLastChatPlayer(p))){
+                                MessagesManager.sendMessage(p, MessagesManager.getLastChatPlayer(p), message);
+                            } else {
+                                p.sendMessage(Main.data.Prefix+Main.messages.getString("msg_toggled"));
+                            }
                         } else {
                             p.sendMessage(Main.data.Prefix+Main.messages.getString("target_muted"));
                         }

@@ -33,7 +33,11 @@ public class PrivateMessage extends Command {
                             message = message + " " + args[i];
                         }
                         if(!Main.ban.isMuted(target.getUniqueId().toString())){
-                            MessagesManager.sendMessage(p, target, message);
+                            if(!MSGToggle.toggle.contains(target)){
+                                MessagesManager.sendMessage(p, target, message);
+                            } else {
+                                p.sendMessage(Main.data.Prefix+Main.messages.getString("msg_toggled"));
+                            }
                         } else {
                             p.sendMessage(Main.data.Prefix+Main.messages.getString("target_muted"));
                         }
