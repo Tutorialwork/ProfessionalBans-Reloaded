@@ -41,7 +41,7 @@ public class Main extends Plugin {
         init();
         data.sendConsoleStartupMessage();
         data.checkUpdateConsole();
-        Metrics metrics = new Metrics(this);
+        Metrics metrics = new Metrics(this, 4785);
     }
 
     private void init(){
