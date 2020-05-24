@@ -29,7 +29,7 @@ public class Chatlog extends Command {
                                 String ID = Chat.createChatlog(UUID, p.getUniqueId().toString());
                                 p.sendMessage(Main.data.Prefix+Main.messages.getString("chatlog_success").replace("%player%", Main.ban.getNameByUUID(UUID)));
                                 if(Main.data.WebURL != null){
-                                    p.sendMessage(Main.data.Prefix+"Link: §e§l"+Main.data.WebURL+"public/chatlog.php?id="+ID);
+                                    p.sendMessage(Main.data.Prefix+"Link: §e§l"+Main.data.WebURL+"/chatlogs/"+ID);
                                 } else {
                                     p.sendMessage(Main.data.Prefix+Main.messages.getString("link_err"));
                                 }
