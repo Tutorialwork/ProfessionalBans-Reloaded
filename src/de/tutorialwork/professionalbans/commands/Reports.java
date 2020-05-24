@@ -58,7 +58,7 @@ public class Reports extends Command {
                         int id = Integer.parseInt(args[2]);
                         Main.ban.setReportDone(id);
                         Main.ban.setReportTeamUUID(id, p.getUniqueId().toString());
-                        p.sendMessage(Main.data.Prefix+Main.messages.getString("report_accepted").replace("%player%", Main.ban.getNameByReportID(id)).replace("%reason%", Main.ban.getReasonByID(id)));
+                        p.sendMessage(Main.data.Prefix+Main.messages.getString("report_accepted").replace("%player%", Main.ban.getNameByReportID(id)).replace("%reason%", Main.ban.getReasonByReportID(id)));
                         LogManager.createEntry(p.getUniqueId().toString(), null, "REPORT_ACCEPT", String.valueOf(id));
                     } else {
                         p.sendMessage(Main.data.Prefix+Main.messages.getString("player_404"));
