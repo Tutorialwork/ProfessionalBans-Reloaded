@@ -12,6 +12,7 @@ import net.md_5.bungee.config.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -150,6 +151,31 @@ public class Data {
         } catch (SQLException e){
             e.printStackTrace();
         }
+    }
+
+    public boolean checkMySQLVersion() {
+        try {
+            PreparedStatement stmt = Main.mysql.getCon().prepareStatement("SELECT VERSION();");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()){
+                String RAWVersion = rs.getString("VERSION()");
+                if(RAWVersion.contains("MariaDB")){
+                    RAWVersion = RAWVersion.split("-")[0];
+                    RAWVersion = RAWVersion.replace(".", "");
+                    RAWVersion = RAWVersion.substring(0, 3);
+                    if(Integer.parseInt(RAWVersion) >= 103){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return true;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return true;
     }
 
     public void sendConsoleStartupMessage(){
@@ -356,5 +382,5 @@ public class Data {
         blacklist.add("wixxxer");
         blacklist.add("wixxxxer");
     }
-    
+
 }

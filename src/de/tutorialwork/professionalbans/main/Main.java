@@ -15,6 +15,9 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
@@ -233,7 +236,11 @@ public class Main extends Plugin {
             e.printStackTrace();
         }
         mysql = new MySQLConnect(MySQLConnect.HOST, MySQLConnect.DATABASE, MySQLConnect.USER, MySQLConnect.PASSWORD, MySQLConnect.PORT);
-        data.seedDatabase();
+        if(data.checkMySQLVersion()){
+            data.seedDatabase();
+        } else {
+            BungeeCord.getInstance().getConsole().sendMessage(Main.data.Prefix+Main.messages.getString("outdated_mysql"));
+        }
     }
 
     private void Commands() {
