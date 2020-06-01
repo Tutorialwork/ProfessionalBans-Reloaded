@@ -261,6 +261,7 @@ public class Main extends Plugin {
             if(cfg.getBoolean("COMMANDS.MSG")){
                 getProxy().getPluginManager().registerCommand(this, new PrivateMessage("msg"));
                 getProxy().getPluginManager().registerCommand(this, new PrivateMessageReply("r"));
+                getProxy().getPluginManager().registerCommand(this, new MSGToggle("msgtoggle"));
             }
             if(cfg.getBoolean("COMMANDS.TEAMCHAT")){
                 getProxy().getPluginManager().registerCommand(this, new TeamChat("tc"));
@@ -272,7 +273,6 @@ public class Main extends Plugin {
             getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinezeit"));
             getProxy().getPluginManager().registerCommand(this, new Onlinezeit("onlinetime"));
             getProxy().getPluginManager().registerCommand(this, new Language("language"));
-            getProxy().getPluginManager().registerCommand(this, new MSGToggle("msgtoggle"));
         } catch (IOException e) {
             e.printStackTrace();
         }
