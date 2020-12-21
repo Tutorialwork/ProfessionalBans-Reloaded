@@ -221,7 +221,7 @@ public class IPManager {
     public boolean isVPN(String IP){
         if(!IP.equals("127.0.0.1")){
             if(Main.data.APIKey != null){
-                String json = Main.callURL("http://proxycheck.io/v2/"+IP+"?key="+Main.data.APIKey);
+                String json = Main.callURL("http://proxycheck.io/v2/"+IP.replace("%0", "")+"?key="+Main.data.APIKey);
                 json = json.replace("{\n" +
                         "    \"status\": \"ok\",\n" +
                         "    \""+IP+"\": {\n" +
@@ -235,7 +235,7 @@ public class IPManager {
                     return false;
                 }
             } else {
-                String json = Main.callURL("http://proxycheck.io/v2/"+IP+"?key=318n07-0o7054-y9y82a-75o3hr");
+                String json = Main.callURL("http://proxycheck.io/v2/"+IP.replace("%0", "")+"?key=318n07-0o7054-y9y82a-75o3hr");
                 json = json.replace("{\n" +
                         "    \"status\": \"ok\",\n" +
                         "    \""+IP+"\": {\n" +
