@@ -235,7 +235,7 @@ public class IPManager {
                     return false;
                 }
             } else {
-                String json = Main.callURL("http://proxycheck.io/v2/"+IP.replace("%0", "")+"?key=318n07-0o7054-y9y82a-75o3hr");
+                String json = Main.callURL("http://proxycheck.io/v2/"+IP.replace("%0", "")+"?key="+Main.data.APIKey);
                 json = json.replace("{\n" +
                         "    \"status\": \"ok\",\n" +
                         "    \""+IP+"\": {\n" +
